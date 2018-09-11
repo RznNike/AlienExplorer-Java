@@ -87,7 +87,7 @@ class ResourcesLoader {
             AffineTransform transform = AffineTransform.getScaleInstance(-1, 1);
             transform.translate(
                     -flippedSprite.getWidth(null),
-                    -flippedSprite.getHeight(null));
+                    flippedSprite.getHeight(null));
             AffineTransformOp transformOp = new AffineTransformOp(
                     transform,
                     AffineTransformOp.TYPE_NEAREST_NEIGHBOR);

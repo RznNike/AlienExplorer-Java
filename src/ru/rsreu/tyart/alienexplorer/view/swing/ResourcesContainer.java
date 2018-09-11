@@ -30,7 +30,7 @@ class ResourcesContainer {
     public Image getSprite(IGameObject gameObject)
     {
 //        int sign = gameObject.getFlippedY() ? -1 : 1;
-        return  _levelObjectSprites.get(0).get(0);
+        return  _levelObjectSprites.get(2).get(0);
 //        if (typeof(LevelObject).IsInstanceOfType(gameObject))
 //        {
 //            return _levelObjectSprites[(int)((LevelObject)parObject).Type * sign][parObject.State];

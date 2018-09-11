@@ -30,10 +30,13 @@ public class MainForm extends JFrame implements IViewable {
     public void paint(Graphics graphics) {
         super.paint(graphics);
 
+        while (_resources == null){
+
+        }
         if (_resources != null) {
             // TODO !!!!!!
             Image img = _resources.getSprite(null);
-            graphics.drawImage(img, 50, 100, 30, 60, null);
+            graphics.drawImage(img, 50, 100, 60, 60, null);
         }
     }
 }
