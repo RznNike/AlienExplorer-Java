@@ -1,5 +1,6 @@
 package ru.rsreu.tyart.alienexplorer.view.swing;
 
+import ru.rsreu.tyart.alienexplorer.controller.GameController;
 import ru.rsreu.tyart.alienexplorer.model.IModel;
 import ru.rsreu.tyart.alienexplorer.view.IViewable;
 
@@ -9,8 +10,11 @@ import java.awt.*;
 public class MainForm extends JFrame implements IViewable {
     private JPanel _canvas;
     private ResourcesContainer _resources;
+    private GameController _controller;
 
-    public MainForm() {
+    public MainForm(GameController controller) {
+        _controller = controller;
+
         setContentPane(_canvas);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setUndecorated(true);
@@ -19,6 +23,7 @@ public class MainForm extends JFrame implements IViewable {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         _resources = ResourcesLoader.loadResources();
+        repaint();
     }
 
     @Override
