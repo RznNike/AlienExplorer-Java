@@ -7,6 +7,7 @@ import java.util.Dictionary;
 import java.util.List;
 
 class ResourcesContainer {
+    // TODO font
     private Dictionary<Integer, Image> _backgrounds;
     private Dictionary<Integer, List<Image>> _levelObjectSprites;
     private Dictionary<Integer, List<Image>> _enemySprites;
@@ -29,6 +30,7 @@ class ResourcesContainer {
 
     public Image getSprite(IGameObject gameObject)
     {
+        // TODO resources getting
 //        int sign = gameObject.getFlippedY() ? -1 : 1;
         return  _levelObjectSprites.get(2).get(0);
 //        if (typeof(LevelObject).IsInstanceOfType(gameObject))
