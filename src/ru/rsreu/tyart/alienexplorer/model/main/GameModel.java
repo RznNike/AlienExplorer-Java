@@ -1,6 +1,8 @@
 package ru.rsreu.tyart.alienexplorer.model.main;
 
 import ru.rsreu.tyart.alienexplorer.model.IModel;
+import ru.rsreu.tyart.alienexplorer.model.util.ModelEvent;
+import ru.rsreu.tyart.alienexplorer.model.util.ModelEventType;
 import ru.rsreu.tyart.alienexplorer.view.ModelEventListener;
 
 import java.util.ArrayList;
@@ -24,6 +26,24 @@ public class GameModel implements IModel {
     @Override
     public void start() {
         // TODO launch sequence (main menu)
+        Thread mainThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                GameModel.this.processMainThread();
+            }
+        });
+        mainThread.start();
+    }
+
+    private void processMainThread() {
+        while (true) {
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            sendEvent(ModelEventType.LEVEL_LOADED);
+        }
     }
 
     @Override
@@ -39,5 +59,12 @@ public class GameModel implements IModel {
     @Override
     public void removeAllEventListeners() {
         _listeners.clear();
+    }
+
+    private void sendEvent(ModelEventType eventType) {
+        ModelEvent event = new ModelEvent(this, eventType);
+        for (ModelEventListener listener : _listeners) {
+            listener.onModelEvent(event);
+        }
     }
 }
