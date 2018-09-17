@@ -61,33 +61,40 @@ public class MainForm extends JFrame implements KeyListener, ModelEventListener 
     public void onModelEvent(ModelEvent event) {
         IModel model = event.getSender();
         ModelEventType eventType = event.getEventType();
-        switch (eventType) {
-            case LEVEL_LOADED:
-                ModelDrawer.drawBackground(model, _resources, _layers.get(BACKGROUND_LAYER));
-                ModelDrawer.drawLevel(model, _resources, _layers.get(LEVEL_LAYER));
-                ModelDrawer.drawUI(model, _resources, _layers.get(UI_LAYER));
-                _layers.get(MENU_LAYER).setVisible(false);
-                break;
-            case MENU_LOADED:
-                ModelDrawer.drawMenu(model, _resources, _layers.get(MENU_LAYER));
-                _layers.get(MENU_LAYER).setVisible(true);
-                break;
-            case LEVEL_CHANGED:
-                ModelDrawer.drawLevel(model, _resources, _layers.get(LEVEL_LAYER));
-                break;
-            case UI_CHANGED:
-                ModelDrawer.drawUI(model, _resources, _layers.get(UI_LAYER));
-                break;
-            case CONTEXT_MENU_LOADED:
-                ModelDrawer.drawMenu(model, _resources, _layers.get(MENU_LAYER));
-                _layers.get(MENU_LAYER).setVisible(true);
-                break;
-            case CONTEXT_MENU_CHANGED:
-                ModelDrawer.drawMenu(model, _resources, _layers.get(MENU_LAYER));
-                break;
-            case CONTEXT_MENU_CLOSED:
-                _layers.get(MENU_LAYER).setVisible(false);
-                break;
+        try {
+            switch (eventType) {
+                case LEVEL_LOADED:
+                    ModelDrawer.drawBackground(model, _resources, _layers.get(BACKGROUND_LAYER));
+                    ModelDrawer.drawLevel(model, _resources, _layers.get(LEVEL_LAYER));
+                    ModelDrawer.drawUI(model, _resources, _layers.get(UI_LAYER));
+                    _layers.get(MENU_LAYER).setVisible(false);
+                    break;
+                case MENU_LOADED:
+                    ModelDrawer.drawMenu(model, _resources, _layers.get(MENU_LAYER));
+                    _layers.get(MENU_LAYER).setVisible(true);
+                    break;
+                case LEVEL_CHANGED:
+                    ModelDrawer.drawLevel(model, _resources, _layers.get(LEVEL_LAYER));
+                    break;
+                case UI_CHANGED:
+                    ModelDrawer.drawUI(model, _resources, _layers.get(UI_LAYER));
+                    break;
+                case CONTEXT_MENU_LOADED:
+                    ModelDrawer.drawMenu(model, _resources, _layers.get(MENU_LAYER));
+                    _layers.get(MENU_LAYER).setVisible(true);
+                    break;
+                case CONTEXT_MENU_CHANGED:
+                    ModelDrawer.drawMenu(model, _resources, _layers.get(MENU_LAYER));
+                    break;
+                case CONTEXT_MENU_CLOSED:
+                    _layers.get(MENU_LAYER).setVisible(false);
+                    break;
+            }
+        } catch (IllegalArgumentException e) {
+            for (JLabel layer : _layers) {
+                layer.setSize(_canvas.getSize());
+            }
+            onModelEvent(event);
         }
     }
 

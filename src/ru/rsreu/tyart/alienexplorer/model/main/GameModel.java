@@ -12,6 +12,8 @@ public class GameModel implements IModel {
     private static GameModel _instance;
     private List<ModelEventListener> _listeners;
 
+    private GameRoom _room;
+
     private GameModel() {
         _listeners = new ArrayList<ModelEventListener>();
     }
@@ -23,9 +25,7 @@ public class GameModel implements IModel {
         return _instance;
     }
 
-    @Override
     public void start() {
-        // TODO launch sequence (main menu)
         Thread mainThread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -36,14 +36,18 @@ public class GameModel implements IModel {
     }
 
     private void processMainThread() {
-        while (true) {
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            sendEvent(ModelEventType.LEVEL_LOADED);
-        }
+        // TODO launch sequence (main menu)
+        _room = new GameRoom();
+        _room.setType(GameRoomType.LEVEL);
+        sendEvent(ModelEventType.LEVEL_LOADED);
+
+//        while (true) {
+//            try {
+//                Thread.sleep(10);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }
     }
 
     @Override
@@ -59,6 +63,11 @@ public class GameModel implements IModel {
     @Override
     public void removeAllEventListeners() {
         _listeners.clear();
+    }
+
+    @Override
+    public GameRoomType getRoomType() {
+        return _room.getType();
     }
 
     private void sendEvent(ModelEventType eventType) {

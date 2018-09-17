@@ -50,10 +50,6 @@ class ResourcesContainer {
                 .get(gameObject.getState());
     }
 
-    public Image getBackground() {
-        return getBackground(1);
-    }
-
     public Image getBackground(int number) {
         return _backgrounds.get(number);
     }
