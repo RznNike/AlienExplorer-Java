@@ -70,6 +70,7 @@ public class MainForm extends JFrame implements KeyListener, ModelEventListener 
                     _layers.get(MENU_LAYER).setVisible(false);
                     break;
                 case MENU_LOADED:
+                    ModelDrawer.drawBackground(model, _resources, _layers.get(BACKGROUND_LAYER));
                     ModelDrawer.drawMenu(model, _resources, _layers.get(MENU_LAYER));
                     _layers.get(MENU_LAYER).setVisible(true);
                     break;

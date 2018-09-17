@@ -26,7 +26,6 @@ class ModelDrawer {
         } else {
             ((ImageIcon)layer.getIcon()).setImage(result);
         }
-        System.out.println("DRAWWWW back");
     }
 
     static void drawLevel(IModel model, ResourcesContainer resources, JLabel layer) {

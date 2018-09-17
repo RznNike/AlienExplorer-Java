@@ -1,8 +1,11 @@
 package ru.rsreu.tyart.alienexplorer.model.main;
 
 import ru.rsreu.tyart.alienexplorer.model.IModel;
+import ru.rsreu.tyart.alienexplorer.model.main.logic.RoomWorkResult;
+import ru.rsreu.tyart.alienexplorer.model.main.logic.RoomWorkResultType;
 import ru.rsreu.tyart.alienexplorer.model.util.ModelEvent;
 import ru.rsreu.tyart.alienexplorer.model.util.ModelEventType;
+import ru.rsreu.tyart.alienexplorer.model.util.RoomLoader;
 import ru.rsreu.tyart.alienexplorer.view.ModelEventListener;
 
 import java.util.ArrayList;
@@ -36,18 +39,26 @@ public class GameModel implements IModel {
     }
 
     private void processMainThread() {
-        // TODO launch sequence (main menu)
-        _room = new GameRoom();
-        _room.setType(GameRoomType.LEVEL);
-        sendEvent(ModelEventType.LEVEL_LOADED);
+        RoomWorkResult roomWorkResult = new RoomWorkResult(RoomWorkResultType.LOAD_MAIN_MENU);
 
-//        while (true) {
-//            try {
-//                Thread.sleep(10);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//        }
+        while (roomWorkResult.getResultType() != RoomWorkResultType.EXIT) {
+            roomWorkResult = executeNextRoomCommand(roomWorkResult);
+        }
+
+        // TODO stop app
+    }
+
+    private RoomWorkResult executeNextRoomCommand(RoomWorkResult roomWorkResult) {
+        switch (roomWorkResult.getResultType()) {
+            case LOAD_MAIN_MENU:
+                _room = RoomLoader.loadMainMenu(this);
+                return _room.executeWithResult();
+            case LOAD_LEVEL:
+                _room = RoomLoader.loadLevel(this, roomWorkResult.getResultValue());
+                return _room.executeWithResult();
+            default:
+                return roomWorkResult;
+        }
     }
 
     @Override
@@ -70,7 +81,7 @@ public class GameModel implements IModel {
         return _room.getType();
     }
 
-    private void sendEvent(ModelEventType eventType) {
+    public void sendEvent(ModelEventType eventType) {
         ModelEvent event = new ModelEvent(this, eventType);
         for (ModelEventListener listener : _listeners) {
             listener.onModelEvent(event);
