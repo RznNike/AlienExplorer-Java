@@ -7,13 +7,19 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 class ModelDrawer {
+    private static ResourcesContainer _resources;
+
     private ModelDrawer() {}
 
-    static void drawBackground(IModel model, ResourcesContainer resources, JLabel layer)
+    static void drawBackground(IModel model, JLabel layer)
             throws IllegalArgumentException {
+        if (_resources == null) {
+            _resources = ResourcesLoader.loadResources();
+        }
+
         Image result = new BufferedImage(layer.getWidth(), layer.getHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics graphics = result.getGraphics();
-        Image backgroundTile = resources.getBackground(model.getRoomType().ordinal());
+        Image backgroundTile = _resources.getBackground(model.getRoomType().ordinal());
         int imageHeight = backgroundTile.getHeight(layer);
         int imageWidth = backgroundTile.getWidth(layer);
         for (int x = 0; x < layer.getWidth(); x += imageWidth) {
@@ -28,12 +34,12 @@ class ModelDrawer {
         }
     }
 
-    static void drawLevel(IModel model, ResourcesContainer resources, JLabel layer) {
+    static void drawLevel(IModel model, JLabel layer) {
     }
 
-    static void drawUI(IModel model, ResourcesContainer resources, JLabel layer) {
+    static void drawUI(IModel model, JLabel layer) {
     }
 
-    static void drawMenu(IModel model, ResourcesContainer resources, JLabel layer) {
+    static void drawMenu(IModel model, JLabel layer) {
     }
 }

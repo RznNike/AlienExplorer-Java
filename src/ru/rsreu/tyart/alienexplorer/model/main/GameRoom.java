@@ -2,13 +2,13 @@ package ru.rsreu.tyart.alienexplorer.model.main;
 
 import ru.rsreu.tyart.alienexplorer.model.main.logic.BaseRoomLogic;
 import ru.rsreu.tyart.alienexplorer.model.main.logic.RoomWorkResult;
-import ru.rsreu.tyart.alienexplorer.model.main.logic.RoomWorkResultType;
 import ru.rsreu.tyart.alienexplorer.model.object.EnemyObject;
 import ru.rsreu.tyart.alienexplorer.model.object.LevelObject;
 import ru.rsreu.tyart.alienexplorer.model.object.PlayerObject;
 import ru.rsreu.tyart.alienexplorer.model.object.UIObject;
 import ru.rsreu.tyart.alienexplorer.model.util.ModelEventType;
 
+import java.awt.*;
 import java.util.List;
 
 public class GameRoom {
@@ -22,6 +22,8 @@ public class GameRoom {
     private List<UIObject> _UIObjects;
     private int sizeX;
     private int sizeY;
+
+    Dimension d = new Dimension();
     private GameModel _parent;
 
 
@@ -43,7 +45,6 @@ public class GameRoom {
                 e.printStackTrace();
             }
         }
-//        return new RoomWorkResult(RoomWorkResultType.LOAD_MAIN_MENU);
     }
 
     public int getId() {

@@ -33,6 +33,7 @@ public class GameController {
         _model.removeAllEventListeners();
     }
 
-    public void sendCommand(ControllerCommand command) {
+    public void sendCommand(ControllerCommand command, boolean isThisACommandStart) {
+        // TODO !!!
     }
 }

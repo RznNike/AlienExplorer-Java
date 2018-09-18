@@ -1,4 +1,10 @@
 package ru.rsreu.tyart.alienexplorer.model.main.logic;
 
-public class ModelCommand {
+public enum ModelCommand {
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT,
+    OK,
+    ESC
 }
