@@ -7,6 +7,7 @@ import ru.rsreu.tyart.alienexplorer.model.util.ModelEventType;
 import ru.rsreu.tyart.alienexplorer.view.ModelEventListener;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +33,7 @@ public class MainForm extends JFrame implements ModelEventListener {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         initLayers();
+        ModelDrawer.prepareDrawer(Toolkit.getDefaultToolkit().getScreenSize());
     }
 
     private void initLayers() {

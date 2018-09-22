@@ -20,15 +20,17 @@ import java.util.List;
 
 class ResourcesLoader {
     private final static String BACKGROUNDS_PATH = "resources/sprites/levels/backgrounds";
+    private final static String FONT_PATH = "resources/fonts/04b_30.otf";
 
     static ResourcesContainer loadResources() {
-        Dictionary<Integer, Image> backgrounds = loadBackgrounds(BACKGROUNDS_PATH);
+        Dictionary<Integer, Image> backgrounds = loadBackgrounds();
         Dictionary<Integer, List<Image>> levelObjectSprites = loadSpritesForEnum(LevelObjectType.class);
         Dictionary<Integer, List<Image>> enemySprites = loadSpritesForEnum(EnemyObjectType.class);
         Dictionary<Integer, List<Image>> playerSprites = loadSpritesForEnum(PlayerObjectType.class);
         Dictionary<Integer, Image> UISprites = loadUISprites();
+        Font font = loadFont();
 
-        return new ResourcesContainer(backgrounds, levelObjectSprites, enemySprites, playerSprites, UISprites);
+        return new ResourcesContainer(backgrounds, levelObjectSprites, enemySprites, playerSprites, UISprites, font);
     }
 
     private static Dictionary<Integer, List<Image>> loadSpritesForEnum(Class enumClass) {
@@ -98,8 +100,8 @@ class ResourcesLoader {
         return sprites;
     }
 
-    private static Dictionary<Integer, Image> loadBackgrounds(String path) {
-        List<Image> backgrounds = loadSpritesFromFolder(path);
+    private static Dictionary<Integer, Image> loadBackgrounds() {
+        List<Image> backgrounds = loadSpritesFromFolder(BACKGROUNDS_PATH);
         Dictionary<Integer, Image> result = new Hashtable<Integer, Image>();
         for (int i = 0; i < backgrounds.size(); i++) {
             result.put(i, backgrounds.get(i));
@@ -119,5 +121,14 @@ class ResourcesLoader {
         sprites.put(UIObjectType.TIMER.ordinal(), sprite);
 
         return sprites;
+    }
+
+    private static Font loadFont() {
+        try {
+            return Font.createFont(Font.PLAIN, new File(FONT_PATH));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

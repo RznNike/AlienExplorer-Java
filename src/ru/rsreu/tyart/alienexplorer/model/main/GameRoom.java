@@ -136,4 +136,9 @@ public class GameRoom implements IGameRoom {
     public Semaphore getLogicBusySemaphore() {
         return _logicBusySemaphore;
     }
+
+    @Override
+    public String getMenuHeader() {
+        return _roomLogic.getMenuHeader();
+    }
 }

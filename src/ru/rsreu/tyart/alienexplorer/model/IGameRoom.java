@@ -15,4 +15,5 @@ public interface IGameRoom {
     List<EnemyObject> getEnemies();
     PlayerObject getPlayer();
     List<UIObject> getUIObjects();
+    String getMenuHeader();
 }
