@@ -8,6 +8,7 @@ import ru.rsreu.tyart.alienexplorer.view.ModelEventListener;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +34,8 @@ public class MainForm extends JFrame implements ModelEventListener {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         initLayers();
+        hideCursor();
+
         ModelDrawer.prepareDrawer(Toolkit.getDefaultToolkit().getScreenSize());
     }
 
@@ -49,6 +52,13 @@ public class MainForm extends JFrame implements ModelEventListener {
         for (int i = 0; i < _layers.size(); i++) {
             _layeredCanvas.setLayer(_layers.get(i), 4 - i);
         }
+    }
+
+    private void hideCursor() {
+        BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+        Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(
+                cursorImg, new Point(0, 0), "blank cursor");
+        this.getLayeredPane().setCursor(blankCursor);
     }
 
     @Override
