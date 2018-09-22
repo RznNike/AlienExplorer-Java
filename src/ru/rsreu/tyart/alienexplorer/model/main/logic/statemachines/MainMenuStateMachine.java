@@ -4,6 +4,7 @@ import ru.rsreu.tyart.alienexplorer.controller.ControllerCommand;
 import ru.rsreu.tyart.alienexplorer.model.main.GameRoom;
 import ru.rsreu.tyart.alienexplorer.model.object.UIObject;
 import ru.rsreu.tyart.alienexplorer.model.object.UIObjectType;
+import ru.rsreu.tyart.alienexplorer.model.util.ModelEventType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,6 +34,7 @@ public class MainMenuStateMachine extends ModelStateMachine {
                     cancelAction();
                     break;
             }
+            getGameRoom().getParent().sendEvent(ModelEventType.MENU_CHANGED);
         }
     }
 
@@ -42,11 +44,7 @@ public class MainMenuStateMachine extends ModelStateMachine {
         // TODO simplify
         switch (getCurrentMenu()) {
             case OK:
-                if (selectedItem.getType() != UIObjectType.NEW_GAME) {
-                    enterToMenu(selectedItem.getType());
-                } else {
-                    setCurrentCommand(ModelStateMachineCommand.LOAD_FIRST_LEVEL);
-                }
+                enterToMenu(selectedItem.getType());
                 break;
             case NEW_GAME:
                 if (selectedItem.getType() == UIObjectType.OK) {
@@ -156,7 +154,7 @@ public class MainMenuStateMachine extends ModelStateMachine {
         List<Integer> levelIDs = new ArrayList<Integer>(Arrays.asList(1, 2));
 
         List<UIObject> uiObjects = new ArrayList<UIObject>();
-        for (int levelID : levelIDs) {
+        for (Integer levelID : levelIDs) {
             UIObject object = new UIObject();
             object.setType(UIObjectType.TEXT);
             object.setState(0);

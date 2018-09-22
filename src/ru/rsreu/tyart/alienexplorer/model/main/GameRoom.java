@@ -4,6 +4,7 @@ import ru.rsreu.tyart.alienexplorer.model.IGameRoom;
 import ru.rsreu.tyart.alienexplorer.model.main.logic.BaseRoomLogic;
 import ru.rsreu.tyart.alienexplorer.model.main.logic.MenuLogic;
 import ru.rsreu.tyart.alienexplorer.model.main.logic.RoomWorkResult;
+import ru.rsreu.tyart.alienexplorer.model.main.logic.RoomWorkResultType;
 import ru.rsreu.tyart.alienexplorer.model.object.EnemyObject;
 import ru.rsreu.tyart.alienexplorer.model.object.LevelObject;
 import ru.rsreu.tyart.alienexplorer.model.object.PlayerObject;
@@ -12,6 +13,7 @@ import ru.rsreu.tyart.alienexplorer.model.util.ModelEventType;
 
 import java.awt.*;
 import java.util.List;
+import java.util.concurrent.Semaphore;
 
 public class GameRoom implements IGameRoom {
     private GameRoomType _type;
@@ -25,19 +27,24 @@ public class GameRoom implements IGameRoom {
     private Dimension _dimension;
 
     private GameModel _parent;
+    private Semaphore _logicBusySemaphore;
+
+    public GameRoom() {
+        _logicBusySemaphore = new Semaphore(1);
+    }
 
     public RoomWorkResult executeWithResult() {
         // TODO room executeWithResult
         _roomLogic = new MenuLogic(this);
         _parent.sendEvent(ModelEventType.MENU_LOADED);
-        while (true) {
-            try {
-                Thread.sleep(30);
-                _parent.sendEvent(ModelEventType.MENU_CHANGED);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
+        try {
+            _logicBusySemaphore.acquire();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+
+        return new RoomWorkResult(RoomWorkResultType.EXIT);
     }
 
     @Override
@@ -124,5 +131,9 @@ public class GameRoom implements IGameRoom {
 
     public void setDimension(Dimension value) {
         _dimension = value;
+    }
+
+    public Semaphore getLogicBusySemaphore() {
+        return _logicBusySemaphore;
     }
 }

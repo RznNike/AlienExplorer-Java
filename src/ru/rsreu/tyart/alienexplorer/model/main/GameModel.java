@@ -47,7 +47,7 @@ public class GameModel implements IModel {
             roomWorkResult = executeNextRoom(roomWorkResult);
         }
 
-        // TODO stop app
+        System.exit(0);
     }
 
     private RoomWorkResult executeNextRoom(RoomWorkResult previousRoomWorkResult) {

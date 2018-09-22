@@ -32,11 +32,14 @@ public abstract class ModelStateMachine {
     protected void selectPrevMenuItem() {
         if ((_gameRoom.getUIObjects() != null) && (_gameRoom.getUIObjects().size() > 0)) {
             int newSelection = _selectedMenuItem - 1;
-            if (!_gameRoom.getUIObjects().get(newSelection).isSelectable()) {
-                newSelection--;
-            }
             if (newSelection < 0) {
                 newSelection = _gameRoom.getUIObjects().size() - 1;
+            }
+            if (!_gameRoom.getUIObjects().get(newSelection).isSelectable()) {
+                newSelection--;
+                if (newSelection < 0) {
+                    newSelection = _gameRoom.getUIObjects().size() - 1;
+                }
             }
             _selectedMenuItem = newSelection;
             selectMenuItem(_selectedMenuItem);
