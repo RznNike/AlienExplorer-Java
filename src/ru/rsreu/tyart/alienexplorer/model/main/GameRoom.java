@@ -32,7 +32,7 @@ public class GameRoom implements IGameRoom {
         _parent.sendEvent(ModelEventType.MENU_LOADED);
         while (true) {
             try {
-                Thread.sleep(100);
+                Thread.sleep(30);
                 _parent.sendEvent(ModelEventType.MENU_CHANGED);
             } catch (InterruptedException e) {
                 e.printStackTrace();

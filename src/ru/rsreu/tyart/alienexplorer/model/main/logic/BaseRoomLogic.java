@@ -7,7 +7,6 @@ import ru.rsreu.tyart.alienexplorer.model.main.logic.statemachines.ModelStateMac
 public abstract class BaseRoomLogic {
     private GameRoom _room;
     private ModelStateMachine _stateMachine;
-    private int _selectedMenuItem;
 
     public void receiveCommand(ControllerCommand command, boolean isThisACommandStart) {
         if (isThisACommandStart) {
@@ -34,11 +33,7 @@ public abstract class BaseRoomLogic {
     }
 
     public int getSelectedMenuItem() {
-        return _selectedMenuItem;
-    }
-
-    public void setSelectedMenuItem(int value) {
-        _selectedMenuItem = value;
+        return _stateMachine.getSelectedMenuItem();
     }
 
     public String getMenuHeader() {

@@ -49,7 +49,6 @@ class ModelDrawer {
         Graphics graphics = result.getGraphics();
         graphics.setColor(COLOR_MENU_SHADOW);
         graphics.fillRect(0, 0, layer.getWidth(), layer.getHeight());
-        graphics.setColor(COLOR_TEXT_SELECTION);
         // TODO custom font
         graphics.setFont(new Font("TimesRoman", Font.PLAIN, 20));
         List<UIObject> uiObjects = model.getRoom().getUIObjects();
@@ -62,6 +61,11 @@ class ModelDrawer {
             } else {
                 text = object.getType().toString();
             }
+            if (object.getState() == 0) {
+                graphics.setColor(COLOR_TEXT_PRIMARY);
+            } else {
+                graphics.setColor(COLOR_TEXT_SELECTION);
+            }
             graphics.drawString(text, 100, offsetY);
         }
 
@@ -69,10 +73,6 @@ class ModelDrawer {
     }
 
     private static void setImageToLayer(JLabel layer, Image result) {
-        if (layer.getIcon() == null) {
-            layer.setIcon(new ImageIcon(result));
-        } else {
-            ((ImageIcon) layer.getIcon()).setImage(result);
-        }
+        layer.setIcon(new ImageIcon(result));
     }
 }

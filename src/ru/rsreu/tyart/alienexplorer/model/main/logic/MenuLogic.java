@@ -12,6 +12,22 @@ public class MenuLogic extends BaseRoomLogic {
 
     @Override
     protected void handleCommand(ControllerCommand command) {
-
+        getStateMachine().changeState(command);
+//        switch (getStateMachine().getCurrentCommand())
+//        {
+//            case LOAD_MENU:
+//                LoadAnotherModel?.Invoke(GameModelType.Menu);
+//                break;
+//            case LOAD_SELECTED_LEVEL:
+//                LoadAnotherModel?.Invoke(GameModelType.Level, _stateMachine.SelectedMenuItem);
+//                break;
+//            case LOAD_FIRST_LEVEL:
+//                int firstLevelID = LevelLoader.CheckAvailableLevels().Min();
+//                LoadAnotherModel?.Invoke(GameModelType.Level, firstLevelID);
+//                break;
+//            case EXIT:
+//                CloseApplication?.Invoke();
+//                break;
+//        }
     }
 }
