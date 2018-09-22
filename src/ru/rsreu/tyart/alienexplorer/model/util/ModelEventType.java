@@ -6,6 +6,6 @@ public enum ModelEventType {
     LEVEL_CHANGED,
     UI_CHANGED,
     CONTEXT_MENU_LOADED,
-    CONTEXT_MENU_CHANGED,
+    MENU_CHANGED,
     CONTEXT_MENU_CLOSED,
 }

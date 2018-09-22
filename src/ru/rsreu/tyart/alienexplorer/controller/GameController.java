@@ -34,6 +34,6 @@ public class GameController {
     }
 
     public void sendCommand(ControllerCommand command, boolean isThisACommandStart) {
-        // TODO !!!
+        _model.receiveCommand(command, isThisACommandStart);
     }
 }

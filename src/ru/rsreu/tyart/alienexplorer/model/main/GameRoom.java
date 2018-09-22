@@ -1,6 +1,8 @@
 package ru.rsreu.tyart.alienexplorer.model.main;
 
+import ru.rsreu.tyart.alienexplorer.model.IGameRoom;
 import ru.rsreu.tyart.alienexplorer.model.main.logic.BaseRoomLogic;
+import ru.rsreu.tyart.alienexplorer.model.main.logic.MenuLogic;
 import ru.rsreu.tyart.alienexplorer.model.main.logic.RoomWorkResult;
 import ru.rsreu.tyart.alienexplorer.model.object.EnemyObject;
 import ru.rsreu.tyart.alienexplorer.model.object.LevelObject;
@@ -11,7 +13,7 @@ import ru.rsreu.tyart.alienexplorer.model.util.ModelEventType;
 import java.awt.*;
 import java.util.List;
 
-public class GameRoom {
+public class GameRoom implements IGameRoom {
     private GameRoomType _type;
     private int _id;
     private BaseRoomLogic _roomLogic;
@@ -20,31 +22,31 @@ public class GameRoom {
     private List<EnemyObject> _enemies;
     private PlayerObject _player;
     private List<UIObject> _UIObjects;
-    private int sizeX;
-    private int sizeY;
+    private Dimension _dimension;
 
-    Dimension d = new Dimension();
     private GameModel _parent;
 
+    public RoomWorkResult executeWithResult() {
+        // TODO room executeWithResult
+        _roomLogic = new MenuLogic(this);
+        _parent.sendEvent(ModelEventType.MENU_LOADED);
+        while (true) {
+            try {
+                Thread.sleep(100);
+                _parent.sendEvent(ModelEventType.MENU_CHANGED);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
+    @Override
     public GameRoomType getType() {
         return _type;
     }
 
     public void setType(GameRoomType value) {
         _type = value;
-    }
-
-    public RoomWorkResult executeWithResult() {
-        // TODO room executeWithResult
-        _parent.sendEvent(ModelEventType.MENU_LOADED);
-        while (true) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     public int getId() {
@@ -63,6 +65,7 @@ public class GameRoom {
         _roomLogic = value;
     }
 
+    @Override
     public List<LevelObject> getLevelObjects() {
         return _levelObjects;
     }
@@ -71,6 +74,7 @@ public class GameRoom {
         _levelObjects = value;
     }
 
+    @Override
     public List<LevelObject> getDoors() {
         return _doors;
     }
@@ -79,6 +83,7 @@ public class GameRoom {
         _doors = value;
     }
 
+    @Override
     public List<EnemyObject> getEnemies() {
         return _enemies;
     }
@@ -87,6 +92,7 @@ public class GameRoom {
         _enemies = value;
     }
 
+    @Override
     public PlayerObject getPlayer() {
         return _player;
     }
@@ -95,6 +101,7 @@ public class GameRoom {
         _player = value;
     }
 
+    @Override
     public List<UIObject> getUIObjects() {
         return _UIObjects;
     }
@@ -103,27 +110,19 @@ public class GameRoom {
         _UIObjects = value;
     }
 
-    public int getSizeX() {
-        return sizeX;
-    }
-
-    public void setSizeX(int value) {
-        sizeX = value;
-    }
-
-    public int getSizeY() {
-        return sizeY;
-    }
-
-    public void setSizeY(int value) {
-        sizeY = value;
-    }
-
     public GameModel getParent() {
         return _parent;
     }
 
     public void setParent(GameModel value) {
         _parent = value;
+    }
+
+    public Dimension getDimension() {
+        return _dimension;
+    }
+
+    public void setDimension(Dimension value) {
+        _dimension = value;
     }
 }

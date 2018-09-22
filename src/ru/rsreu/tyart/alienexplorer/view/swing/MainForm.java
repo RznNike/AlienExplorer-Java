@@ -45,7 +45,7 @@ public class MainForm extends JFrame implements ModelEventListener {
             layer.setVisible(true);
         }
         for (int i = 0; i < _layers.size(); i++) {
-            _layeredCanvas.setLayer(_layers.get(i), i);
+            _layeredCanvas.setLayer(_layers.get(i), 4 - i);
         }
     }
 
@@ -53,41 +53,41 @@ public class MainForm extends JFrame implements ModelEventListener {
     public void onModelEvent(ModelEvent event) {
         IModel model = event.getSender();
         ModelEventType eventType = event.getEventType();
-        try {
-            switch (eventType) {
-                case LEVEL_LOADED:
-                    ModelDrawer.drawBackground(model, _layers.get(BACKGROUND_LAYER));
-                    ModelDrawer.drawLevel(model, _layers.get(LEVEL_LAYER));
-                    ModelDrawer.drawUI(model, _layers.get(UI_LAYER));
-                    _layers.get(MENU_LAYER).setVisible(false);
-                    break;
-                case MENU_LOADED:
-                    ModelDrawer.drawBackground(model, _layers.get(BACKGROUND_LAYER));
-                    ModelDrawer.drawMenu(model, _layers.get(MENU_LAYER));
-                    _layers.get(MENU_LAYER).setVisible(true);
-                    break;
-                case LEVEL_CHANGED:
-                    ModelDrawer.drawLevel(model, _layers.get(LEVEL_LAYER));
-                    break;
-                case UI_CHANGED:
-                    ModelDrawer.drawUI(model, _layers.get(UI_LAYER));
-                    break;
-                case CONTEXT_MENU_LOADED:
-                    ModelDrawer.drawMenu(model, _layers.get(MENU_LAYER));
-                    _layers.get(MENU_LAYER).setVisible(true);
-                    break;
-                case CONTEXT_MENU_CHANGED:
-                    ModelDrawer.drawMenu(model, _layers.get(MENU_LAYER));
-                    break;
-                case CONTEXT_MENU_CLOSED:
-                    _layers.get(MENU_LAYER).setVisible(false);
-                    break;
-            }
-        } catch (IllegalArgumentException e) {
+
+        if ((_layers.get(0).getSize().width == 0) || (_layers.get(0).getSize().height == 0)) {
             for (JLabel layer : _layers) {
                 layer.setSize(_canvas.getSize());
             }
-            onModelEvent(event);
+        }
+
+        switch (eventType) {
+            case MENU_LOADED:
+                ModelDrawer.drawBackground(model, _layers.get(BACKGROUND_LAYER));
+                ModelDrawer.drawMenu(model, _layers.get(MENU_LAYER));
+                _layers.get(MENU_LAYER).setVisible(true);
+                break;
+            case MENU_CHANGED:
+                ModelDrawer.drawMenu(model, _layers.get(MENU_LAYER));
+                break;
+            case LEVEL_LOADED:
+                ModelDrawer.drawBackground(model, _layers.get(BACKGROUND_LAYER));
+                ModelDrawer.drawLevel(model, _layers.get(LEVEL_LAYER));
+                ModelDrawer.drawUI(model, _layers.get(UI_LAYER));
+                _layers.get(MENU_LAYER).setVisible(false);
+                break;
+            case LEVEL_CHANGED:
+                ModelDrawer.drawLevel(model, _layers.get(LEVEL_LAYER));
+                break;
+            case UI_CHANGED:
+                ModelDrawer.drawUI(model, _layers.get(UI_LAYER));
+                break;
+            case CONTEXT_MENU_LOADED:
+                ModelDrawer.drawMenu(model, _layers.get(MENU_LAYER));
+                _layers.get(MENU_LAYER).setVisible(true);
+                break;
+            case CONTEXT_MENU_CLOSED:
+                _layers.get(MENU_LAYER).setVisible(false);
+                break;
         }
     }
 }

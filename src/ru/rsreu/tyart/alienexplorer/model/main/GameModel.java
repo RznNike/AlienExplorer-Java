@@ -1,5 +1,7 @@
 package ru.rsreu.tyart.alienexplorer.model.main;
 
+import ru.rsreu.tyart.alienexplorer.controller.ControllerCommand;
+import ru.rsreu.tyart.alienexplorer.model.IGameRoom;
 import ru.rsreu.tyart.alienexplorer.model.IModel;
 import ru.rsreu.tyart.alienexplorer.model.main.logic.RoomWorkResult;
 import ru.rsreu.tyart.alienexplorer.model.main.logic.RoomWorkResultType;
@@ -42,22 +44,22 @@ public class GameModel implements IModel {
         RoomWorkResult roomWorkResult = new RoomWorkResult(RoomWorkResultType.LOAD_MAIN_MENU);
 
         while (roomWorkResult.getResultType() != RoomWorkResultType.EXIT) {
-            roomWorkResult = executeNextRoomCommand(roomWorkResult);
+            roomWorkResult = executeNextRoom(roomWorkResult);
         }
 
         // TODO stop app
     }
 
-    private RoomWorkResult executeNextRoomCommand(RoomWorkResult roomWorkResult) {
-        switch (roomWorkResult.getResultType()) {
+    private RoomWorkResult executeNextRoom(RoomWorkResult previousRoomWorkResult) {
+        switch (previousRoomWorkResult.getResultType()) {
             case LOAD_MAIN_MENU:
                 _room = RoomLoader.loadMainMenu(this);
                 return _room.executeWithResult();
             case LOAD_LEVEL:
-                _room = RoomLoader.loadLevel(this, roomWorkResult.getResultValue());
+                _room = RoomLoader.loadLevel(this, previousRoomWorkResult.getResultValue());
                 return _room.executeWithResult();
             default:
-                return roomWorkResult;
+                return previousRoomWorkResult;
         }
     }
 
@@ -77,8 +79,13 @@ public class GameModel implements IModel {
     }
 
     @Override
-    public GameRoomType getRoomType() {
-        return _room.getType();
+    public IGameRoom getRoom() {
+        return _room;
+    }
+
+    @Override
+    public void receiveCommand(ControllerCommand command, boolean isThisACommandStart) {
+        _room.getRoomLogic().receiveCommand(command, isThisACommandStart);
     }
 
     public void sendEvent(ModelEventType eventType) {

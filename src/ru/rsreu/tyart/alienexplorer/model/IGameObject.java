@@ -1,10 +1,9 @@
 package ru.rsreu.tyart.alienexplorer.model;
 
+import java.awt.*;
+
 public interface IGameObject {
-    int getX();
-    int getY();
-    int getWidth();
-    int getHeight();
+    Rectangle getCollider();
     int getTypeNumber();
     int getState();
     boolean getFlippedY();

@@ -11,16 +11,6 @@ public enum UIObjectType implements IPathEnum {
         @Override
         public String toString() {
             return "New game";
-        }
-    },
-    LOAD_GAME {
-        public String getPath() {
-            return "";
-        }
-
-        @Override
-        public String toString() {
-            return "Load game";
         }},
     CHOOSE_LEVEL {
         public String getPath() {
@@ -30,15 +20,6 @@ public enum UIObjectType implements IPathEnum {
         @Override
         public String toString() {
             return "Choose level";
-        }},
-    RECORDS {
-        public String getPath() {
-            return "";
-        }
-
-        @Override
-        public String toString() {
-            return "Records";
         }},
     EXIT {
         public String getPath() {

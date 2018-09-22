@@ -2,48 +2,20 @@ package ru.rsreu.tyart.alienexplorer.model.object;
 
 import ru.rsreu.tyart.alienexplorer.model.IGameObject;
 
+import java.awt.*;
+
 public abstract class GameObject implements IGameObject {
-    private int _x;
-    private int _y;
-    private int _width;
-    private int _height;
+    private Rectangle _collider;
     private int _state;
     private boolean _flippedY;
 
     @Override
-    public int getX() {
-        return _x;
+    public Rectangle getCollider() {
+        return _collider;
     }
 
-    public void setX(int value) {
-        _x = value;
-    }
-
-    @Override
-    public int getY() {
-        return _y;
-    }
-
-    public void setY(int value) {
-        _y = value;
-    }
-
-    @Override
-    public int getWidth() {
-        return _width;
-    }
-
-    public void setWidth(int value) {
-        _width = value;
-    }
-
-    @Override
-    public int getHeight() {
-        return _height;
-    }
-
-    public void setHeight(int value) {
-        _height = value;
+    public void setCollider(Rectangle value) {
+        _collider = value;
     }
 
     @Override
