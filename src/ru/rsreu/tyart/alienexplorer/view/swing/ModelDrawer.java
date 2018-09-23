@@ -24,7 +24,7 @@ class ModelDrawer {
 
     private static final double MAX_VISIBLE_MENU_ITEMS = 7;
 
-    private static final int CAMERA_WIDTH = 15;
+    private static final int CAMERA_WIDTH = 40;
 
     private static ResourcesContainer _resources;
     private static Font _fontNormal;
