@@ -1,15 +1,16 @@
 package ru.rsreu.tyart.alienexplorer.view.swing;
 
 import ru.rsreu.tyart.alienexplorer.model.IModel;
-import ru.rsreu.tyart.alienexplorer.model.object.UIObject;
-import ru.rsreu.tyart.alienexplorer.model.object.UIObjectType;
+import ru.rsreu.tyart.alienexplorer.model.object.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
 class ModelDrawer {
+    private static final Color COLOR_TRANSPARENT = new Color(0, 0, 0, 0);
     private static final Color COLOR_MENU_SHADOW = new Color(31, 68, 82, 180);
     private static final Color COLOR_TEXT_PRIMARY = Color.WHITE;
     private static final Color COLOR_TEXT_HEADER = new Color(173, 216, 230);
@@ -22,18 +23,18 @@ class ModelDrawer {
 
     private static final double MAX_VISIBLE_MENU_ITEMS = 7;
 
+    private static final int CAMERA_WIDTH = 15;
+
     private static ResourcesContainer _resources;
-    private static Dimension _screenSize;
     private static Font _fontNormal;
     private static Font _fontBig;
 
     private ModelDrawer() {}
 
     static void prepareDrawer(Dimension screenSize) {
-        _screenSize = screenSize;
         _resources = ResourcesLoader.loadResources();
-        _fontNormal = _resources.getFont().deriveFont(Font.PLAIN, _screenSize.height / FONT_NORMAL_DIVIDER);
-        _fontBig = _resources.getFont().deriveFont(Font.PLAIN, _screenSize.height / FONT_BIG_DIVIDER);
+        _fontNormal = _resources.getFont().deriveFont(Font.PLAIN, screenSize.height / FONT_NORMAL_DIVIDER);
+        _fontBig = _resources.getFont().deriveFont(Font.PLAIN, screenSize.height / FONT_BIG_DIVIDER);
     }
 
     static void drawBackground(IModel model, JLabel layer) {
@@ -52,6 +53,32 @@ class ModelDrawer {
     }
 
     static void drawLevel(IModel model, JLabel layer) {
+        Image result = new BufferedImage(layer.getWidth(), layer.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        Graphics graphics = result.getGraphics();
+        graphics.setColor(COLOR_TRANSPARENT);
+        graphics.fillRect(0, 0, layer.getWidth(), layer.getHeight());
+
+        int blockSize = layer.getWidth() / CAMERA_WIDTH;
+
+        List<LevelObject> levelObjects = model.getRoom().getLevelObjects();
+        for (LevelObject object : levelObjects) {
+            drawGameObjectSprite(graphics, layer.getHeight(), blockSize, object);
+        }
+        drawGameObjectSprite(graphics, layer.getHeight(), blockSize, model.getRoom().getPlayer());
+
+        layer.setIcon(new ImageIcon(result));
+    }
+
+    private static void drawGameObjectSprite(Graphics graphics, int canvasHeight, int blockSize, GameObject object) {
+        Image sprite = _resources.getSprite(object);
+        Rectangle2D rect = object.getCollider();
+        graphics.drawImage(
+                sprite,
+                (int)(rect.getX() * blockSize),
+                (int)(canvasHeight - (rect.getY() + rect.getHeight()) * blockSize),
+                (int)(rect.getWidth() * blockSize),
+                (int)(rect.getHeight() * blockSize),
+                null);
     }
 
     static void drawUI(IModel model, JLabel layer) {
@@ -68,7 +95,7 @@ class ModelDrawer {
         drawCenteredString(
                 graphics,
                 model.getRoom().getMenuHeader(),
-                new Rectangle(0, 0, layer.getWidth(), (int)(layer.getHeight() * HEADER_HEIGHT)),
+                new Rectangle2D.Float(0, 0, layer.getWidth(), (int)(layer.getHeight() * HEADER_HEIGHT)),
                 _fontBig);
 
         // items
@@ -97,17 +124,17 @@ class ModelDrawer {
             drawCenteredString(
                     graphics,
                     text,
-                    new Rectangle(0, offsetY, layer.getWidth(), itemHeight),
+                    new Rectangle2D.Float(0, offsetY, layer.getWidth(), itemHeight),
                     _fontNormal);
         }
 
         layer.setIcon(new ImageIcon(result));
     }
 
-    private static void drawCenteredString(Graphics graphics, String text, Rectangle rect, Font font) {
+    private static void drawCenteredString(Graphics graphics, String text, Rectangle2D rect, Font font) {
         FontMetrics metrics = graphics.getFontMetrics(font);
-        int x = rect.x + (rect.width - metrics.stringWidth(text)) / 2;
-        int y = rect.y + ((rect.height - metrics.getHeight()) / 2) + metrics.getAscent();
+        int x = (int)(rect.getX() + (rect.getWidth() - metrics.stringWidth(text)) / 2);
+        int y = (int)(rect.getY() + ((rect.getHeight() - metrics.getHeight()) / 2) + metrics.getAscent());
         graphics.setFont(font);
         graphics.drawString(text, x, y);
     }

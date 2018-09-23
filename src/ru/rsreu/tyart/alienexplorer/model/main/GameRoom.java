@@ -34,8 +34,11 @@ public class GameRoom implements IGameRoom {
     }
 
     public RoomWorkResult executeWithResult() {
-        _roomLogic = new MenuLogic(this);
-        _parent.sendEvent(ModelEventType.MENU_LOADED);
+        if (_type == GameRoomType.MENU) {
+            _parent.sendEvent(ModelEventType.MENU_LOADED);
+        } else {
+            _parent.sendEvent(ModelEventType.LEVEL_LOADED);
+        }
 
         try {
             _logicBusySemaphore.acquire();

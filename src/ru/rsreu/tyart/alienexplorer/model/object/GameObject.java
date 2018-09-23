@@ -2,19 +2,19 @@ package ru.rsreu.tyart.alienexplorer.model.object;
 
 import ru.rsreu.tyart.alienexplorer.model.IGameObject;
 
-import java.awt.*;
+import java.awt.geom.Rectangle2D;
 
 public abstract class GameObject implements IGameObject {
-    private Rectangle _collider;
+    private Rectangle2D _collider;
     private int _state;
-    private boolean _flippedY;
+    private boolean _flippedY = false;
 
     @Override
-    public Rectangle getCollider() {
+    public Rectangle2D getCollider() {
         return _collider;
     }
 
-    public void setCollider(Rectangle value) {
+    public void setCollider(Rectangle2D value) {
         _collider = value;
     }
 

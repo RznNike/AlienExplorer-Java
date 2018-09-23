@@ -5,9 +5,9 @@ import ru.rsreu.tyart.alienexplorer.model.main.GameRoom;
 import ru.rsreu.tyart.alienexplorer.model.object.UIObject;
 import ru.rsreu.tyart.alienexplorer.model.object.UIObjectType;
 import ru.rsreu.tyart.alienexplorer.model.util.ModelEventType;
+import ru.rsreu.tyart.alienexplorer.model.util.RoomLoader;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class MainMenuStateMachine extends ModelStateMachine {
@@ -41,7 +41,6 @@ public class MainMenuStateMachine extends ModelStateMachine {
     @Override
     protected void acceptAction() {
         UIObject selectedItem = getGameRoom().getUIObjects().get(getSelectedMenuItem());
-        // TODO simplify
         switch (getCurrentMenu()) {
             case OK:
                 enterToMenu(selectedItem.getType());
@@ -49,8 +48,7 @@ public class MainMenuStateMachine extends ModelStateMachine {
             case NEW_GAME:
                 if (selectedItem.getType() == UIObjectType.OK) {
                     setCurrentCommand(ModelStateMachineCommand.LOAD_FIRST_LEVEL);
-                    // TODO first level ID
-                    setSelectedMenuItem(1);
+                    setSelectedMenuItem(RoomLoader.checkAvailableLevels().get(0));
                 } else {
                     enterToMenu(UIObjectType.OK);
                 }
@@ -149,12 +147,7 @@ public class MainMenuStateMachine extends ModelStateMachine {
     }
 
     private void initializeChooseLevelMenu() {
-        // TODO max level number, level IDs
-        int maxLevel = 2;
-
-//        List<Integer> levelIDs = RoomLoader.CheckAvailableLevels().OrderBy(x => x).TakeWhile(x => x <= maxLevel).ToList();
-        List<Integer> levelIDs = new ArrayList<Integer>(Arrays.asList(1, 2));
-
+        List<Integer> levelIDs = RoomLoader.checkAvailableLevels();
         List<UIObject> uiObjects = new ArrayList<UIObject>();
         for (Integer levelID : levelIDs) {
             UIObject object = new UIObject();
