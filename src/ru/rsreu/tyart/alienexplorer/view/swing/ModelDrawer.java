@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
 
 class ModelDrawer {
@@ -60,11 +61,32 @@ class ModelDrawer {
 
         int blockSize = layer.getWidth() / CAMERA_WIDTH;
 
-        List<LevelObject> levelObjects = model.getRoom().getLevelObjects();
-        for (LevelObject object : levelObjects) {
+        List<GameObject> objectsToDraw = new ArrayList<GameObject>();
+        objectsToDraw.addAll(model.getRoom().getLevelObjects());
+        objectsToDraw.addAll(model.getRoom().getDoors());
+        objectsToDraw.addAll(model.getRoom().getEnemies());
+        objectsToDraw.add(model.getRoom().getPlayer());
+        for (GameObject object : objectsToDraw) {
             drawGameObjectSprite(graphics, layer.getHeight(), blockSize, object);
         }
-        drawGameObjectSprite(graphics, layer.getHeight(), blockSize, model.getRoom().getPlayer());
+
+        // level
+//        List<LevelObject> levelObjects = model.getRoom().getLevelObjects();
+//        for (LevelObject object : levelObjects) {
+//            drawGameObjectSprite(graphics, layer.getHeight(), blockSize, object);
+//        }
+//        // doors
+//        List<LevelObject> doors = model.getRoom().getDoors();
+//        for (LevelObject object : levelObjects) {
+//            drawGameObjectSprite(graphics, layer.getHeight(), blockSize, object);
+//        }
+//        // enemies
+//        List<EnemyObject> enemies = model.getRoom().getEnemies();
+//        for (EnemyObject enemy : enemies) {
+//            drawGameObjectSprite(graphics, layer.getHeight(), blockSize, enemy);
+//        }
+//        // player
+//        drawGameObjectSprite(graphics, layer.getHeight(), blockSize, model.getRoom().getPlayer());
 
         layer.setIcon(new ImageIcon(result));
     }

@@ -5,7 +5,7 @@ import ru.rsreu.tyart.alienexplorer.model.IPathEnum;
 public enum EnemyObjectType implements IPathEnum {
     SPIKES {
         public String getPath() {
-            return "resources/sprites/levels/stone";
+            return "resources/sprites/enemies/spikes";
         }},
     SLIME {
         public String getPath() {

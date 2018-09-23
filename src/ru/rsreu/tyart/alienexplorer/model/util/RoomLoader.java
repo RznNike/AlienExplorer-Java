@@ -8,6 +8,7 @@ import ru.rsreu.tyart.alienexplorer.model.main.logic.MenuLogic;
 import ru.rsreu.tyart.alienexplorer.model.object.*;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.BufferedReader;
 import java.io.File;
@@ -125,18 +126,27 @@ public class RoomLoader {
         final int HEIGHT_N = 6;
         final int STATE_N = 7;
         final int IS_FLIPPED_N = 8;
-        // TODO check usages
-        final int IS_MOVING_N = 9;
+        final int LEFT_WALKING_BOUND_X = 9;
+        final int LEFT_WALKING_BOUND_Y = 10;
+        final int RIGHT_WALKING_BOUND_X = 11;
+        final int RIGHT_WALKING_BOUND_Y = 12;
 
         EnemyObject result = new EnemyObject();
-//        result.setType(EnemyObjectType.valueOf(parts[TYPE_N]));
-//        float x = Float.valueOf(parts[X_N]);
-//        float y = Float.valueOf(parts[Y_N]);
-//        float width = Float.valueOf(parts[WIDTH_N]);
-//        float height = Float.valueOf(parts[HEIGHT_N]);
-//        result.setCollider(new Rectangle2D.Float(x, y, width, height));
-//        result.setState(Integer.valueOf(parts[STATE_N]));
-//        result.setFlippedY(Boolean.valueOf(parts[IS_FLIPPED_N]));
+        result.setType(EnemyObjectType.valueOf(parts[TYPE_N]));
+        result.setDamage(Integer.valueOf(parts[DAMAGE_N]));
+        float x = Float.valueOf(parts[X_N]);
+        float y = Float.valueOf(parts[Y_N]);
+        float width = Float.valueOf(parts[WIDTH_N]);
+        float height = Float.valueOf(parts[HEIGHT_N]);
+        result.setCollider(new Rectangle2D.Float(x, y, width, height));
+        result.setState(Integer.valueOf(parts[STATE_N]));
+        result.setFlippedY(Boolean.valueOf(parts[IS_FLIPPED_N]));
+        float leftWalkingBoundX = Float.valueOf(parts[LEFT_WALKING_BOUND_X]);
+        float leftWalkingBoundY = Float.valueOf(parts[LEFT_WALKING_BOUND_Y]);
+        float rightWalkingBoundX = Float.valueOf(parts[RIGHT_WALKING_BOUND_X]);
+        float rightWalkingBoundY = Float.valueOf(parts[RIGHT_WALKING_BOUND_Y]);
+        result.setLeftWalkingBound(new Point2D.Float(leftWalkingBoundX, leftWalkingBoundY));
+        result.setRightWalkingBound(new Point2D.Float(rightWalkingBoundX, rightWalkingBoundY));
 
         return result;
     }

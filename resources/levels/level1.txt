@@ -136,17 +136,17 @@ levelObject STONE 14 11 1 1 0 false
 
 // enemies
 // spikes: x/y = 140/35 = 4
-// tag type damage x y width height state isFlipped isMoving
+// tag type damage x y width height state isFlipped leftWalkingBoundX leftWalkingBoundY rightWalkingBoundX rightWalkingBoundY
 // Y = 1
-enemy SPIKES 34 6 1 1 0.25 0 false false
-enemy SPIKES 34 7 1 1 0.25 0 false false
+enemy SPIKES 34 6 1 1 0.25 0 false 0 0 0 0
+enemy SPIKES 34 7 1 1 0.25 0 false 0 0 0 0
 // Y = 8
-enemy SPIKES 34 2 8 1 0.25 0 false false
-enemy SPIKES 34 3 8 1 0.25 0 false false
-enemy SPIKES 34 5 8 1 0.25 0 false false
-enemy SPIKES 34 6 8 1 0.25 0 false false
-enemy SPIKES 34 7 8 1 0.25 0 false false
-enemy SPIKES 34 8 8 1 0.25 0 false false
+enemy SPIKES 34 2 8 1 0.25 0 false 0 0 0 0
+enemy SPIKES 34 3 8 1 0.25 0 false 0 0 0 0
+enemy SPIKES 34 5 8 1 0.25 0 false 0 0 0 0
+enemy SPIKES 34 6 8 1 0.25 0 false 0 0 0 0
+enemy SPIKES 34 7 8 1 0.25 0 false 0 0 0 0
+enemy SPIKES 34 8 8 1 0.25 0 false 0 0 0 0
 
 // doors
 // size: x/y = 70/110 = 0.64
