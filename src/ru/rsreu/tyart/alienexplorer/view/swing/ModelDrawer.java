@@ -81,15 +81,19 @@ class ModelDrawer {
             String text;
             if (object.getType() == UIObjectType.TEXT) {
                 text = object.getText();
-                graphics.setColor(COLOR_TEXT_SUBHEADER);
             } else {
                 text = object.getType().toString();
-                if (object.getState() == 0) {
-                    graphics.setColor(COLOR_TEXT_PRIMARY);
-                } else {
-                    graphics.setColor(COLOR_TEXT_SELECTION);
-                }
             }
+            if (object.isSelectable()) {
+                if (object.getState() == 1) {
+                    graphics.setColor(COLOR_TEXT_SELECTION);
+                } else {
+                    graphics.setColor(COLOR_TEXT_PRIMARY);
+                }
+            } else {
+                graphics.setColor(COLOR_TEXT_SUBHEADER);
+            }
+
             drawCenteredString(
                     graphics,
                     text,

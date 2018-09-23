@@ -41,7 +41,7 @@ public class GameModel implements IModel {
     }
 
     private void processMainThread() {
-        RoomWorkResult roomWorkResult = new RoomWorkResult(RoomWorkResultType.LOAD_MAIN_MENU);
+        RoomWorkResult roomWorkResult = new RoomWorkResult(RoomWorkResultType.LOAD_MENU);
 
         while (roomWorkResult.getResultType() != RoomWorkResultType.EXIT) {
             roomWorkResult = executeNextRoom(roomWorkResult);
@@ -52,7 +52,7 @@ public class GameModel implements IModel {
 
     private RoomWorkResult executeNextRoom(RoomWorkResult previousRoomWorkResult) {
         switch (previousRoomWorkResult.getResultType()) {
-            case LOAD_MAIN_MENU:
+            case LOAD_MENU:
                 _room = RoomLoader.loadMainMenu(this);
                 return _room.executeWithResult();
             case LOAD_LEVEL:

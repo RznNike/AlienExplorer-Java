@@ -34,7 +34,6 @@ public class GameRoom implements IGameRoom {
     }
 
     public RoomWorkResult executeWithResult() {
-        // TODO room executeWithResult
         _roomLogic = new MenuLogic(this);
         _parent.sendEvent(ModelEventType.MENU_LOADED);
 
@@ -44,7 +43,19 @@ public class GameRoom implements IGameRoom {
             e.printStackTrace();
         }
 
-        return new RoomWorkResult(RoomWorkResultType.EXIT);
+        switch (getRoomLogic().getStateMachine().getCurrentCommand())
+        {
+            case LOAD_MENU:
+                return new RoomWorkResult(RoomWorkResultType.LOAD_MENU);
+            case LOAD_FIRST_LEVEL:
+            case LOAD_NEXT_LEVEL:
+            case LOAD_SELECTED_LEVEL:
+                return new RoomWorkResult(
+                        RoomWorkResultType.LOAD_LEVEL,
+                        getRoomLogic().getStateMachine().getSelectedMenuItem());
+            default:
+                return new RoomWorkResult(RoomWorkResultType.EXIT);
+        }
     }
 
     @Override

@@ -49,6 +49,8 @@ public class MainMenuStateMachine extends ModelStateMachine {
             case NEW_GAME:
                 if (selectedItem.getType() == UIObjectType.OK) {
                     setCurrentCommand(ModelStateMachineCommand.LOAD_FIRST_LEVEL);
+                    // TODO first level ID
+                    setSelectedMenuItem(1);
                 } else {
                     enterToMenu(UIObjectType.OK);
                 }
@@ -158,7 +160,7 @@ public class MainMenuStateMachine extends ModelStateMachine {
             UIObject object = new UIObject();
             object.setType(UIObjectType.TEXT);
             object.setState(0);
-            object.setText(String.format("%s &d", "Level", levelID));
+            object.setText(String.format("%s %d", "Level", levelID));
             object.setNumber(levelID);
             uiObjects.add(object);
         }

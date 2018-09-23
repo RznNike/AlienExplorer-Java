@@ -48,6 +48,7 @@ public class KeyboardListener implements KeyListener {
                 _controller.sendCommand(ControllerCommand.RIGHT, isThisACommandStart);
                 break;
             case KeyEvent.VK_ESCAPE:
+            case KeyEvent.VK_BACK_SPACE:
                 _controller.sendCommand(ControllerCommand.ESC, isThisACommandStart);
                 break;
             case KeyEvent.VK_ENTER:
