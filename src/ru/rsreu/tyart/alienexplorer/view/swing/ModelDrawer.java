@@ -24,7 +24,7 @@ class ModelDrawer {
 
     private static final double MAX_VISIBLE_MENU_ITEMS = 7;
 
-    private static final int CAMERA_WIDTH = 40;
+    private static final int CAMERA_WIDTH = 30;
 
     private static ResourcesContainer _resources;
     private static Font _fontNormal;
@@ -78,10 +78,10 @@ class ModelDrawer {
         Rectangle2D rect = object.getCollider();
         graphics.drawImage(
                 sprite,
-                (int)(rect.getX() * blockSize),
-                (int)(canvasHeight - (rect.getY() + rect.getHeight()) * blockSize),
-                (int)(rect.getWidth() * blockSize),
-                (int)(rect.getHeight() * blockSize),
+                (int)(rect.getX() * blockSize - 0.5),
+                (int)(canvasHeight - (rect.getY() + rect.getHeight()) * blockSize - 0.5),
+                (int)(rect.getWidth() * blockSize + 1),
+                (int)(rect.getHeight() * blockSize + 1),
                 null);
     }
 
