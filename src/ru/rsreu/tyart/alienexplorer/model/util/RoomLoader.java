@@ -14,7 +14,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class RoomLoader {
@@ -196,22 +195,16 @@ public class RoomLoader {
     }
 
     public static List<Integer> checkAvailableLevels() {
-        // TODO checkAvailableLevels()
-        List<Integer> result = new ArrayList<Integer>(Arrays.asList(1, 2, 3));
-//        String[] fileNames = Directory.GetFiles(LEVELS_FOLDER);
-//        if (fileNames.Length == 0)
-//        {
-//            throw new FileNotFoundException();
-//        }
-//        foreach (string elFileName in fileNames)
-//        {
-//            List<string> numbersInFileName = Regex.Split(elFileName, "[^0-9]+").Where(x => !x.Equals("")).ToList();
-//            if (numbersInFileName.Count > 0)
-//            {
-//                int id = int.Parse(numbersInFileName.Last());
-//                result.Add(id);
-//            }
-//        }
+        List<Integer> result = new ArrayList<Integer>();
+        File folder = new File(LEVELS_FOLDER);
+        File[] files = folder.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                if (file.isFile() && file.getName().matches("level\\d+.txt")) {
+                    result.add(Integer.valueOf(file.getName().replaceAll("\\D+", "")));
+                }
+            }
+        }
 
         return result;
     }

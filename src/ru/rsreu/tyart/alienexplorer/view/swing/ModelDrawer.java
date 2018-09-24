@@ -70,24 +70,6 @@ class ModelDrawer {
             drawGameObjectSprite(graphics, layer.getHeight(), blockSize, object);
         }
 
-        // level
-//        List<LevelObject> levelObjects = model.getRoom().getLevelObjects();
-//        for (LevelObject object : levelObjects) {
-//            drawGameObjectSprite(graphics, layer.getHeight(), blockSize, object);
-//        }
-//        // doors
-//        List<LevelObject> doors = model.getRoom().getDoors();
-//        for (LevelObject object : levelObjects) {
-//            drawGameObjectSprite(graphics, layer.getHeight(), blockSize, object);
-//        }
-//        // enemies
-//        List<EnemyObject> enemies = model.getRoom().getEnemies();
-//        for (EnemyObject enemy : enemies) {
-//            drawGameObjectSprite(graphics, layer.getHeight(), blockSize, enemy);
-//        }
-//        // player
-//        drawGameObjectSprite(graphics, layer.getHeight(), blockSize, model.getRoom().getPlayer());
-
         layer.setIcon(new ImageIcon(result));
     }
 
