@@ -88,8 +88,8 @@ public class RoomLoader {
 
         // TODO init logics here
 
-        room.setRoomLogic(new LevelLogic(room));
         room.setParent(parent);
+        room.setRoomLogic(new LevelLogic(room));
 
         return room;
     }

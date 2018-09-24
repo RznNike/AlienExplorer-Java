@@ -75,7 +75,7 @@ class ModelDrawer {
 
     private static void drawGameObjectSprite(Graphics graphics, int canvasHeight, int blockSize, GameObject object) {
         Image sprite = _resources.getSprite(object);
-        Rectangle2D rect = object.getCollider();
+        Rectangle2D.Float rect = object.getCollider();
         graphics.drawImage(
                 sprite,
                 (int)(rect.getX() * blockSize - 0.5),
@@ -135,7 +135,7 @@ class ModelDrawer {
         layer.setIcon(new ImageIcon(result));
     }
 
-    private static void drawCenteredString(Graphics graphics, String text, Rectangle2D rect, Font font) {
+    private static void drawCenteredString(Graphics graphics, String text, Rectangle2D.Float rect, Font font) {
         FontMetrics metrics = graphics.getFontMetrics(font);
         int x = (int)(rect.getX() + (rect.getWidth() - metrics.stringWidth(text)) / 2);
         int y = (int)(rect.getY() + ((rect.getHeight() - metrics.getHeight()) / 2) + metrics.getAscent());

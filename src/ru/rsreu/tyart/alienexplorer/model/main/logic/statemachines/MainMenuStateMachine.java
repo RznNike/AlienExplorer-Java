@@ -47,14 +47,14 @@ public class MainMenuStateMachine extends ModelStateMachine {
                 break;
             case NEW_GAME:
                 if (selectedItem.getType() == UIObjectType.OK) {
-                    setCurrentCommand(ModelStateMachineCommand.LOAD_FIRST_LEVEL);
+                    setCurrentCommand(ModelStateMachineCommand.LOAD_LEVEL);
                     setSelectedMenuItem(RoomLoader.checkAvailableLevels().get(0));
                 } else {
                     enterToMenu(UIObjectType.OK);
                 }
                 break;
             case CHOOSE_LEVEL:
-                setCurrentCommand(ModelStateMachineCommand.LOAD_SELECTED_LEVEL);
+                setCurrentCommand(ModelStateMachineCommand.LOAD_LEVEL);
                 setSelectedMenuItem(selectedItem.getNumber());
                 break;
             case EXIT:

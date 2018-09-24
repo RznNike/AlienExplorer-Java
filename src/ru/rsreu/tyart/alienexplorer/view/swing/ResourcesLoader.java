@@ -116,10 +116,6 @@ class ResourcesLoader {
         Image sprite = loadSpritesFromFolder(path).get(0);
         sprites.put(UIObjectType.HEALTH.ordinal(), sprite);
 
-        path = UIObjectType.TIMER.getPath();
-        sprite = loadSpritesFromFolder(path).get(0);
-        sprites.put(UIObjectType.TIMER.ordinal(), sprite);
-
         return sprites;
     }
 

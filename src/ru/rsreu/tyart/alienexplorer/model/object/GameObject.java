@@ -5,16 +5,16 @@ import ru.rsreu.tyart.alienexplorer.model.IGameObject;
 import java.awt.geom.Rectangle2D;
 
 public abstract class GameObject implements IGameObject {
-    private Rectangle2D _collider;
+    private Rectangle2D.Float _collider;
     private int _state;
     private boolean _flippedY = false;
 
     @Override
-    public Rectangle2D getCollider() {
+    public Rectangle2D.Float getCollider() {
         return _collider;
     }
 
-    public void setCollider(Rectangle2D value) {
+    public void setCollider(Rectangle2D.Float value) {
         _collider = value;
     }
 

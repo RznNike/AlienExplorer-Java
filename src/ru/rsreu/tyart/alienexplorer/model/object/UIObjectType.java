@@ -91,10 +91,6 @@ public enum UIObjectType implements IPathEnum {
         public String getPath() {
             return "resources/sprites/ui/health";
         }},
-    TIMER {
-        public String getPath() {
-            return "resources/sprites/ui/timer";
-        }},
 
     TEXT {
         public String getPath() {

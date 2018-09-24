@@ -5,8 +5,6 @@ public enum ModelStateMachineCommand {
     PAUSE,
     RESUME,
     LOAD_MENU,
-    LOAD_SELECTED_LEVEL,
-    LOAD_FIRST_LEVEL,
-    LOAD_NEXT_LEVEL,
+    LOAD_LEVEL,
     EXIT
 }

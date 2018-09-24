@@ -1,10 +1,7 @@
 package ru.rsreu.tyart.alienexplorer.model.main;
 
 import ru.rsreu.tyart.alienexplorer.model.IGameRoom;
-import ru.rsreu.tyart.alienexplorer.model.main.logic.BaseRoomLogic;
-import ru.rsreu.tyart.alienexplorer.model.main.logic.MenuLogic;
-import ru.rsreu.tyart.alienexplorer.model.main.logic.RoomWorkResult;
-import ru.rsreu.tyart.alienexplorer.model.main.logic.RoomWorkResultType;
+import ru.rsreu.tyart.alienexplorer.model.main.logic.*;
 import ru.rsreu.tyart.alienexplorer.model.object.EnemyObject;
 import ru.rsreu.tyart.alienexplorer.model.object.LevelObject;
 import ru.rsreu.tyart.alienexplorer.model.object.PlayerObject;
@@ -33,11 +30,12 @@ public class GameRoom implements IGameRoom {
         _logicBusySemaphore = new Semaphore(1);
     }
 
-    public RoomWorkResult executeWithResult() {
+    RoomWorkResult executeWithResult() {
         if (_type == GameRoomType.MENU) {
             _parent.sendEvent(ModelEventType.MENU_LOADED);
         } else {
             _parent.sendEvent(ModelEventType.LEVEL_LOADED);
+            ((LevelLogic)_roomLogic).start();
         }
 
         try {
@@ -50,9 +48,7 @@ public class GameRoom implements IGameRoom {
         {
             case LOAD_MENU:
                 return new RoomWorkResult(RoomWorkResultType.LOAD_MENU);
-            case LOAD_FIRST_LEVEL:
-            case LOAD_NEXT_LEVEL:
-            case LOAD_SELECTED_LEVEL:
+            case LOAD_LEVEL:
                 return new RoomWorkResult(
                         RoomWorkResultType.LOAD_LEVEL,
                         getRoomLogic().getStateMachine().getSelectedMenuItem());

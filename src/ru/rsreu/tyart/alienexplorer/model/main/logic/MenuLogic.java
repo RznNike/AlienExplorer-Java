@@ -16,8 +16,7 @@ public class MenuLogic extends BaseRoomLogic {
         getStateMachine().changeState(command);
         switch (getStateMachine().getCurrentCommand()) {
             case LOAD_MENU:
-            case LOAD_SELECTED_LEVEL:
-            case LOAD_FIRST_LEVEL:
+            case LOAD_LEVEL:
             case EXIT:
                 getRoom().getLogicBusySemaphore().release();
                 break;
