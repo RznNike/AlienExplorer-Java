@@ -336,4 +336,4 @@ door DOOR 29.36 10 0.64 1 0 false
 // player
 // size: x/y = 72/97 = 0.74
 // tag type x y width height heightStandard heightSmall state isFlipped health
-player GREEN 29.4 10.02 0.37 0.5 0.5 0.37 0 false 100
+player GREEN 29.4 10.02 0.37 0.5 0.5 0.37 0 true 100

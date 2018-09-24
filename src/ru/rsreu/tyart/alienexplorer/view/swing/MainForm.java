@@ -50,7 +50,7 @@ public class MainForm extends JFrame implements ModelEventListener {
             layer.setVisible(true);
         }
         for (int i = 0; i < _layers.size(); i++) {
-            _layeredCanvas.setLayer(_layers.get(i), 4 - i);
+            _layeredCanvas.setLayer(_layers.get(i), LAYERS_COUNT - i);
         }
     }
 
@@ -76,6 +76,8 @@ public class MainForm extends JFrame implements ModelEventListener {
             case MENU_LOADED:
                 ModelDrawer.drawBackground(model, _layers.get(BACKGROUND_LAYER));
                 ModelDrawer.drawMenu(model, _layers.get(MENU_LAYER));
+                _layers.get(LEVEL_LAYER).setVisible(false);
+                _layers.get(UI_LAYER).setVisible(false);
                 _layers.get(MENU_LAYER).setVisible(true);
                 break;
             case MENU_CHANGED:
@@ -85,6 +87,8 @@ public class MainForm extends JFrame implements ModelEventListener {
                 ModelDrawer.drawBackground(model, _layers.get(BACKGROUND_LAYER));
                 ModelDrawer.drawLevel(model, _layers.get(LEVEL_LAYER));
                 ModelDrawer.drawUI(model, _layers.get(UI_LAYER));
+                _layers.get(LEVEL_LAYER).setVisible(true);
+                _layers.get(UI_LAYER).setVisible(true);
                 _layers.get(MENU_LAYER).setVisible(false);
                 break;
             case LEVEL_CHANGED:

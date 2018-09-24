@@ -41,6 +41,7 @@ public class LevelMenuStateMachine extends ModelStateMachine {
             if (command == ControllerCommand.ESC) {
                 cancelAction();
             }
+            getGameRoom().getParent().sendEvent(ModelEventType.MENU_CHANGED);
         }
     }
 
