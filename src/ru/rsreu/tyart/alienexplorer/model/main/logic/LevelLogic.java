@@ -4,6 +4,7 @@ import ru.rsreu.tyart.alienexplorer.controller.ControllerCommand;
 import ru.rsreu.tyart.alienexplorer.model.main.GameRoom;
 import ru.rsreu.tyart.alienexplorer.model.main.logic.statemachines.LevelMenuStateMachine;
 import ru.rsreu.tyart.alienexplorer.model.object.LevelObject;
+import ru.rsreu.tyart.alienexplorer.model.object.UIObjectType;
 import ru.rsreu.tyart.alienexplorer.model.util.ManualResetEvent;
 
 import java.awt.geom.Rectangle2D;
@@ -123,8 +124,7 @@ public class LevelLogic extends BaseRoomLogic {
         boolean stopThread = false;
         if (getRoom().getPlayer().getHealth() == 0) {
             this.stop();
-            // TODO!!!
-//            ((LevelMenuStateMachine)getStateMachine()).enterToMenu(UIObjectType.RESTART);
+            ((LevelMenuStateMachine)getStateMachine()).enterToMenu(UIObjectType.RESTART);
             stopThread = true;
         }
 
@@ -135,8 +135,7 @@ public class LevelLogic extends BaseRoomLogic {
         boolean stopThread = false;
         if (isPlayerInGoalPoint()) {
             this.stop();
-            // TODO!!!
-//            ((LevelMenuStateMachine)getStateMachine()).enterToMenu(UIObjectType.NEXT_LEVEL);
+            ((LevelMenuStateMachine)getStateMachine()).enterToMenu(UIObjectType.NEXT_LEVEL);
             stopThread = true;
         }
 

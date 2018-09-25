@@ -17,9 +17,11 @@ class ModelDrawer {
     private static final Color COLOR_TEXT_HEADER = new Color(173, 216, 230);
     private static final Color COLOR_TEXT_SUBHEADER = new Color(255, 255, 0);
     private static final Color COLOR_TEXT_SELECTION = new Color(124, 252, 0);
+    private static final Color COLOR_TEXT_HEALTH = new Color(217, 29, 60);
 
     private static final float FONT_NORMAL_DIVIDER = 16;
     private static final float FONT_BIG_DIVIDER = 8;
+    private static final float FONT_SMALL_DIVIDER = 20;
     private static final double HEADER_HEIGHT = 0.2;
 
     private static final double MAX_VISIBLE_MENU_ITEMS = 7;
@@ -29,6 +31,7 @@ class ModelDrawer {
     private static ResourcesContainer _resources;
     private static Font _fontNormal;
     private static Font _fontBig;
+    private static Font _fontSmall;
 
     private ModelDrawer() {}
 
@@ -36,6 +39,7 @@ class ModelDrawer {
         _resources = ResourcesLoader.loadResources();
         _fontNormal = _resources.getFont().deriveFont(Font.PLAIN, screenSize.height / FONT_NORMAL_DIVIDER);
         _fontBig = _resources.getFont().deriveFont(Font.PLAIN, screenSize.height / FONT_BIG_DIVIDER);
+        _fontSmall = _resources.getFont().deriveFont(Font.PLAIN, screenSize.height / FONT_SMALL_DIVIDER);
     }
 
     static void drawBackground(IModel model, JLabel layer) {
@@ -73,19 +77,31 @@ class ModelDrawer {
         layer.setIcon(new ImageIcon(result));
     }
 
-    private static void drawGameObjectSprite(Graphics graphics, int canvasHeight, int blockSize, GameObject object) {
-        Image sprite = _resources.getSprite(object);
-        Rectangle2D.Float rect = object.getCollider();
-        graphics.drawImage(
-                sprite,
-                (int)(rect.getX() * blockSize - 0.5),
-                (int)(canvasHeight - (rect.getY() + rect.getHeight()) * blockSize - 0.5),
-                (int)(rect.getWidth() * blockSize + 1),
-                (int)(rect.getHeight() * blockSize + 1),
-                null);
-    }
-
     static void drawUI(IModel model, JLabel layer) {
+        // TODO drawUI
+        Image result = new BufferedImage(layer.getWidth(), layer.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        Graphics graphics = result.getGraphics();
+        graphics.setColor(COLOR_TRANSPARENT);
+        graphics.fillRect(0, 0, layer.getWidth(), layer.getHeight());
+
+        int blockSize = layer.getWidth() / CAMERA_WIDTH;
+
+        List<UIObject> uiObjects = model.getRoom().getUIObjects();
+        for (UIObject object : uiObjects) {
+            switch (object.getType()) {
+                case HEALTH:
+                    Rectangle2D.Float rect = new Rectangle2D.Float(0.25f, 0.25f, 1, 1);
+                    drawGameObjectSprite(graphics, layer.getHeight(), blockSize, object, rect);
+
+                    String text = String.valueOf(model.getRoom().getPlayer().getHealth());
+                    graphics.setColor(COLOR_TEXT_HEALTH);
+                    graphics.setFont(_fontSmall);
+                    graphics.drawString(text, (int)(blockSize * 1.5), (int)(layer.getHeight() - blockSize * 0.35));
+                    break;
+            }
+        }
+
+        layer.setIcon(new ImageIcon(result));
     }
 
     static void drawMenu(IModel model, JLabel layer) {
@@ -133,6 +149,30 @@ class ModelDrawer {
         }
 
         layer.setIcon(new ImageIcon(result));
+    }
+
+    private static void drawGameObjectSprite(
+            Graphics graphics,
+            int canvasHeight,
+            int blockSize,
+            GameObject object) {
+        drawGameObjectSprite(graphics, canvasHeight, blockSize, object, object.getCollider());
+    }
+
+    private static void drawGameObjectSprite(
+            Graphics graphics,
+            int canvasHeight,
+            int blockSize,
+            GameObject object,
+            Rectangle2D.Float rect) {
+        Image sprite = _resources.getSprite(object);
+        graphics.drawImage(
+                sprite,
+                (int)(rect.getX() * blockSize - 0.5),
+                (int)(canvasHeight - (rect.getY() + rect.getHeight()) * blockSize - 0.5),
+                (int)(rect.getWidth() * blockSize + 1),
+                (int)(rect.getHeight() * blockSize + 1),
+                null);
     }
 
     private static void drawCenteredString(Graphics graphics, String text, Rectangle2D.Float rect, Font font) {

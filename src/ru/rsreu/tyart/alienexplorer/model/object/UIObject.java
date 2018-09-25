@@ -16,7 +16,7 @@ public class UIObject extends GameObject {
 
     @Override
     public int getTypeNumber() {
-        return 0;
+        return _type.ordinal();
     }
 
     public UIObjectType getType() {
