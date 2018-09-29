@@ -155,6 +155,7 @@ public class PlayerLogic extends BaseObjectLogic<PlayerStateType> {
                     getPlayer().setHealth(0);
                 }
                 getStateMachine().setMachineState(PlayerStateType.HURT);
+                getRoom().getParent().sendEvent(ModelEventType.UI_CHANGED);
                 return true;
             }
         }

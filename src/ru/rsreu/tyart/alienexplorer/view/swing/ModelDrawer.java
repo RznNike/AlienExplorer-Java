@@ -26,7 +26,7 @@ class ModelDrawer {
 
     private static final double MAX_VISIBLE_MENU_ITEMS = 7;
 
-    private static final int CAMERA_WIDTH = 14;
+    private static final int CAMERA_WIDTH = 34;
 
     private static ResourcesContainer _resources;
     private static Font _fontNormal;
@@ -83,7 +83,7 @@ class ModelDrawer {
         graphics.setColor(COLOR_TRANSPARENT);
         graphics.fillRect(0, 0, layer.getWidth(), layer.getHeight());
 
-        int blockSize = layer.getWidth() / CAMERA_WIDTH;
+        int blockSize = _fontSmall.getSize();
 
         List<UIObject> uiObjects = model.getRoom().getUIObjects();
         for (UIObject object : uiObjects) {
@@ -95,7 +95,7 @@ class ModelDrawer {
                     String text = String.valueOf(model.getRoom().getPlayer().getHealth());
                     graphics.setColor(COLOR_TEXT_HEALTH);
                     graphics.setFont(_fontSmall);
-                    graphics.drawString(text, (int)(blockSize * 1.5), (int)(layer.getHeight() - blockSize * 0.35));
+                    graphics.drawString(text, (int)(blockSize * 1.5), (int)(layer.getHeight() - blockSize * 0.3));
                     break;
             }
         }
