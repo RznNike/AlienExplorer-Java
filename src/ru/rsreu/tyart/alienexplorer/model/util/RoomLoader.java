@@ -90,7 +90,6 @@ public class RoomLoader {
         room.setType(GameRoomType.LEVEL);
         room.setDimension(new Dimension(levelWidth, levelHeight));
 
-        // TODO init logics here
         room.getPlayer().setLogic(new PlayerLogic(room));
         for (EnemyObject enemy : room.getEnemies()) {
             switch (enemy.getType()) {
@@ -100,9 +99,9 @@ public class RoomLoader {
                 case BAT:
                     enemy.setLogic(new BatLogic(room, enemy));
                     break;
-//                case GHOST:
-//                    enemy.setLogic(new GhostLogic(room, enemy));
-//                    break;
+                case GHOST:
+                    enemy.setLogic(new GhostLogic(room, enemy));
+                    break;
             }
         }
 
