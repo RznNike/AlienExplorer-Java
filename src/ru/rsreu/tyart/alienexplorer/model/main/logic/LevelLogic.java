@@ -11,7 +11,7 @@ import java.awt.geom.Rectangle2D;
 
 public class LevelLogic extends BaseRoomLogic {
     private static final int THREAD_SLEEP_MS = 5;
-    private static final float PLAYER_TO_DOOR_WIN_OFFSET = 0.4f;
+    private static final float PLAYER_TO_DOOR_WIN_OFFSET = 0.3f;
 
     private boolean _stopThread;
     private ManualResetEvent _manualResetEvent;
@@ -105,8 +105,7 @@ public class LevelLogic extends BaseRoomLogic {
     }
 
     private void processMainThread() {
-        while (!_stopThread)
-        {
+        while (!_stopThread) {
             try {
                 _manualResetEvent.waitOne();
                 _stopThread = checkPlayerHP() || checkPlayerPosition();
@@ -149,10 +148,10 @@ public class LevelLogic extends BaseRoomLogic {
                 Rectangle2D.Float playerCollider = getRoom().getPlayer().getCollider();
                 Rectangle2D.Float doorCollider = door.getCollider();
                 Rectangle2D.Float pointCollider = new Rectangle2D.Float(
-                        (float)door.getCollider().getX() + PLAYER_TO_DOOR_WIN_OFFSET,
-                        (float)door.getCollider().getY() + PLAYER_TO_DOOR_WIN_OFFSET,
-                        (float)door.getCollider().getWidth() - PLAYER_TO_DOOR_WIN_OFFSET * 2,
-                        (float)door.getCollider().getHeight() - PLAYER_TO_DOOR_WIN_OFFSET * 2);
+                        (float)(door.getCollider().getX() + door.getCollider().getWidth() * PLAYER_TO_DOOR_WIN_OFFSET),
+                        (float)(door.getCollider().getY() + door.getCollider().getHeight() * PLAYER_TO_DOOR_WIN_OFFSET),
+                        (float)(door.getCollider().getWidth() * (1 - PLAYER_TO_DOOR_WIN_OFFSET * 2)),
+                        (float)(door.getCollider().getHeight() * (1 - PLAYER_TO_DOOR_WIN_OFFSET * 2)));
                 result |= playerCollider.intersects(pointCollider);
             }
         }

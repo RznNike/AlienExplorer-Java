@@ -28,13 +28,14 @@ public class PlayerStateMachine extends ObjectStateMachine<PlayerStateType> {
     }
 
     @Override
-    public void changeState(GameObject player, Space2D freeSpace, Vector2D move, float deltaSeconds) {
+    public boolean changeState(GameObject player, Space2D freeSpace, Vector2D move, float deltaSeconds) {
         setTimeInState(getTimeInState() + deltaSeconds);
         PlayerStateType possibleState = findPossibleState((PlayerObject)player, freeSpace, move);
         if (getMachineState() == possibleState) {
-            processInSameState(player);
+            return processInSameState(player);
         } else {
             processInNewState(player, possibleState);
+            return true;
         }
     }
 
@@ -54,9 +55,9 @@ public class PlayerStateMachine extends ObjectStateMachine<PlayerStateType> {
         }
     }
 
-    private void processInSameState(GameObject player) {
+    private boolean processInSameState(GameObject player) {
         if (getTimeInState() >= SUBSTATE_PERIOD) {
-            int multiplier = (int)Math.floor(getTimeInState() / SUBSTATE_PERIOD);
+            int multiplier = (int)(getTimeInState() / SUBSTATE_PERIOD);
             setTimeInState(getTimeInState() - SUBSTATE_PERIOD * multiplier);
 
             int oldSubState = player.getState();
@@ -67,7 +68,9 @@ public class PlayerStateMachine extends ObjectStateMachine<PlayerStateType> {
             }
             int newSubState = getObjectStates().get(getMachineState()).get(newSubStatePosition);
             player.setState(newSubState);
+            return true;
         }
+        return false;
     }
 
     private void processInNewState(GameObject player, PlayerStateType state) {

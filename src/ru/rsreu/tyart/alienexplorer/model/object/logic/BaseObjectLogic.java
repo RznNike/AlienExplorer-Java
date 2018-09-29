@@ -142,15 +142,21 @@ public abstract class BaseObjectLogic<MachineStateEnum> {
         return move;
     }
 
-    protected void moveObject(Vector2D move) {
-        _object.getCollider().x += move.getX();
-        _object.getCollider().y += move.getY();
+    protected boolean moveObject(Vector2D move) {
+        if ((Math.abs(move.getX()) > EPSILON) || (Math.abs(move.getY()) > EPSILON)) {
+            _object.getCollider().x += move.getX();
+            _object.getCollider().y += move.getY();
+            return true;
+        }
+        return false;
     }
 
-    protected void setObjectFlipped(Vector2D move) {
+    protected boolean setObjectFlipped(Vector2D move) {
         if (Math.abs(move.getX()) > EPSILON) {
             _object.setFlippedY(move.getX() < 0);
+            return true;
         }
+        return false;
     }
 
     public ObjectStateMachine getStateMachine() {

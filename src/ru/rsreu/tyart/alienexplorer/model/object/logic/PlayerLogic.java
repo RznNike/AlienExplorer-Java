@@ -24,6 +24,7 @@ public class PlayerLogic extends BaseObjectLogic<PlayerStateType> {
     private boolean _isJumpActive;
     private float _hurtCooldown;
 
+
     public PlayerLogic(GameRoom room) {
         setRoom(room);
         setStateMachine(new PlayerStateMachine());
@@ -46,6 +47,10 @@ public class PlayerLogic extends BaseObjectLogic<PlayerStateType> {
         while (!isStopThread()) {
             try {
                 getManualResetEvent().waitOne();
+                if (isStopThread()) {
+                    continue;
+                }
+                boolean levelChanged = false;
 
                 freeSpace = findFreeSpace();
                 long newTime = new Date().getTime();
@@ -53,10 +58,13 @@ public class PlayerLogic extends BaseObjectLogic<PlayerStateType> {
                 setTimestamp(newTime);
                 speed = findSpeed(speed, freeSpace, deltaSeconds);
                 move = findMoveVector(speed, freeSpace, deltaSeconds);
-                moveObject(move);
-                setObjectFlipped(move);
-                getStateMachine().changeState(getPlayer(), freeSpace, move, deltaSeconds);
-                getRoom().getParent().sendEvent(ModelEventType.LEVEL_CHANGED);
+                levelChanged |= moveObject(move);
+                levelChanged |= setObjectFlipped(move);
+                levelChanged |= getStateMachine().changeState(getPlayer(), freeSpace, move, deltaSeconds);
+
+                if (levelChanged) {
+                    getRoom().getParent().sendEvent(ModelEventType.LEVEL_CHANGED);
+                }
 
                 Thread.sleep(THREAD_SLEEP_MS);
             } catch (InterruptedException e) {
@@ -111,7 +119,8 @@ public class PlayerLogic extends BaseObjectLogic<PlayerStateType> {
             if (newSpeed.getY() < -MAX_SPEED) {
                 newSpeed.setY(-MAX_SPEED);
             }
-        } else if ((oldSpeed.getY() > EPSILON) && (freeSpace.getTop() < EPSILON)) {
+        }
+        if ((oldSpeed.getY() > EPSILON) && (freeSpace.getTop() < EPSILON)) {
             newSpeed.setY(0);
         }
 

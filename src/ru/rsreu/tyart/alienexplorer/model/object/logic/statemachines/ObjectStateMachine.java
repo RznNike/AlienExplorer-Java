@@ -14,7 +14,7 @@ public abstract class ObjectStateMachine<MachineStateEnum> {
     private Map<MachineStateEnum, List<Integer>> _objectStates;
     private float _timeInState;
 
-    public abstract void changeState(GameObject gameObject, Space2D freeSpace, Vector2D move, float deltaSeconds);
+    public abstract boolean changeState(GameObject gameObject, Space2D freeSpace, Vector2D move, float deltaSeconds);
 
 
     protected MachineStateEnum getMachineState() {
