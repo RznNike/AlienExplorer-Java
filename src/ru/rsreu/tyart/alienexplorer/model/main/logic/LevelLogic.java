@@ -29,9 +29,9 @@ public class LevelLogic extends BaseRoomLogic {
             handleCommand(command);
         }
         // TODO send command to player
-//        if (command.ordinal() <= ControllerCommand.RIGHT.ordinal()) {
-//            getRoom().getPlayer().
-//        }
+        if (command.ordinal() <= ControllerCommand.RIGHT.ordinal()) {
+            getRoom().getPlayer().getLogic().receiveCommand(command, isThisACommandStart);
+        }
     }
 
     @Override
@@ -56,7 +56,7 @@ public class LevelLogic extends BaseRoomLogic {
     public void start() {
         _manualResetEvent.set();
 
-//        getRoom().getPlayer().getLogic().start(_manualResetEvent);
+        getRoom().getPlayer().getLogic().start(_manualResetEvent);
 //        foreach (ILogic elLogic in _model.EnemyLogics)
 //        {
 //            if (elLogic != null)
@@ -77,7 +77,7 @@ public class LevelLogic extends BaseRoomLogic {
 
     public void stop() {
         _stopThread = true;
-//        _model.PlayerLogics.Stop();
+        getRoom().getPlayer().getLogic().stop();
 //        foreach (ILogic elLogic in _model.EnemyLogics)
 //        {
 //            if (elLogic != null)
@@ -93,7 +93,7 @@ public class LevelLogic extends BaseRoomLogic {
     }
 
     public void resume() {
-//        _model.PlayerLogics.Resume();
+        getRoom().getPlayer().getLogic().resume();
 //        foreach (ILogic elLogic in _model.EnemyLogics)
 //        {
 //            if (elLogic != null)

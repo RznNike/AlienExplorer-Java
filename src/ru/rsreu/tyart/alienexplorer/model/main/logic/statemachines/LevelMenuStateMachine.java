@@ -37,11 +37,11 @@ public class LevelMenuStateMachine extends ModelStateMachine {
                         acceptAction();
                         break;
                 }
+                getGameRoom().getParent().sendEvent(ModelEventType.MENU_CHANGED);
             }
             if (command == ControllerCommand.ESC) {
                 cancelAction();
             }
-            getGameRoom().getParent().sendEvent(ModelEventType.MENU_CHANGED);
         }
     }
 
@@ -104,8 +104,6 @@ public class LevelMenuStateMachine extends ModelStateMachine {
         health.setType(UIObjectType.HEALTH);
         getGameRoom().getUIObjects().add(health);
 
-        // TODO can it be removed?
-        setMenuHeader("");
         setCurrentMenu(UIObjectType.OK);
         setCurrentCommand(ModelStateMachineCommand.RESUME);
         _menuDisplayed = false;

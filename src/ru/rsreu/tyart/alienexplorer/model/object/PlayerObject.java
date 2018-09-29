@@ -1,12 +1,14 @@
 package ru.rsreu.tyart.alienexplorer.model.object;
 
+import ru.rsreu.tyart.alienexplorer.model.object.logic.PlayerLogic;
+
 public class PlayerObject extends GameObject {
     private PlayerObjectType _type;
     private float _heightStandard;
     private float _heightSmall;
-
     private int _health;
     private boolean _damaged;
+    private PlayerLogic _logic;
 
     @Override
     public int getTypeNumber() {
@@ -51,5 +53,13 @@ public class PlayerObject extends GameObject {
 
     public void setDamaged(boolean value) {
         _damaged = value;
+    }
+
+    public PlayerLogic getLogic() {
+        return _logic;
+    }
+
+    public void setLogic(PlayerLogic value) {
+        _logic = value;
     }
 }

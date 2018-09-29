@@ -6,6 +6,7 @@ import ru.rsreu.tyart.alienexplorer.model.main.GameRoomType;
 import ru.rsreu.tyart.alienexplorer.model.main.logic.LevelLogic;
 import ru.rsreu.tyart.alienexplorer.model.main.logic.MenuLogic;
 import ru.rsreu.tyart.alienexplorer.model.object.*;
+import ru.rsreu.tyart.alienexplorer.model.object.logic.PlayerLogic;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -87,6 +88,7 @@ public class RoomLoader {
         room.setDimension(new Dimension(levelWidth, levelHeight));
 
         // TODO init logics here
+        room.getPlayer().setLogic(new PlayerLogic(room));
 
         room.setParent(parent);
         room.setRoomLogic(new LevelLogic(room));

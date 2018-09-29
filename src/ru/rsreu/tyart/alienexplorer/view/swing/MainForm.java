@@ -40,17 +40,17 @@ public class MainForm extends JFrame implements ModelEventListener {
     }
 
     private void initLayers() {
-        JLayeredPane _layeredCanvas = getLayeredPane();
+        JLayeredPane layeredCanvas = getLayeredPane();
         _layers = new ArrayList<JLabel>();
         for (int i = 0; i < LAYERS_COUNT; i++) {
             JLabel layer = new JLabel();
             layer.setSize(_canvas.getSize());
             _layers.add(layer);
-            _layeredCanvas.add(layer);
+            layeredCanvas.add(layer);
             layer.setVisible(true);
         }
         for (int i = 0; i < _layers.size(); i++) {
-            _layeredCanvas.setLayer(_layers.get(i), LAYERS_COUNT - i);
+            layeredCanvas.setLayer(_layers.get(i), LAYERS_COUNT - i);
         }
     }
 

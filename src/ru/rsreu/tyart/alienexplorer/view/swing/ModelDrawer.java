@@ -26,7 +26,7 @@ class ModelDrawer {
 
     private static final double MAX_VISIBLE_MENU_ITEMS = 7;
 
-    private static final int CAMERA_WIDTH = 34;
+    private static final int CAMERA_WIDTH = 14;
 
     private static ResourcesContainer _resources;
     private static Font _fontNormal;
@@ -78,7 +78,6 @@ class ModelDrawer {
     }
 
     static void drawUI(IModel model, JLabel layer) {
-        // TODO drawUI
         Image result = new BufferedImage(layer.getWidth(), layer.getHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics graphics = result.getGraphics();
         graphics.setColor(COLOR_TRANSPARENT);
