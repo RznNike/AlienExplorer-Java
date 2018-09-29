@@ -23,9 +23,9 @@ public class SlimeLogic extends BaseObjectLogic<SlimeStateType> {
 
     @Override
     protected void processThread() {
-        Space2D freeSpace = new Space2D(0, 0, 0, 0);
+        Space2D freeSpace;
         Vector2D speed = new Vector2D(0, 0);
-        Vector2D move = new Vector2D(0, 0);
+        Vector2D move;
         _targetX = (float)getEnemy().getLeftWalkingBound().getX();
         setTimestamp(new Date().getTime());
 

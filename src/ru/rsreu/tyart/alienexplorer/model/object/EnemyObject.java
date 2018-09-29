@@ -6,9 +6,8 @@ import java.awt.geom.Point2D;
 
 public class EnemyObject extends GameObject {
     private EnemyObjectType _type;
-    private boolean _isMoving;
-    private Point2D _leftWalkingBound;
-    private Point2D _rightWalkingBound;
+    private Point2D.Float _leftWalkingBound;
+    private Point2D.Float _rightWalkingBound;
     private int _damage;
     private BaseObjectLogic _logic;
 
@@ -25,27 +24,19 @@ public class EnemyObject extends GameObject {
         _type = value;
     }
 
-    public boolean isMoving() {
-        return _isMoving;
-    }
-
-    public void setMoving(boolean value) {
-        _isMoving = value;
-    }
-
-    public Point2D getLeftWalkingBound() {
+    public Point2D.Float getLeftWalkingBound() {
         return _leftWalkingBound;
     }
 
-    public void setLeftWalkingBound(Point2D value) {
+    public void setLeftWalkingBound(Point2D.Float value) {
         _leftWalkingBound = value;
     }
 
-    public Point2D getRightWalkingBound() {
+    public Point2D.Float getRightWalkingBound() {
         return _rightWalkingBound;
     }
 
-    public void setRightWalkingBound(Point2D value) {
+    public void setRightWalkingBound(Point2D.Float value) {
         _rightWalkingBound = value;
     }
 

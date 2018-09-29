@@ -97,9 +97,9 @@ public class RoomLoader {
                 case SLIME:
                     enemy.setLogic(new SlimeLogic(room, enemy));
                     break;
-//                case BAT:
-//                    enemy.setLogic(new BatLogic(room, enemy));
-//                    break;
+                case BAT:
+                    enemy.setLogic(new BatLogic(room, enemy));
+                    break;
 //                case GHOST:
 //                    enemy.setLogic(new GhostLogic(room, enemy));
 //                    break;
