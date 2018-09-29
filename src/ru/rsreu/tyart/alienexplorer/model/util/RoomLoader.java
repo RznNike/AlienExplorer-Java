@@ -196,7 +196,7 @@ public class RoomLoader {
         return result;
     }
 
-    public static List<Integer> checkAvailableLevels() {
+    public static List<Integer> getAvailableLevels() {
         List<Integer> result = new ArrayList<Integer>();
         File folder = new File(LEVELS_FOLDER);
         File[] files = folder.listFiles();

@@ -28,7 +28,6 @@ public class LevelLogic extends BaseRoomLogic {
         if (isThisACommandStart) {
             handleCommand(command);
         }
-        // TODO send command to player
         if (command.ordinal() <= ControllerCommand.RIGHT.ordinal()) {
             getRoom().getPlayer().getLogic().receiveCommand(command, isThisACommandStart);
         }
@@ -146,7 +145,6 @@ public class LevelLogic extends BaseRoomLogic {
         for (LevelObject door : getRoom().getDoors()) {
             if (door.getState() == 1) {
                 Rectangle2D.Float playerCollider = getRoom().getPlayer().getCollider();
-                Rectangle2D.Float doorCollider = door.getCollider();
                 Rectangle2D.Float pointCollider = new Rectangle2D.Float(
                         (float)(door.getCollider().getX() + door.getCollider().getWidth() * PLAYER_TO_DOOR_WIN_OFFSET),
                         (float)(door.getCollider().getY() + door.getCollider().getHeight() * PLAYER_TO_DOOR_WIN_OFFSET),

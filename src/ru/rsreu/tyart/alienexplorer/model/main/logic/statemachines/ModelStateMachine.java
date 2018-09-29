@@ -6,14 +6,14 @@ import ru.rsreu.tyart.alienexplorer.model.object.UIObject;
 import ru.rsreu.tyart.alienexplorer.model.object.UIObjectType;
 
 public abstract class ModelStateMachine {
-    private GameRoom _gameRoom;
+    private GameRoom _room;
     private UIObjectType _currentMenu;
     private ModelStateMachineCommand _currentCommand;
     private int _selectedMenuItem;
     private String _menuHeader;
 
-    public ModelStateMachine(GameRoom gameRoom) {
-        _gameRoom = gameRoom;
+    public ModelStateMachine(GameRoom room) {
+        _room = room;
     }
 
     public abstract void changeState(ControllerCommand command);
@@ -23,22 +23,22 @@ public abstract class ModelStateMachine {
     protected abstract void cancelAction();
 
     protected void selectMenuItem(int itemNumber) {
-        for (UIObject item : _gameRoom.getUIObjects()) {
+        for (UIObject item : _room.getUIObjects()) {
             item.setState(0);
         }
-        _gameRoom.getUIObjects().get(itemNumber).setState(1);
+        _room.getUIObjects().get(itemNumber).setState(1);
     }
 
     protected void selectPrevMenuItem() {
-        if ((_gameRoom.getUIObjects() != null) && (_gameRoom.getUIObjects().size() > 0)) {
+        if ((_room.getUIObjects() != null) && (_room.getUIObjects().size() > 0)) {
             int newSelection = _selectedMenuItem - 1;
             if (newSelection < 0) {
-                newSelection = _gameRoom.getUIObjects().size() - 1;
+                newSelection = _room.getUIObjects().size() - 1;
             }
-            if (!_gameRoom.getUIObjects().get(newSelection).isSelectable()) {
+            if (!_room.getUIObjects().get(newSelection).isSelectable()) {
                 newSelection--;
                 if (newSelection < 0) {
-                    newSelection = _gameRoom.getUIObjects().size() - 1;
+                    newSelection = _room.getUIObjects().size() - 1;
                 }
             }
             _selectedMenuItem = newSelection;
@@ -47,13 +47,13 @@ public abstract class ModelStateMachine {
     }
 
     protected void selectNextMenuItem() {
-        if ((_gameRoom.getUIObjects() != null) && (_gameRoom.getUIObjects().size() > 0)) {
+        if ((_room.getUIObjects() != null) && (_room.getUIObjects().size() > 0)) {
             int newSelection = _selectedMenuItem + 1;
 
-            if (newSelection >= _gameRoom.getUIObjects().size()) {
+            if (newSelection >= _room.getUIObjects().size()) {
                 newSelection = 0;
             }
-            if (!_gameRoom.getUIObjects().get(newSelection).isSelectable()) {
+            if (!_room.getUIObjects().get(newSelection).isSelectable()) {
                 newSelection++;
             }
             _selectedMenuItem = newSelection;
@@ -61,12 +61,12 @@ public abstract class ModelStateMachine {
         }
     }
 
-    protected GameRoom getGameRoom() {
-        return _gameRoom;
+    protected GameRoom getRoom() {
+        return _room;
     }
 
-    public void setGameRoom(GameRoom value) {
-        _gameRoom = value;
+    public void setRoom(GameRoom value) {
+        _room = value;
     }
 
     protected UIObjectType getCurrentMenu() {

@@ -19,7 +19,7 @@ public class MainMenuStateMachine extends ModelStateMachine {
 
     @Override
     public void changeState(ControllerCommand command) {
-        if ((getGameRoom().getUIObjects() != null) && (getGameRoom().getUIObjects().size() > 0)) {
+        if ((getRoom().getUIObjects() != null) && (getRoom().getUIObjects().size() > 0)) {
             switch (command) {
                 case UP:
                     selectPrevMenuItem();
@@ -34,13 +34,13 @@ public class MainMenuStateMachine extends ModelStateMachine {
                     cancelAction();
                     break;
             }
-            getGameRoom().getParent().sendEvent(ModelEventType.MENU_CHANGED);
+            getRoom().getParent().sendEvent(ModelEventType.MENU_CHANGED);
         }
     }
 
     @Override
     protected void acceptAction() {
-        UIObject selectedItem = getGameRoom().getUIObjects().get(getSelectedMenuItem());
+        UIObject selectedItem = getRoom().getUIObjects().get(getSelectedMenuItem());
         switch (getCurrentMenu()) {
             case OK:
                 enterToMenu(selectedItem.getType());
@@ -48,7 +48,7 @@ public class MainMenuStateMachine extends ModelStateMachine {
             case NEW_GAME:
                 if (selectedItem.getType() == UIObjectType.OK) {
                     setCurrentCommand(ModelStateMachineCommand.LOAD_LEVEL);
-                    setSelectedMenuItem(RoomLoader.checkAvailableLevels().get(0));
+                    setSelectedMenuItem(RoomLoader.getAvailableLevels().get(0));
                 } else {
                     enterToMenu(UIObjectType.OK);
                 }
@@ -104,7 +104,7 @@ public class MainMenuStateMachine extends ModelStateMachine {
             uiObjects.add(object);
         }
         uiObjects.get(0).setState(1);
-        getGameRoom().setUIObjects(uiObjects);
+        getRoom().setUIObjects(uiObjects);
 
         setSelectedMenuItem(0);
         setMenuHeader("Alien Explorer");
@@ -139,7 +139,7 @@ public class MainMenuStateMachine extends ModelStateMachine {
             uiObjects.add(object);
         }
         uiObjects.get(2).setState(1);
-        getGameRoom().setUIObjects(uiObjects);
+        getRoom().setUIObjects(uiObjects);
 
         setCurrentMenu(type);
         setSelectedMenuItem(2);
@@ -147,7 +147,7 @@ public class MainMenuStateMachine extends ModelStateMachine {
     }
 
     private void initializeChooseLevelMenu() {
-        List<Integer> levelIDs = RoomLoader.checkAvailableLevels();
+        List<Integer> levelIDs = RoomLoader.getAvailableLevels();
         List<UIObject> uiObjects = new ArrayList<UIObject>();
         for (Integer levelID : levelIDs) {
             UIObject object = new UIObject();
@@ -158,7 +158,7 @@ public class MainMenuStateMachine extends ModelStateMachine {
             uiObjects.add(object);
         }
         uiObjects.get(0).setState(1);
-        getGameRoom().setUIObjects(uiObjects);
+        getRoom().setUIObjects(uiObjects);
 
         setSelectedMenuItem(0);
         setMenuHeader("Choose level");

@@ -8,6 +8,7 @@ import ru.rsreu.tyart.alienexplorer.model.util.ModelEventType;
 import ru.rsreu.tyart.alienexplorer.model.util.RoomLoader;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class LevelMenuStateMachine extends ModelStateMachine {
@@ -24,7 +25,7 @@ public class LevelMenuStateMachine extends ModelStateMachine {
     @Override
     public void changeState(ControllerCommand command) {
         setCurrentCommand(ModelStateMachineCommand.NONE);
-        if ((getGameRoom().getUIObjects() != null) && (getGameRoom().getUIObjects().size() > 0)) {
+        if ((getRoom().getUIObjects() != null) && (getRoom().getUIObjects().size() > 0)) {
             if (_menuDisplayed) {
                 switch (command) {
                     case UP:
@@ -37,7 +38,7 @@ public class LevelMenuStateMachine extends ModelStateMachine {
                         acceptAction();
                         break;
                 }
-                getGameRoom().getParent().sendEvent(ModelEventType.MENU_CHANGED);
+                getRoom().getParent().sendEvent(ModelEventType.MENU_CHANGED);
             }
             if (command == ControllerCommand.ESC) {
                 cancelAction();
@@ -47,17 +48,20 @@ public class LevelMenuStateMachine extends ModelStateMachine {
 
     @Override
     protected void acceptAction() {
-        UIObjectType selectedItem = getGameRoom().getUIObjects().get(getSelectedMenuItem()).getType();
+        UIObjectType selectedItem = getRoom().getUIObjects().get(getSelectedMenuItem()).getType();
         switch (selectedItem) {
             case RESUME:
                 enterToMenu(UIObjectType.OK);
                 break;
             case RESTART:
-                // TODO set level number
+                setSelectedMenuItem(getRoom().getId());
                 setCurrentCommand(ModelStateMachineCommand.LOAD_LEVEL);
                 break;
             case NEXT_LEVEL:
-                // TODO set level number
+                List<Integer> levelNumbers = RoomLoader.getAvailableLevels();
+                int currentLevelPosition = levelNumbers.indexOf(getRoom().getId());
+                int nextLevel = levelNumbers.get(currentLevelPosition + 1);
+                setSelectedMenuItem(nextLevel);
                 setCurrentCommand(ModelStateMachineCommand.LOAD_LEVEL);
                 break;
             case BACK_TO_MAIN_MENU:
@@ -99,130 +103,78 @@ public class LevelMenuStateMachine extends ModelStateMachine {
     }
 
     private void initializeLevelUI() {
-        getGameRoom().setUIObjects(new ArrayList<UIObject>());
+        getRoom().setUIObjects(new ArrayList<UIObject>());
         UIObject health = new UIObject();
         health.setType(UIObjectType.HEALTH);
-        getGameRoom().getUIObjects().add(health);
+        getRoom().getUIObjects().add(health);
 
         setCurrentMenu(UIObjectType.OK);
         setCurrentCommand(ModelStateMachineCommand.RESUME);
         _menuDisplayed = false;
 
-        getGameRoom().getParent().sendEvent(ModelEventType.CONTEXT_MENU_CLOSED);
+        getRoom().getParent().sendEvent(ModelEventType.CONTEXT_MENU_CLOSED);
     }
 
     private void initializePauseMenu() {
-        getGameRoom().setUIObjects(new ArrayList<UIObject>());
+        getRoom().setUIObjects(new ArrayList<UIObject>(Arrays.asList(
+                new UIObject(UIObjectType.TEXT, 0, "GAME PAUSED", false),
+                new UIObject(UIObjectType.RESUME, 1),
+                new UIObject(UIObjectType.RESTART, 0),
+                new UIObject(UIObjectType.BACK_TO_MAIN_MENU, 0)
+        )));
 
-        UIObject uiObject = new UIObject();
-        uiObject.setType(UIObjectType.TEXT);
-        uiObject.setState(0);
-        uiObject.setText("GAME PAUSED");
-        uiObject.setSelectable(false);
-        getGameRoom().getUIObjects().add(uiObject);
-
-        uiObject = new UIObject();
-        uiObject.setType(UIObjectType.RESUME);
-        uiObject.setState(1);
-        getGameRoom().getUIObjects().add(uiObject);
-
-        uiObject = new UIObject();
-        uiObject.setType(UIObjectType.RESTART);
-        uiObject.setState(0);
-        getGameRoom().getUIObjects().add(uiObject);
-
-        uiObject = new UIObject();
-        uiObject.setType(UIObjectType.BACK_TO_MAIN_MENU);
-        uiObject.setState(0);
-        getGameRoom().getUIObjects().add(uiObject);
-
-        setMenuHeader(String.format("Level %d", getGameRoom().getId()));
+        setMenuHeader(String.format("Level %d", getRoom().getId()));
         setSelectedMenuItem(1);
         setCurrentMenu(UIObjectType.RESUME);
         setCurrentCommand(ModelStateMachineCommand.PAUSE);
         _menuDisplayed = true;
 
-        getGameRoom().getParent().sendEvent(ModelEventType.CONTEXT_MENU_LOADED);
+        getRoom().getParent().sendEvent(ModelEventType.CONTEXT_MENU_LOADED);
     }
 
     private void initializeWinMenu() {
-        getGameRoom().setUIObjects(new ArrayList<UIObject>());
+        getRoom().setUIObjects(new ArrayList<UIObject>());
+        getRoom().getUIObjects().add(new UIObject(UIObjectType.TEXT, 0, "YOU WIN!", false));
 
-        UIObject uiObject = new UIObject();
-        uiObject.setType(UIObjectType.TEXT);
-        uiObject.setState(0);
-        uiObject.setText("YOU WIN!");
-        uiObject.setSelectable(false);
-        getGameRoom().getUIObjects().add(uiObject);
-
-        int currentLevel = getGameRoom().getId();
-        List<Integer> levels = RoomLoader.checkAvailableLevels();
+        int currentLevel = getRoom().getId();
+        List<Integer> levels = RoomLoader.getAvailableLevels();
         int lastLevel = levels.get(levels.size() - 1);
         if (currentLevel < lastLevel) {
-            uiObject = new UIObject();
-            uiObject.setType(UIObjectType.NEXT_LEVEL);
-            uiObject.setState(1);
-            getGameRoom().getUIObjects().add(uiObject);
-
-            uiObject = new UIObject();
-            uiObject.setType(UIObjectType.RESTART);
-            uiObject.setState(0);
-            getGameRoom().getUIObjects().add(uiObject);
-
-            uiObject = new UIObject();
-            uiObject.setType(UIObjectType.BACK_TO_MAIN_MENU);
-            uiObject.setState(0);
-            getGameRoom().getUIObjects().add(uiObject);
-
+            getRoom().getUIObjects().addAll(Arrays.asList(
+                    new UIObject(UIObjectType.NEXT_LEVEL, 1),
+                    new UIObject(UIObjectType.RESTART, 0),
+                    new UIObject(UIObjectType.BACK_TO_MAIN_MENU, 0)
+            ));
             setSelectedMenuItem(1);
         } else {
-            uiObject = new UIObject();
-            uiObject.setType(UIObjectType.RESTART);
-            uiObject.setState(0);
-            getGameRoom().getUIObjects().add(uiObject);
-
-            uiObject = new UIObject();
-            uiObject.setType(UIObjectType.BACK_TO_MAIN_MENU);
-            uiObject.setState(1);
-            getGameRoom().getUIObjects().add(uiObject);
-
+            getRoom().getUIObjects().addAll(Arrays.asList(
+                    new UIObject(UIObjectType.RESTART, 0),
+                    new UIObject(UIObjectType.BACK_TO_MAIN_MENU, 1)
+            ));
             setSelectedMenuItem(2);
         }
 
-        setMenuHeader(String.format("Level %d", getGameRoom().getId()));
+        setMenuHeader(String.format("Level %d", getRoom().getId()));
         setCurrentMenu(UIObjectType.NEXT_LEVEL);
         setCurrentCommand(ModelStateMachineCommand.PAUSE);
         _menuDisplayed = true;
 
-        getGameRoom().getParent().sendEvent(ModelEventType.CONTEXT_MENU_LOADED);
+        getRoom().getParent().sendEvent(ModelEventType.CONTEXT_MENU_LOADED);
     }
 
     private void initializeLoseMenu() {
-        getGameRoom().setUIObjects(new ArrayList<UIObject>());
+        getRoom().setUIObjects(new ArrayList<UIObject>(Arrays.asList(
+                new UIObject(UIObjectType.TEXT, 0, "YOU LOSE...", false),
+                new UIObject(UIObjectType.RESTART, 1),
+                new UIObject(UIObjectType.BACK_TO_MAIN_MENU, 0)
+        )));
 
-        UIObject uiObject = new UIObject();
-        uiObject.setType(UIObjectType.TEXT);
-        uiObject.setState(0);
-        uiObject.setText("YOU LOSE...");
-        uiObject.setSelectable(false);
-        getGameRoom().getUIObjects().add(uiObject);
-
-        uiObject = new UIObject();
-        uiObject.setType(UIObjectType.RESTART);
-        uiObject.setState(1);
-        getGameRoom().getUIObjects().add(uiObject);
-
-        uiObject = new UIObject();
-        uiObject.setType(UIObjectType.BACK_TO_MAIN_MENU);
-        uiObject.setState(0);
-        getGameRoom().getUIObjects().add(uiObject);
-
-        setMenuHeader(String.format("Level %d", getGameRoom().getId()));
+        setMenuHeader(String.format("Level %d", getRoom().getId()));
         setSelectedMenuItem(1);
         setCurrentMenu(UIObjectType.NEXT_LEVEL);
         setCurrentCommand(ModelStateMachineCommand.PAUSE);
         _menuDisplayed = true;
 
-        getGameRoom().getParent().sendEvent(ModelEventType.CONTEXT_MENU_LOADED);
+        getRoom().getParent().sendEvent(ModelEventType.CONTEXT_MENU_LOADED);
     }
 }
