@@ -25,6 +25,7 @@ public class PlayerStateMachine extends ObjectStateMachine<PlayerStateType> {
 
         setMachineState(PlayerStateType.STAND);
         setTimeInState(0);
+        setSubstatePeriod(SUBSTATE_PERIOD);
     }
 
     @Override
@@ -53,24 +54,6 @@ public class PlayerStateMachine extends ObjectStateMachine<PlayerStateType> {
                 return PlayerStateType.DUCK;
             }
         }
-    }
-
-    private boolean processInSameState(GameObject player) {
-        if (getTimeInState() >= SUBSTATE_PERIOD) {
-            int multiplier = (int)(getTimeInState() / SUBSTATE_PERIOD);
-            setTimeInState(getTimeInState() - SUBSTATE_PERIOD * multiplier);
-
-            int oldSubState = player.getState();
-            int oldSubStatePosition = getObjectStates().get(getMachineState()).indexOf(oldSubState);
-            int newSubStatePosition = 0;
-            if ((oldSubStatePosition >= 0) && (oldSubStatePosition < getObjectStates().get(getMachineState()).size() - 1)) {
-                newSubStatePosition = oldSubStatePosition + 1;
-            }
-            int newSubState = getObjectStates().get(getMachineState()).get(newSubStatePosition);
-            player.setState(newSubState);
-            return true;
-        }
-        return false;
     }
 
     private void processInNewState(GameObject player, PlayerStateType state) {

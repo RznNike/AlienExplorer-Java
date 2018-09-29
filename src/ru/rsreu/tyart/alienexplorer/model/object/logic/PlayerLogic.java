@@ -50,7 +50,7 @@ public class PlayerLogic extends BaseObjectLogic<PlayerStateType> {
                 if (isStopThread()) {
                     continue;
                 }
-                boolean levelChanged = false;
+                boolean levelChanged;
 
                 freeSpace = findFreeSpace();
                 long newTime = new Date().getTime();
@@ -58,7 +58,7 @@ public class PlayerLogic extends BaseObjectLogic<PlayerStateType> {
                 setTimestamp(newTime);
                 speed = findSpeed(speed, freeSpace, deltaSeconds);
                 move = findMoveVector(speed, freeSpace, deltaSeconds);
-                levelChanged |= moveObject(move);
+                levelChanged = moveObject(move);
                 levelChanged |= setObjectFlipped(move);
                 levelChanged |= getStateMachine().changeState(getPlayer(), freeSpace, move, deltaSeconds);
 

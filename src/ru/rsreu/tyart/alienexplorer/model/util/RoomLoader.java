@@ -6,7 +6,10 @@ import ru.rsreu.tyart.alienexplorer.model.main.GameRoomType;
 import ru.rsreu.tyart.alienexplorer.model.main.logic.LevelLogic;
 import ru.rsreu.tyart.alienexplorer.model.main.logic.MenuLogic;
 import ru.rsreu.tyart.alienexplorer.model.object.*;
+import ru.rsreu.tyart.alienexplorer.model.object.logic.BatLogic;
+import ru.rsreu.tyart.alienexplorer.model.object.logic.GhostLogic;
 import ru.rsreu.tyart.alienexplorer.model.object.logic.PlayerLogic;
+import ru.rsreu.tyart.alienexplorer.model.object.logic.SlimeLogic;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -89,6 +92,19 @@ public class RoomLoader {
 
         // TODO init logics here
         room.getPlayer().setLogic(new PlayerLogic(room));
+        for (EnemyObject enemy : room.getEnemies()) {
+            switch (enemy.getType()) {
+                case SLIME:
+                    enemy.setLogic(new SlimeLogic(room, enemy));
+                    break;
+//                case BAT:
+//                    enemy.setLogic(new BatLogic(room, enemy));
+//                    break;
+//                case GHOST:
+//                    enemy.setLogic(new GhostLogic(room, enemy));
+//                    break;
+            }
+        }
 
         room.setParent(parent);
         room.setRoomLogic(new LevelLogic(room));

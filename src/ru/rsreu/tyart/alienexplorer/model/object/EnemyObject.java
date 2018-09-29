@@ -1,5 +1,7 @@
 package ru.rsreu.tyart.alienexplorer.model.object;
 
+import ru.rsreu.tyart.alienexplorer.model.object.logic.BaseObjectLogic;
+
 import java.awt.geom.Point2D;
 
 public class EnemyObject extends GameObject {
@@ -8,6 +10,7 @@ public class EnemyObject extends GameObject {
     private Point2D _leftWalkingBound;
     private Point2D _rightWalkingBound;
     private int _damage;
+    private BaseObjectLogic _logic;
 
     @Override
     public int getTypeNumber() {
@@ -52,5 +55,13 @@ public class EnemyObject extends GameObject {
 
     public void setDamage(int value) {
         _damage = value;
+    }
+
+    public BaseObjectLogic getLogic() {
+        return _logic;
+    }
+
+    public void setLogic(BaseObjectLogic value) {
+        _logic = value;
     }
 }

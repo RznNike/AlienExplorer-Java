@@ -3,6 +3,7 @@ package ru.rsreu.tyart.alienexplorer.model.main.logic;
 import ru.rsreu.tyart.alienexplorer.controller.ControllerCommand;
 import ru.rsreu.tyart.alienexplorer.model.main.GameRoom;
 import ru.rsreu.tyart.alienexplorer.model.main.logic.statemachines.LevelMenuStateMachine;
+import ru.rsreu.tyart.alienexplorer.model.object.EnemyObject;
 import ru.rsreu.tyart.alienexplorer.model.object.LevelObject;
 import ru.rsreu.tyart.alienexplorer.model.object.UIObjectType;
 import ru.rsreu.tyart.alienexplorer.model.util.ManualResetEvent;
@@ -56,13 +57,11 @@ public class LevelLogic extends BaseRoomLogic {
         _manualResetEvent.set();
 
         getRoom().getPlayer().getLogic().start(_manualResetEvent);
-//        foreach (ILogic elLogic in _model.EnemyLogics)
-//        {
-//            if (elLogic != null)
-//            {
-//                elLogic.Start(_manualResetEventSlim);
-//            }
-//        }
+        for (EnemyObject enemy : getRoom().getEnemies()) {
+            if (enemy.getLogic() != null) {
+                enemy.getLogic().start(_manualResetEvent);
+            }
+        }
 
         _stopThread = false;
         Thread logicThread = new Thread(new Runnable() {
@@ -76,14 +75,14 @@ public class LevelLogic extends BaseRoomLogic {
 
     public void stop() {
         _stopThread = true;
+
         getRoom().getPlayer().getLogic().stop();
-//        foreach (ILogic elLogic in _model.EnemyLogics)
-//        {
-//            if (elLogic != null)
-//            {
-//                elLogic.Stop();
-//            }
-//        }
+        for (EnemyObject enemy : getRoom().getEnemies()) {
+            if (enemy.getLogic() != null) {
+                enemy.getLogic().stop();
+            }
+        }
+
         _manualResetEvent.set();
     }
 
@@ -93,13 +92,12 @@ public class LevelLogic extends BaseRoomLogic {
 
     public void resume() {
         getRoom().getPlayer().getLogic().resume();
-//        foreach (ILogic elLogic in _model.EnemyLogics)
-//        {
-//            if (elLogic != null)
-//            {
-//                elLogic.Resume();
-//            }
-//        }
+        for (EnemyObject enemy : getRoom().getEnemies()) {
+            if (enemy.getLogic() != null) {
+                enemy.getLogic().resume();
+            }
+        }
+
         _manualResetEvent.set();
     }
 

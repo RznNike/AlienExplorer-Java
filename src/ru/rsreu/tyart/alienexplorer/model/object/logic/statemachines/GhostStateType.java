@@ -1,18 +1,22 @@
 package ru.rsreu.tyart.alienexplorer.model.object.logic.statemachines;
 
-public enum  GhostStateType {
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public enum GhostStateType {
     STAND {
         @Override
-        public int[] getStates() {
-            return new int[] {0};
+        public List<Integer> getStates() {
+            return new ArrayList<Integer>(Arrays.asList(0));
         }
     },
     ATTACK {
         @Override
-        public int[] getStates() {
-            return new int[] {1};
+        public List<Integer> getStates() {
+            return new ArrayList<Integer>(Arrays.asList(1));
         }
     };
 
-    public abstract int[] getStates();
+    public abstract List<Integer> getStates();
 }

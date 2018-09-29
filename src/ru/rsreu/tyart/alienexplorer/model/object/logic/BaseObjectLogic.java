@@ -152,11 +152,11 @@ public abstract class BaseObjectLogic<MachineStateEnum> {
     }
 
     protected boolean setObjectFlipped(Vector2D move) {
+        boolean oldValue = _object.getFlippedY();
         if (Math.abs(move.getX()) > EPSILON) {
             _object.setFlippedY(move.getX() < 0);
-            return true;
         }
-        return false;
+        return oldValue != _object.getFlippedY();
     }
 
     public ObjectStateMachine getStateMachine() {
@@ -191,11 +191,11 @@ public abstract class BaseObjectLogic<MachineStateEnum> {
         _room = value;
     }
 
-    public GameObject getObject() {
+    protected GameObject getObject() {
         return _object;
     }
 
-    public void setObject(GameObject value) {
+    protected void setObject(GameObject value) {
         _object = value;
     }
 
