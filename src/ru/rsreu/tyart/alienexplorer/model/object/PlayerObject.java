@@ -15,10 +15,6 @@ public class PlayerObject extends GameObject {
         return _type.ordinal() + 1;
     }
 
-    public PlayerObjectType type() {
-        return _type;
-    }
-
     public void setType(PlayerObjectType value) {
         _type = value;
     }

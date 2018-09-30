@@ -37,8 +37,7 @@ class ResourcesLoader {
         Map<Integer, List<Image>> sprites = new HashMap<Integer, List<Image>>();
 
         Enum[] constants = (Enum[])enumClass.getEnumConstants();
-        for (Enum constant : constants)
-        {
+        for (Enum constant : constants) {
             String path = ((IPathEnum)constant).getPath();
             Integer number = constant.ordinal() + 1;
             List<Image> list = loadSpritesFromFolder(path);
@@ -61,8 +60,7 @@ class ResourcesLoader {
                 }
             }
         }
-        for (String file : filePaths)
-        {
+        for (String file : filePaths) {
             try {
                 result.add(ImageIO.read(new File(file)));
             } catch (IOException e) {
@@ -75,8 +73,7 @@ class ResourcesLoader {
 
     private static List<Image> flipSprites(List<Image> originalSprites) {
         List<Image> sprites = new ArrayList<Image>();
-        for (Image sprite : originalSprites)
-        {
+        for (Image sprite : originalSprites) {
             BufferedImage flippedSprite = new BufferedImage(
                     sprite.getWidth(null),
                     sprite.getHeight(null),

@@ -15,7 +15,7 @@ public abstract class ObjectStateMachine<MachineStateEnum> {
 
     public abstract boolean changeState(GameObject gameObject, Space2D freeSpace, Vector2D move, float deltaSeconds);
 
-    protected boolean processInSameState(GameObject object) {
+    boolean processInSameState(GameObject object) {
         if (_timeInState >= _substatePeriod) {
             int multiplier = (int)(_timeInState / _substatePeriod);
             _timeInState -= _substatePeriod * multiplier;
@@ -33,7 +33,7 @@ public abstract class ObjectStateMachine<MachineStateEnum> {
         return false;
     }
 
-    protected MachineStateEnum getMachineState() {
+    MachineStateEnum getMachineState() {
         return _machineState;
     }
 
@@ -41,23 +41,23 @@ public abstract class ObjectStateMachine<MachineStateEnum> {
         _machineState = value;
     }
 
-    protected Map<MachineStateEnum, List<Integer>> getObjectStates() {
+    Map<MachineStateEnum, List<Integer>> getObjectStates() {
         return _objectStates;
     }
 
-    protected void setObjectStates(Map<MachineStateEnum, List<Integer>> value) {
+    void setObjectStates(Map<MachineStateEnum, List<Integer>> value) {
         _objectStates = value;
     }
 
-    protected float getTimeInState() {
+    float getTimeInState() {
         return _timeInState;
     }
 
-    protected void setTimeInState(float value) {
+    void setTimeInState(float value) {
         _timeInState = value;
     }
 
-    public void setSubstatePeriod(float value) {
+    void setSubstatePeriod(float value) {
         _substatePeriod = value;
     }
 }

@@ -13,9 +13,9 @@ import java.util.Map;
 
 public abstract class BaseObjectLogic<MachineStateEnum> {
     public static final float EPSILON = 0.001f;
-    public static final float MAX_SPEED = 9.0f;
-    public static final float G = 15.0f;
-    public static final float LOOKUP_DIST = 1.5f;
+    static final float MAX_SPEED = 9.0f;
+    static final float G = 15.0f;
+    private static final float LOOKUP_DIST = 1.5f;
 
     private ObjectStateMachine<MachineStateEnum> _stateMachine;
     private boolean _stopThread;
@@ -46,7 +46,7 @@ public abstract class BaseObjectLogic<MachineStateEnum> {
         _timestamp = new Date().getTime();
     }
 
-    protected Space2D findFreeSpace() {
+    Space2D findFreeSpace() {
         Space2D freeSpace = new Space2D(LOOKUP_DIST, LOOKUP_DIST, LOOKUP_DIST, LOOKUP_DIST);
 
         Rectangle2D.Float collider = getObject().getCollider();
@@ -121,11 +121,10 @@ public abstract class BaseObjectLogic<MachineStateEnum> {
         return distances;
     }
 
-    protected Vector2D findMoveVector(
+    Vector2D findMoveVector(
             Vector2D speed,
             Space2D freeSpace,
-            float deltaSeconds)
-    {
+            float deltaSeconds) {
         Vector2D move = new Vector2D(
                 speed.getX() * deltaSeconds,
                 speed.getY() * deltaSeconds);
@@ -153,7 +152,7 @@ public abstract class BaseObjectLogic<MachineStateEnum> {
         return move;
     }
 
-    protected boolean moveObject(Vector2D move) {
+    boolean moveObject(Vector2D move) {
         if ((Math.abs(move.getX()) > EPSILON) || (Math.abs(move.getY()) > EPSILON)) {
             _object.getCollider().x += move.getX();
             _object.getCollider().y += move.getY();
@@ -162,7 +161,7 @@ public abstract class BaseObjectLogic<MachineStateEnum> {
         return false;
     }
 
-    protected boolean setObjectFlipped(Vector2D move) {
+    boolean setObjectFlipped(Vector2D move) {
         boolean oldValue = _object.getFlippedY();
         if (Math.abs(move.getX()) > EPSILON) {
             _object.setFlippedY(move.getX() < 0);
@@ -170,27 +169,23 @@ public abstract class BaseObjectLogic<MachineStateEnum> {
         return oldValue != _object.getFlippedY();
     }
 
-    public ObjectStateMachine getStateMachine() {
+    ObjectStateMachine getStateMachine() {
         return _stateMachine;
     }
 
-    public void setStateMachine(ObjectStateMachine value) {
+    void setStateMachine(ObjectStateMachine value) {
         _stateMachine = value;
     }
 
-    public boolean isStopThread() {
+    boolean isStopThread() {
         return _stopThread;
     }
 
-    public void setStopThread(boolean value) {
-        _stopThread = value;
-    }
-
-    public long getTimestamp() {
+    long getTimestamp() {
         return _timestamp;
     }
 
-    public void setTimestamp(long value) {
+    void setTimestamp(long value) {
         _timestamp = value;
     }
 
@@ -198,7 +193,7 @@ public abstract class BaseObjectLogic<MachineStateEnum> {
         return _room;
     }
 
-    public void setRoom(GameRoom value) {
+    void setRoom(GameRoom value) {
         _room = value;
     }
 
@@ -210,11 +205,7 @@ public abstract class BaseObjectLogic<MachineStateEnum> {
         _object = value;
     }
 
-    public ManualResetEvent getManualResetEvent() {
+    ManualResetEvent getManualResetEvent() {
         return _manualResetEvent;
-    }
-
-    public void setManualResetEvent(ManualResetEvent value) {
-        _manualResetEvent = value;
     }
 }

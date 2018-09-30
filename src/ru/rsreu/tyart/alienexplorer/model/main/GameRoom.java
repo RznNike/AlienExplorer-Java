@@ -53,8 +53,7 @@ public class GameRoom implements IGameRoom {
             e.printStackTrace();
         }
 
-        switch (getRoomLogic().getStateMachine().getCurrentCommand())
-        {
+        switch (getRoomLogic().getStateMachine().getCurrentCommand()) {
             case LOAD_MENU:
                 return new RoomWorkResult(RoomWorkResultType.LOAD_MENU);
             case LOAD_LEVEL:

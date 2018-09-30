@@ -73,7 +73,7 @@ public class LevelLogic extends BaseRoomLogic {
         logicThread.start();
     }
 
-    public void stop() {
+    private void stop() {
         _stopThread = true;
 
         getRoom().getPlayer().getLogic().stop();
@@ -86,11 +86,11 @@ public class LevelLogic extends BaseRoomLogic {
         _manualResetEvent.set();
     }
 
-    public void pause() {
+    private void pause() {
         _manualResetEvent.reset();
     }
 
-    public void resume() {
+    private void resume() {
         getRoom().getPlayer().getLogic().resume();
         for (EnemyObject enemy : getRoom().getEnemies()) {
             if (enemy.getLogic() != null) {

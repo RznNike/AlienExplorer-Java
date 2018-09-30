@@ -9,7 +9,7 @@ import java.awt.event.KeyListener;
 public class KeyboardListener implements KeyListener {
     private GameController _controller;
 
-    public KeyboardListener(GameController controller) {
+    KeyboardListener(GameController controller) {
         _controller = controller;
     }
 

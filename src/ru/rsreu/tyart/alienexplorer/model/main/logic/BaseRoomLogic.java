@@ -20,7 +20,7 @@ public abstract class BaseRoomLogic {
         return _room;
     }
 
-    public void setRoom(GameRoom value) {
+    void setRoom(GameRoom value) {
         _room = value;
     }
 
@@ -28,12 +28,8 @@ public abstract class BaseRoomLogic {
         return _stateMachine;
     }
 
-    public void setStateMachine(ModelStateMachine value) {
+    void setStateMachine(ModelStateMachine value) {
         _stateMachine = value;
-    }
-
-    public int getSelectedMenuItem() {
-        return _stateMachine.getSelectedMenuItem();
     }
 
     public String getMenuHeader() {

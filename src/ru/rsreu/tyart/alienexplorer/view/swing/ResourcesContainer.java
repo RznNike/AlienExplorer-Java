@@ -33,7 +33,7 @@ class ResourcesContainer {
         _font = font;
     }
 
-    public Image getSprite(IGameObject gameObject) {
+    Image getSprite(IGameObject gameObject) {
         int sign = gameObject.getFlippedY() ? -1 : 1;
         Map<Integer, List<Image>> sprites;
         if (gameObject instanceof LevelObject) {
@@ -52,11 +52,11 @@ class ResourcesContainer {
                 .get(gameObject.getState());
     }
 
-    public Image getBackground(int number) {
+    Image getBackground(int number) {
         return _backgrounds.get(number);
     }
 
-    public Font getFont() {
+    Font getFont() {
         return _font;
     }
 }

@@ -1,7 +1,6 @@
 package ru.rsreu.tyart.alienexplorer.model;
 
 import ru.rsreu.tyart.alienexplorer.controller.ControllerCommand;
-import ru.rsreu.tyart.alienexplorer.model.main.GameRoomType;
 import ru.rsreu.tyart.alienexplorer.view.ModelEventListener;
 
 public interface IModel {

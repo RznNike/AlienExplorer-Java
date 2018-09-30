@@ -12,7 +12,7 @@ public abstract class ModelStateMachine {
     private int _selectedMenuItem;
     private String _menuHeader;
 
-    public ModelStateMachine(GameRoom room) {
+    ModelStateMachine(GameRoom room) {
         _room = room;
     }
 
@@ -22,14 +22,14 @@ public abstract class ModelStateMachine {
 
     protected abstract void cancelAction();
 
-    protected void selectMenuItem(int itemNumber) {
+    private void selectMenuItem(int itemNumber) {
         for (UIObject item : _room.getUIObjects()) {
             item.setState(0);
         }
         _room.getUIObjects().get(itemNumber).setState(1);
     }
 
-    protected void selectPrevMenuItem() {
+    void selectPrevMenuItem() {
         if ((_room.getUIObjects() != null) && (_room.getUIObjects().size() > 0)) {
             int newSelection = _selectedMenuItem - 1;
             if (newSelection < 0) {
@@ -46,7 +46,7 @@ public abstract class ModelStateMachine {
         }
     }
 
-    protected void selectNextMenuItem() {
+    void selectNextMenuItem() {
         if ((_room.getUIObjects() != null) && (_room.getUIObjects().size() > 0)) {
             int newSelection = _selectedMenuItem + 1;
 
@@ -65,15 +65,11 @@ public abstract class ModelStateMachine {
         return _room;
     }
 
-    public void setRoom(GameRoom value) {
-        _room = value;
-    }
-
-    protected UIObjectType getCurrentMenu() {
+    UIObjectType getCurrentMenu() {
         return _currentMenu;
     }
 
-    protected void setCurrentMenu(UIObjectType value) {
+    void setCurrentMenu(UIObjectType value) {
         _currentMenu = value;
     }
 
@@ -81,7 +77,7 @@ public abstract class ModelStateMachine {
         return _currentCommand;
     }
 
-    protected void setCurrentCommand(ModelStateMachineCommand value) {
+    void setCurrentCommand(ModelStateMachineCommand value) {
         _currentCommand = value;
     }
 
@@ -89,7 +85,7 @@ public abstract class ModelStateMachine {
         return _selectedMenuItem;
     }
 
-    protected void setSelectedMenuItem(int value) {
+    void setSelectedMenuItem(int value) {
         _selectedMenuItem = value;
     }
 
@@ -97,7 +93,7 @@ public abstract class ModelStateMachine {
         return _menuHeader;
     }
 
-    protected void setMenuHeader(String value) {
+    void setMenuHeader(String value) {
         _menuHeader = value;
     }
 }

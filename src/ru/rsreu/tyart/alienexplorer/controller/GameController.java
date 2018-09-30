@@ -7,8 +7,7 @@ public class GameController {
     private static GameController _instance;
     private IModel _model;
 
-    private GameController() {
-    }
+    private GameController() { }
 
     public static GameController getInstance() {
         if (_instance == null) {

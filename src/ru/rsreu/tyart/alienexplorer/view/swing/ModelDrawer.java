@@ -35,6 +35,7 @@ class ModelDrawer {
     private static Font _fontBig;
     private static Font _fontSmall;
 
+    // TODO make rectangle
     private static Dimension _camera;
     private static Point2D.Float _cameraPosition;
     private static Image[][] _buffers;

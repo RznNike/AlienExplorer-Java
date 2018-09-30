@@ -26,6 +26,7 @@ class ModelEventHandler {
     }
 
     private void processEvents() {
+        // TODO stop cycle
         while (true) {
             try {
                 _manualResetEvent.waitOne();

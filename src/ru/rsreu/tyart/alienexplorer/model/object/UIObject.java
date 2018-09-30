@@ -23,10 +23,6 @@ public class UIObject extends GameObject {
         _isSelectable = isSelectable;
     }
 
-    public UIObject(boolean isSelectable) {
-        _isSelectable = isSelectable;
-    }
-
     @Override
     public int getTypeNumber() {
         return _type.ordinal();

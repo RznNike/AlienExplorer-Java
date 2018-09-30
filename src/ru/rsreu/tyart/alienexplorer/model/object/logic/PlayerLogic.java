@@ -92,8 +92,7 @@ public class PlayerLogic extends BaseObjectLogic<PlayerStateType> {
     private Vector2D findSpeed(
             Vector2D oldSpeed,
             Space2D freeSpace,
-            float deltaSeconds)
-    {
+            float deltaSeconds) {
         Vector2D newSpeed = new Vector2D(0, 0);
 
         // Обработка приседания
