@@ -175,6 +175,10 @@ class ModelDrawer {
     }
 
     private static void drawCenteredString(Graphics graphics, String text, Rectangle2D.Float rect, Font font) {
+        if ((text == null) || ("".equals(text))) {
+            return;
+        }
+
         FontMetrics metrics = graphics.getFontMetrics(font);
         int x = (int)(rect.getX() + (rect.getWidth() - metrics.stringWidth(text)) / 2);
         int y = (int)(rect.getY() + ((rect.getHeight() - metrics.getHeight()) / 2) + metrics.getAscent());

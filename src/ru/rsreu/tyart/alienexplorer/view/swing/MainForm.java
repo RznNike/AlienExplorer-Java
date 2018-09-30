@@ -21,6 +21,7 @@ public class MainForm extends JFrame implements ModelEventListener {
 
     private JPanel _canvas;
     private List<JLabel> _layers;
+    private ModelEventHandler _modelEventHandler;
 
     public MainForm(GameController controller) {
         controller.subscribeViewToModel(this);
@@ -37,6 +38,8 @@ public class MainForm extends JFrame implements ModelEventListener {
         hideCursor();
 
         ModelDrawer.prepareDrawer(Toolkit.getDefaultToolkit().getScreenSize());
+
+        _modelEventHandler = new ModelEventHandler(this);
     }
 
     private void initLayers() {
@@ -63,6 +66,10 @@ public class MainForm extends JFrame implements ModelEventListener {
 
     @Override
     public void onModelEvent(ModelEvent event) {
+        _modelEventHandler.addEvent(event);
+    }
+
+    void processEvent(ModelEvent event) {
         IModel model = event.getSender();
         ModelEventType eventType = event.getEventType();
 
