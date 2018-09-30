@@ -6,10 +6,15 @@ import ru.rsreu.tyart.alienexplorer.model.object.EnemyObject;
 import ru.rsreu.tyart.alienexplorer.model.object.LevelObject;
 import ru.rsreu.tyart.alienexplorer.model.object.PlayerObject;
 import ru.rsreu.tyart.alienexplorer.model.object.UIObject;
+import ru.rsreu.tyart.alienexplorer.model.object.logic.BaseObjectLogic;
 import ru.rsreu.tyart.alienexplorer.model.util.ModelEventType;
 
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Semaphore;
 
 public class GameRoom implements IGameRoom {
@@ -17,6 +22,7 @@ public class GameRoom implements IGameRoom {
     private int _id;
     private BaseRoomLogic _roomLogic;
     private List<LevelObject> _levelObjects;
+    private Map<Integer, Map<Integer, List<LevelObject>>> _levelObjects2DMap;
     private List<LevelObject> _doors;
     private List<EnemyObject> _enemies;
     private PlayerObject _player;
@@ -35,6 +41,7 @@ public class GameRoom implements IGameRoom {
             _parent.sendEvent(ModelEventType.MENU_LOADED);
         } else {
             _parent.sendEvent(ModelEventType.LEVEL_LOADED);
+            mapLevelObjects();
             ((LevelLogic)_roomLogic).start();
         }
 
@@ -54,6 +61,30 @@ public class GameRoom implements IGameRoom {
                         getRoomLogic().getStateMachine().getSelectedMenuItem());
             default:
                 return new RoomWorkResult(RoomWorkResultType.EXIT);
+        }
+    }
+
+    private void mapLevelObjects() {
+        _levelObjects2DMap = new HashMap<Integer, Map<Integer, List<LevelObject>>>();
+        float epsilon = BaseObjectLogic.EPSILON;
+        for (LevelObject levelObject : _levelObjects) {
+            Rectangle2D.Float collider = levelObject.getCollider();
+            for (int x = (int)(collider.getX() + epsilon);
+                 x <= (int)(collider.getX() + collider.getWidth() - epsilon);
+                 x++) {
+                if (!_levelObjects2DMap.containsKey(x)) {
+                    _levelObjects2DMap.put(x, new HashMap<Integer, List<LevelObject>>());
+                }
+                for (int y = (int)(collider.getY() + epsilon);
+                     y <= (int)(collider.getY() + collider.getHeight() - epsilon);
+                     y++) {
+                    if (!_levelObjects2DMap.get(x).containsKey(y)) {
+                        _levelObjects2DMap.get(x).put(y, new ArrayList<LevelObject>());
+                    }
+
+                    _levelObjects2DMap.get(x).get(y).add(levelObject);
+                }
+            }
         }
     }
 
@@ -89,6 +120,10 @@ public class GameRoom implements IGameRoom {
 
     public void setLevelObjects(List<LevelObject> value) {
         _levelObjects = value;
+    }
+
+    public Map<Integer, Map<Integer, List<LevelObject>>> getLevelObjects2DMap() {
+        return _levelObjects2DMap;
     }
 
     @Override

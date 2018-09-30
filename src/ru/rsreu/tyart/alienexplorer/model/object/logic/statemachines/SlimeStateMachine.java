@@ -4,7 +4,7 @@ import ru.rsreu.tyart.alienexplorer.model.object.GameObject;
 import ru.rsreu.tyart.alienexplorer.model.object.logic.Space2D;
 import ru.rsreu.tyart.alienexplorer.model.object.logic.Vector2D;
 
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,7 +12,7 @@ public class SlimeStateMachine extends ObjectStateMachine<SlimeStateType> {
     private static final float SUBSTATE_PERIOD = 0.35f;
 
     public SlimeStateMachine() {
-        Map<SlimeStateType, List<Integer>> objectStates = new Hashtable<SlimeStateType, List<Integer>>();
+        Map<SlimeStateType, List<Integer>> objectStates = new HashMap<SlimeStateType, List<Integer>>();
 
         for (SlimeStateType stateType : SlimeStateType.values()) {
             List<Integer> states = stateType.getStates();

@@ -14,27 +14,27 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Dictionary;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 class ResourcesLoader {
     private final static String BACKGROUNDS_PATH = "resources/sprites/levels/backgrounds";
     private final static String FONT_PATH = "resources/fonts/04b_30.otf";
 
     static ResourcesContainer loadResources() {
-        Dictionary<Integer, Image> backgrounds = loadBackgrounds();
-        Dictionary<Integer, List<Image>> levelObjectSprites = loadSpritesForEnum(LevelObjectType.class);
-        Dictionary<Integer, List<Image>> enemySprites = loadSpritesForEnum(EnemyObjectType.class);
-        Dictionary<Integer, List<Image>> playerSprites = loadSpritesForEnum(PlayerObjectType.class);
-        Dictionary<Integer, Image> UISprites = loadUISprites();
+        Map<Integer, Image> backgrounds = loadBackgrounds();
+        Map<Integer, List<Image>> levelObjectSprites = loadSpritesForEnum(LevelObjectType.class);
+        Map<Integer, List<Image>> enemySprites = loadSpritesForEnum(EnemyObjectType.class);
+        Map<Integer, List<Image>> playerSprites = loadSpritesForEnum(PlayerObjectType.class);
+        Map<Integer, Image> UISprites = loadUISprites();
         Font font = loadFont();
 
         return new ResourcesContainer(backgrounds, levelObjectSprites, enemySprites, playerSprites, UISprites, font);
     }
 
-    private static Dictionary<Integer, List<Image>> loadSpritesForEnum(Class enumClass) {
-        Dictionary<Integer, List<Image>> sprites = new Hashtable<Integer, List<Image>>();
+    private static Map<Integer, List<Image>> loadSpritesForEnum(Class enumClass) {
+        Map<Integer, List<Image>> sprites = new HashMap<Integer, List<Image>>();
 
         Enum[] constants = (Enum[])enumClass.getEnumConstants();
         for (Enum constant : constants)
@@ -100,17 +100,17 @@ class ResourcesLoader {
         return sprites;
     }
 
-    private static Dictionary<Integer, Image> loadBackgrounds() {
+    private static Map<Integer, Image> loadBackgrounds() {
         List<Image> backgrounds = loadSpritesFromFolder(BACKGROUNDS_PATH);
-        Dictionary<Integer, Image> result = new Hashtable<Integer, Image>();
+        Map<Integer, Image> result = new HashMap<Integer, Image>();
         for (int i = 0; i < backgrounds.size(); i++) {
             result.put(i, backgrounds.get(i));
         }
         return result;
     }
 
-    private static Dictionary<Integer, Image> loadUISprites() {
-        Dictionary<Integer, Image> sprites = new Hashtable<Integer, Image>();
+    private static Map<Integer, Image> loadUISprites() {
+        Map<Integer, Image> sprites = new HashMap<Integer, Image>();
 
         String path = UIObjectType.HEALTH.getPath();
         Image sprite = loadSpritesFromFolder(path).get(0);

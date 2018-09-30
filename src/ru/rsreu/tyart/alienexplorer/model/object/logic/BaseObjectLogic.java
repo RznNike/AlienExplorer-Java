@@ -8,6 +8,8 @@ import ru.rsreu.tyart.alienexplorer.model.util.ManualResetEvent;
 
 import java.awt.geom.Rectangle2D;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 public abstract class BaseObjectLogic<MachineStateEnum> {
     public static final float EPSILON = 0.01f;
@@ -47,26 +49,35 @@ public abstract class BaseObjectLogic<MachineStateEnum> {
     protected Space2D findFreeSpace() {
         Space2D freeSpace = new Space2D(LOOKUP_DIST, LOOKUP_DIST, LOOKUP_DIST, LOOKUP_DIST);
 
-        Rectangle2D.Float lookupRect = new Rectangle2D.Float(
-                (float)(_object.getCollider().getX() - LOOKUP_DIST),
-                (float)(_object.getCollider().getY() - LOOKUP_DIST),
-                (float)(_object.getCollider().getWidth() + LOOKUP_DIST * 2),
-                (float)(_object.getCollider().getHeight() + LOOKUP_DIST * 2));
-        for (LevelObject levelObject : _room.getLevelObjects()) {
-            if (lookupRect.intersects(levelObject.getCollider())) {
-                Space2D distances = findDistances(levelObject);
-                freeSpace.setLeft(freeSpace.getLeft() > distances.getLeft()
-                        ? distances.getLeft()
-                        : freeSpace.getLeft());
-                freeSpace.setTop(freeSpace.getTop() > distances.getTop()
-                        ? distances.getTop()
-                        : freeSpace.getTop());
-                freeSpace.setRight(freeSpace.getRight() > distances.getRight()
-                        ? distances.getRight()
-                        : freeSpace.getRight());
-                freeSpace.setBottom(freeSpace.getBottom() > distances.getBottom()
-                        ? distances.getBottom()
-                        : freeSpace.getBottom());
+        Rectangle2D.Float collider = getObject().getCollider();
+        Map<Integer, Map<Integer, List<LevelObject>>> levelObjects2DMap = getRoom().getLevelObjects2DMap();
+        for (int x = (int)(collider.getX() - LOOKUP_DIST);
+             x <= (int)(collider.getX() + collider.getWidth() + LOOKUP_DIST);
+             x++) {
+            if (!levelObjects2DMap.containsKey(x)) {
+                continue;
+            }
+            for (int y = (int)(collider.getY() - LOOKUP_DIST);
+                 y <= (int)(collider.getY() + collider.getHeight() + LOOKUP_DIST);
+                 y++) {
+                if (!levelObjects2DMap.get(x).containsKey(y)) {
+                    continue;
+                }
+                for (LevelObject levelObject : levelObjects2DMap.get(x).get(y)) {
+                    Space2D distances = findDistances(levelObject);
+                    freeSpace.setLeft(freeSpace.getLeft() > distances.getLeft()
+                            ? distances.getLeft()
+                            : freeSpace.getLeft());
+                    freeSpace.setTop(freeSpace.getTop() > distances.getTop()
+                            ? distances.getTop()
+                            : freeSpace.getTop());
+                    freeSpace.setRight(freeSpace.getRight() > distances.getRight()
+                            ? distances.getRight()
+                            : freeSpace.getRight());
+                    freeSpace.setBottom(freeSpace.getBottom() > distances.getBottom()
+                            ? distances.getBottom()
+                            : freeSpace.getBottom());
+                }
             }
         }
 

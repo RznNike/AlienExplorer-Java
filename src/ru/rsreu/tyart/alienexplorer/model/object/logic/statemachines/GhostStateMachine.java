@@ -4,7 +4,7 @@ import ru.rsreu.tyart.alienexplorer.model.object.GameObject;
 import ru.rsreu.tyart.alienexplorer.model.object.logic.Space2D;
 import ru.rsreu.tyart.alienexplorer.model.object.logic.Vector2D;
 
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,7 +12,7 @@ public class GhostStateMachine extends ObjectStateMachine<GhostStateType> {
     private static final float SUBSTATE_PERIOD = Float.MAX_VALUE; // нет анимации
 
     public GhostStateMachine() {
-        Map<GhostStateType, List<Integer>> objectStates = new Hashtable<GhostStateType, List<Integer>>();
+        Map<GhostStateType, List<Integer>> objectStates = new HashMap<GhostStateType, List<Integer>>();
 
         for (GhostStateType stateType : GhostStateType.values()) {
             List<Integer> states = stateType.getStates();

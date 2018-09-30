@@ -5,7 +5,7 @@ import ru.rsreu.tyart.alienexplorer.model.object.PlayerObject;
 import ru.rsreu.tyart.alienexplorer.model.object.logic.Space2D;
 import ru.rsreu.tyart.alienexplorer.model.object.logic.Vector2D;
 
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +14,7 @@ public class PlayerStateMachine extends ObjectStateMachine<PlayerStateType> {
     private static final int HURT_PERIOD_MULTIPLIER = 10;
 
     public PlayerStateMachine() {
-        Map<PlayerStateType, List<Integer>> objectStates = new Hashtable<PlayerStateType, List<Integer>>();
+        Map<PlayerStateType, List<Integer>> objectStates = new HashMap<PlayerStateType, List<Integer>>();
 
         for (PlayerStateType stateType : PlayerStateType.values()) {
             List<Integer> states = stateType.getStates();

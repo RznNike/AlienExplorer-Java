@@ -7,23 +7,23 @@ import ru.rsreu.tyart.alienexplorer.model.object.PlayerObject;
 import ru.rsreu.tyart.alienexplorer.model.object.UIObject;
 
 import java.awt.*;
-import java.util.Dictionary;
 import java.util.List;
+import java.util.Map;
 
 class ResourcesContainer {
-    private Dictionary<Integer, Image> _backgrounds;
-    private Dictionary<Integer, List<Image>> _levelObjectSprites;
-    private Dictionary<Integer, List<Image>> _enemySprites;
-    private Dictionary<Integer, List<Image>> _playerSprites;
-    private Dictionary<Integer, Image> _UISprites;
+    private Map<Integer, Image> _backgrounds;
+    private Map<Integer, List<Image>> _levelObjectSprites;
+    private Map<Integer, List<Image>> _enemySprites;
+    private Map<Integer, List<Image>> _playerSprites;
+    private Map<Integer, Image> _UISprites;
     private Font _font;
 
     ResourcesContainer(
-            Dictionary<Integer, Image> backgrounds,
-            Dictionary<Integer, List<Image>> levelObjectSprites,
-            Dictionary<Integer, List<Image>> enemySprites,
-            Dictionary<Integer, List<Image>> playerSprites,
-            Dictionary<Integer, Image> uiSprites,
+            Map<Integer, Image> backgrounds,
+            Map<Integer, List<Image>> levelObjectSprites,
+            Map<Integer, List<Image>> enemySprites,
+            Map<Integer, List<Image>> playerSprites,
+            Map<Integer, Image> uiSprites,
             Font font) {
         _backgrounds = backgrounds;
         _levelObjectSprites = levelObjectSprites;
@@ -35,19 +35,19 @@ class ResourcesContainer {
 
     public Image getSprite(IGameObject gameObject) {
         int sign = gameObject.getFlippedY() ? -1 : 1;
-        Dictionary<Integer, List<Image>> dictionary;
+        Map<Integer, List<Image>> sprites;
         if (gameObject instanceof LevelObject) {
-            dictionary = _levelObjectSprites;
+            sprites = _levelObjectSprites;
         } else if (gameObject instanceof EnemyObject) {
-            dictionary = _enemySprites;
+            sprites = _enemySprites;
         } else if (gameObject instanceof PlayerObject) {
-            dictionary = _playerSprites;
+            sprites = _playerSprites;
         } else if (gameObject instanceof UIObject) {
             return _UISprites.get(gameObject.getTypeNumber());
         } else {
             return null;
         }
-        return dictionary
+        return sprites
                 .get(gameObject.getTypeNumber()* sign)
                 .get(gameObject.getState());
     }
