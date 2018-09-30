@@ -42,7 +42,7 @@ public class PlayerStateMachine extends ObjectStateMachine<PlayerStateType> {
     }
 
     private PlayerStateType findPossibleState(PlayerObject player, Space2D freeSpace, Vector2D move) {
-        if (freeSpace.getBottom() > BaseObjectLogic.EPSILON) {
+        if (freeSpace.getBottom() > (BaseObjectLogic.EPSILON * 2)) {
             return PlayerStateType.JUMP;
         } else {
             if (player.getCollider().getHeight() > player.getHeightSmall()) {

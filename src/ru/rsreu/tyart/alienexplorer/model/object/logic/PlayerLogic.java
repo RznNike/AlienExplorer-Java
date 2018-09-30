@@ -13,11 +13,11 @@ import java.util.Date;
 import java.util.List;
 
 public class PlayerLogic extends BaseObjectLogic<PlayerStateType> {
-    public static final float HORIZONTAL_SPEED = MAX_SPEED / 3;
+    static final float HORIZONTAL_SPEED = MAX_SPEED / 3;
     private static final float JUMP_SPEED = MAX_SPEED / 1.5f;
     private static final int MAX_JUMPS = 2;
     private static final float HURT_COOLDOWN_TIME = 1f;
-    private static final int THREAD_SLEEP_MS = 3;
+    private static final int THREAD_SLEEP_MS = 2;
 
     private List<ControllerCommand> _activeCommands;
     private int _jumpsCount;
@@ -120,7 +120,7 @@ public class PlayerLogic extends BaseObjectLogic<PlayerStateType> {
                 newSpeed.setY(-MAX_SPEED);
             }
         }
-        if ((oldSpeed.getY() > EPSILON) && (freeSpace.getTop() < EPSILON)) {
+        if ((oldSpeed.getY() > EPSILON) && (freeSpace.getTop() < (EPSILON * 2))) {
             newSpeed.setY(0);
         }
 
@@ -133,12 +133,12 @@ public class PlayerLogic extends BaseObjectLogic<PlayerStateType> {
         }
 
         // Сброс счетчика прыжков, если игрок на земле
-        if (freeSpace.getBottom() < EPSILON) {
+        if (freeSpace.getBottom() < (EPSILON * 2)) {
             _jumpsCount = 0;
         }
 
         // Счетчик прыжков >= 1, если игрок в воздухе
-        if ((freeSpace.getBottom() > EPSILON) & (_jumpsCount == 0)) {
+        if ((freeSpace.getBottom() > (EPSILON * 2)) & (_jumpsCount == 0)) {
             _jumpsCount = 1;
         }
 
@@ -146,7 +146,7 @@ public class PlayerLogic extends BaseObjectLogic<PlayerStateType> {
         if ((!_isJumpActive) && _activeCommands.contains(ControllerCommand.UP) && (_jumpsCount < MAX_JUMPS)) {
             _jumpsCount++;
             _isJumpActive = true;
-            if (freeSpace.getTop() > EPSILON) {
+            if (freeSpace.getTop() > (EPSILON * 2)) {
                 newSpeed.setY(JUMP_SPEED);
             }
         } else if (!_activeCommands.contains(ControllerCommand.UP)) {

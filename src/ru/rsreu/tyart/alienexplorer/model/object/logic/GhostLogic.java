@@ -14,7 +14,7 @@ import java.util.Date;
 public class GhostLogic extends BaseObjectLogic<GhostStateType> {
     private static final float HORIZONTAL_SPEED = PlayerLogic.HORIZONTAL_SPEED;
     private static final float ATTACK_COOLDOWN_TIME = 1f;
-    private static final int THREAD_SLEEP_MS = 10;
+    private static final int THREAD_SLEEP_MS = 4;
 
     private Rectangle2D.Float _triggerZone;
     private float _attackCooldown;

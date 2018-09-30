@@ -7,13 +7,14 @@ import ru.rsreu.tyart.alienexplorer.model.object.logic.statemachines.SlimeStateM
 import ru.rsreu.tyart.alienexplorer.model.object.logic.statemachines.SlimeStateType;
 import ru.rsreu.tyart.alienexplorer.model.util.ModelEventType;
 
+import java.awt.geom.Point2D;
 import java.util.Date;
 
 public class SlimeLogic extends BaseObjectLogic<SlimeStateType> {
     private static final float HORIZONTAL_SPEED = MAX_SPEED / 20;
-    private static final int THREAD_SLEEP_MS = 25;
+    private static final int THREAD_SLEEP_MS = 10;
 
-    private float _targetX;
+    private Point2D _targetPoint;
 
     public SlimeLogic(GameRoom room, GameObject object) {
         setRoom(room);
@@ -26,7 +27,7 @@ public class SlimeLogic extends BaseObjectLogic<SlimeStateType> {
         Space2D freeSpace;
         Vector2D speed = new Vector2D(0, 0);
         Vector2D move;
-        _targetX = (float)getEnemy().getLeftWalkingBound().getX();
+        _targetPoint = getEnemy().getLeftWalkingBound();
         setTimestamp(new Date().getTime());
 
         while (!isStopThread()) {
@@ -65,23 +66,19 @@ public class SlimeLogic extends BaseObjectLogic<SlimeStateType> {
         Vector2D newSpeed = new Vector2D(0, 0);
 
         // Обработка движений по горизонтали
-        if (Math.abs(getEnemy().getCollider().getX() - _targetX) < EPSILON) {
-            if (Math.abs(getEnemy().getLeftWalkingBound().getX() - _targetX) < EPSILON) {
-                _targetX = (float)getEnemy().getRightWalkingBound().getX();
-            } else {
-                _targetX = (float)getEnemy().getLeftWalkingBound().getX();
+        if (_targetPoint == getEnemy().getLeftWalkingBound()) {
+            if ((getEnemy().getCollider().getX() < _targetPoint.getX())
+                || (freeSpace.getLeft() < EPSILON)) {
+                _targetPoint = getEnemy().getRightWalkingBound();
             }
-        } else {
-            if ((freeSpace.getLeft() < EPSILON)
-                    && (Math.abs((float)getEnemy().getLeftWalkingBound().getX() - _targetX) < EPSILON)) {
-                _targetX = (float)getEnemy().getRightWalkingBound().getX();
-            } else if((freeSpace.getRight() < EPSILON)
-                    && (Math.abs(getEnemy().getRightWalkingBound().getX() - _targetX) < EPSILON)) {
-                _targetX = (float)getEnemy().getLeftWalkingBound().getX();
+        } else if (_targetPoint == getEnemy().getRightWalkingBound()) {
+            if ((getEnemy().getCollider().getX() > _targetPoint.getX())
+                    || (freeSpace.getRight() < EPSILON)) {
+                _targetPoint = getEnemy().getLeftWalkingBound();
             }
         }
 
-        if (getEnemy().getCollider().getX() < _targetX) {
+        if (_targetPoint == getEnemy().getRightWalkingBound()) {
             newSpeed.setX(HORIZONTAL_SPEED);
         } else {
             newSpeed.setX(-HORIZONTAL_SPEED);

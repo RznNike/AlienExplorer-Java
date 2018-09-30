@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 public class SlimeStateMachine extends ObjectStateMachine<SlimeStateType> {
-    private static final float SUBSTATE_PERIOD = 0.35f;
+    private static final float SUBSTATE_PERIOD = 0.25f;
 
     public SlimeStateMachine() {
         Map<SlimeStateType, List<Integer>> objectStates = new HashMap<SlimeStateType, List<Integer>>();
