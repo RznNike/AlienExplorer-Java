@@ -16,6 +16,7 @@ public class GhostLogic extends BaseObjectLogic<GhostStateType> {
     private static final float ATTACK_COOLDOWN_TIME = 1f;
     private static final int THREAD_SLEEP_MS = 15;
 
+    private Rectangle2D.Float _triggerZone;
     private float _attackCooldown;
 
     public GhostLogic(GameRoom room, GameObject object) {
@@ -30,6 +31,8 @@ public class GhostLogic extends BaseObjectLogic<GhostStateType> {
         Vector2D speed;
         Vector2D move;
         setTimestamp(new Date().getTime());
+
+        initTriggerZone();
 
         while (!isStopThread()) {
             try {
@@ -60,6 +63,29 @@ public class GhostLogic extends BaseObjectLogic<GhostStateType> {
         }
     }
 
+    private void initTriggerZone() {
+        _triggerZone = new Rectangle2D.Float(
+                -Float.MAX_VALUE / 2,
+                (float)getEnemy().getCollider().getY(),
+                Float.MAX_VALUE,
+                (float)getEnemy().getCollider().getHeight());
+
+        float leftBound = (float)_triggerZone.getX();
+        float rightBound = (float)(_triggerZone.getX() + _triggerZone.getWidth());
+
+        for (LevelObject levelObject : getRoom().getLevelObjects()) {
+            if (_triggerZone.intersects(levelObject.getCollider())) {
+                if (levelObject.getCollider().getX() < getEnemy().getCollider().getX()) {
+                    leftBound = (float)(levelObject.getCollider().getX() + levelObject.getCollider().getWidth());
+                } else {
+                    rightBound = (float)levelObject.getCollider().getX();
+                }
+                _triggerZone.x = leftBound;
+                _triggerZone.width = rightBound - leftBound;
+            }
+        }
+    }
+
     private Vector2D findSpeed(
             Space2D freeSpace,
             float deltaSeconds) {
@@ -75,10 +101,10 @@ public class GhostLogic extends BaseObjectLogic<GhostStateType> {
             return newSpeed;
         }
 
-        if (isPlayerVisible()) {
+        if (_triggerZone.intersects(getRoom().getPlayer().getCollider())) {
             float playerX = (float)getRoom().getPlayer().getCollider().getX();
             float enemyX = (float)getEnemy().getCollider().getX();
-            // Обработка движений по горизонтали
+
             if ((enemyX < playerX) && (freeSpace.getRight() > EPSILON)) {
                 newSpeed.setX(HORIZONTAL_SPEED);
             } else if ((enemyX > playerX) && (freeSpace.getLeft() > EPSILON)) {
@@ -87,42 +113,6 @@ public class GhostLogic extends BaseObjectLogic<GhostStateType> {
         }
 
         return newSpeed;
-    }
-
-    private boolean isPlayerVisible() {
-        Rectangle2D.Float playerCollider = getRoom().getPlayer().getCollider();
-
-        if (getEnemy().getCollider().intersects(
-                new Rectangle2D.Float(
-                        -Float.MAX_VALUE / 2,
-                        (float)playerCollider.getY(),
-                        Float.MAX_VALUE,
-                        (float)playerCollider.getHeight() ) )) {
-            boolean barrierFound = false;
-            for (LevelObject levelObject : getRoom().getLevelObjects()) {
-                if (getEnemy().getCollider().getX() < playerCollider.getX()) {
-                    barrierFound = levelObject.getCollider().intersects(
-                            new Rectangle2D.Float(
-                                    (float)getEnemy().getCollider().getX(),
-                                    (float)getEnemy().getCollider().getY(),
-                                    (float)(playerCollider.getX() - getEnemy().getCollider().getX()),
-                                    (float)getEnemy().getCollider().getHeight() ) );
-                } else {
-                    barrierFound = levelObject.getCollider().intersects(
-                            new Rectangle2D.Float(
-                                    (float)playerCollider.getX(),
-                                    (float)getEnemy().getCollider().getY(),
-                                    (float)(getEnemy().getCollider().getX() - playerCollider.getX()),
-                                    (float)getEnemy().getCollider().getHeight() ) );
-                }
-                if (barrierFound) {
-                    break;
-                }
-            }
-            return !barrierFound;
-        } else {
-            return false;
-        }
     }
 
     public EnemyObject getEnemy() {
