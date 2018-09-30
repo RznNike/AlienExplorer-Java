@@ -13,11 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainForm extends JFrame implements ModelEventListener {
-    private static final int LAYERS_COUNT = 4;
-    private static final int BACKGROUND_LAYER = 3;
-    private static final int LEVEL_LAYER = 2;
-    private static final int UI_LAYER = 1;
-    private static final int MENU_LAYER = 0;
+    // TODO enum
+    public static final int LAYERS_COUNT = 4;
+    public static final int BACKGROUND_LAYER = 3;
+    public static final int LEVEL_LAYER = 2;
+    public static final int UI_LAYER = 1;
+    public static final int MENU_LAYER = 0;
 
     private JPanel _canvas;
     private List<JLabel> _layers;

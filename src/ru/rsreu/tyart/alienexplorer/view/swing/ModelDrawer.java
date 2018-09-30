@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 class ModelDrawer {
+    private static final int BUFFERS_COUNT = 3;
+
     private static final Color COLOR_TRANSPARENT = new Color(0, 0, 0, 0);
     private static final Color COLOR_MENU_SHADOW = new Color(31, 68, 82, 180);
     private static final Color COLOR_TEXT_PRIMARY = Color.WHITE;
@@ -26,7 +28,6 @@ class ModelDrawer {
     private static final double HEADER_HEIGHT = 0.2;
 
     private static final double MAX_VISIBLE_MENU_ITEMS = 7;
-
     private static final int DEFAULT_CAMERA_WIDTH = 15;
 
     private static ResourcesContainer _resources;
@@ -36,6 +37,7 @@ class ModelDrawer {
 
     private static Dimension _camera;
     private static Point2D.Float _cameraPosition;
+    private static Image[][] _buffers;
 
     private ModelDrawer() {}
 
@@ -44,6 +46,12 @@ class ModelDrawer {
         _fontNormal = _resources.getFont().deriveFont(Font.PLAIN, screenSize.height / FONT_NORMAL_DIVIDER);
         _fontBig = _resources.getFont().deriveFont(Font.PLAIN, screenSize.height / FONT_BIG_DIVIDER);
         _fontSmall = _resources.getFont().deriveFont(Font.PLAIN, screenSize.height / FONT_SMALL_DIVIDER);
+        _buffers = new Image[MainForm.LAYERS_COUNT][BUFFERS_COUNT];
+        for (int i = 0; i < _buffers.length; i++) {
+            for (int j = 0; j < _buffers[0].length; j++) {
+                _buffers[i][j] = new BufferedImage(screenSize.width, screenSize.height, BufferedImage.TYPE_INT_ARGB);
+            }
+        }
     }
 
     static void resetCamera(IModel model, Dimension screenSize) {
@@ -61,8 +69,10 @@ class ModelDrawer {
     }
 
     static void drawBackground(IModel model, JLabel layer) {
-        Image result = new BufferedImage(layer.getWidth(), layer.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        Graphics graphics = result.getGraphics();
+        Image result = _buffers[MainForm.BACKGROUND_LAYER][0];
+        Graphics2D graphics = (Graphics2D)result.getGraphics();
+        graphics.setBackground(COLOR_TRANSPARENT);
+        graphics.clearRect(0, 0, result.getWidth(null), result.getHeight(null));
         Image backgroundTile = _resources.getBackground(model.getRoom().getType().ordinal());
         int imageHeight = backgroundTile.getHeight(layer);
         int imageWidth = backgroundTile.getWidth(layer);
@@ -72,16 +82,17 @@ class ModelDrawer {
             }
         }
 
+        swapBuffers(MainForm.BACKGROUND_LAYER);
         layer.setIcon(new ImageIcon(result));
     }
 
     static void drawLevel(IModel model, JLabel layer) {
         moveCamera(model);
 
-        Image result = new BufferedImage(layer.getWidth(), layer.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        Graphics graphics = result.getGraphics();
-        graphics.setColor(COLOR_TRANSPARENT);
-        graphics.fillRect(0, 0, layer.getWidth(), layer.getHeight());
+        Image result = _buffers[MainForm.LEVEL_LAYER][0];
+        Graphics2D graphics = (Graphics2D)result.getGraphics();
+        graphics.setBackground(COLOR_TRANSPARENT);
+        graphics.clearRect(0, 0, result.getWidth(null), result.getHeight(null));
 
         int blockSize = layer.getWidth() / (int)_camera.getWidth();
 
@@ -100,14 +111,15 @@ class ModelDrawer {
             drawGameObjectSprite(graphics, layer.getHeight(), blockSize, object, position);
         }
 
+        swapBuffers(MainForm.LEVEL_LAYER);
         layer.setIcon(new ImageIcon(result));
     }
 
     static void drawUI(IModel model, JLabel layer) {
-        Image result = new BufferedImage(layer.getWidth(), layer.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        Graphics graphics = result.getGraphics();
-        graphics.setColor(COLOR_TRANSPARENT);
-        graphics.fillRect(0, 0, layer.getWidth(), layer.getHeight());
+        Image result = _buffers[MainForm.UI_LAYER][0];
+        Graphics2D graphics = (Graphics2D)result.getGraphics();
+        graphics.setBackground(COLOR_TRANSPARENT);
+        graphics.clearRect(0, 0, result.getWidth(null), result.getHeight(null));
 
         int blockSize = _fontSmall.getSize();
 
@@ -126,12 +138,15 @@ class ModelDrawer {
             }
         }
 
+        swapBuffers(MainForm.UI_LAYER);
         layer.setIcon(new ImageIcon(result));
     }
 
     static void drawMenu(IModel model, JLabel layer) {
-        Image result = new BufferedImage(layer.getWidth(), layer.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        Graphics graphics = result.getGraphics();
+        Image result = _buffers[MainForm.MENU_LAYER][0];
+        Graphics2D graphics = (Graphics2D)result.getGraphics();
+        graphics.setBackground(COLOR_TRANSPARENT);
+        graphics.clearRect(0, 0, result.getWidth(null), result.getHeight(null));
         graphics.setColor(COLOR_MENU_SHADOW);
         graphics.fillRect(0, 0, layer.getWidth(), layer.getHeight());
 
@@ -173,7 +188,14 @@ class ModelDrawer {
                     _fontNormal);
         }
 
+        swapBuffers(MainForm.MENU_LAYER);
         layer.setIcon(new ImageIcon(result));
+    }
+
+    private static void swapBuffers(int layerIndex) {
+        Image temp = _buffers[layerIndex][0];
+        System.arraycopy(_buffers[layerIndex], 1, _buffers[layerIndex], 0, BUFFERS_COUNT - 1);
+        _buffers[layerIndex][BUFFERS_COUNT - 1] = temp;
     }
 
     private static void drawGameObjectSprite(
