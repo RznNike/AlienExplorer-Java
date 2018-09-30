@@ -5,7 +5,6 @@ import ru.rsreu.tyart.alienexplorer.model.object.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -35,9 +34,7 @@ class ModelDrawer {
     private static Font _fontBig;
     private static Font _fontSmall;
 
-    // TODO make rectangle
-    private static Dimension _camera;
-    private static Point2D.Float _cameraPosition;
+    private static Rectangle2D.Float _camera;
     private static Image[][] _buffers;
 
     private ModelDrawer() {}
@@ -61,12 +58,12 @@ class ModelDrawer {
             width = DEFAULT_CAMERA_WIDTH;
         }
         float height = (float)(width * (screenSize.getHeight() / screenSize.getWidth()));
-        _camera = new Dimension();
-        _camera.setSize(width, height);
-
-        _cameraPosition = new Point2D.Float(
+        _camera = new Rectangle2D.Float(
                 (float)model.getRoom().getStartCameraPosition().getX(),
-                (float)model.getRoom().getStartCameraPosition().getY());
+                (float)model.getRoom().getStartCameraPosition().getY(),
+                (float)Math.ceil(width),
+                (float)Math.ceil(height)
+        );
     }
 
     static void drawBackground(IModel model, JLabel layer) {
@@ -104,13 +101,13 @@ class ModelDrawer {
         objectsToDraw.add(model.getRoom().getPlayer());
         for (GameObject object : objectsToDraw) {
             if (object.getCollider().intersects(
-                    _cameraPosition.x - 1,
-                    _cameraPosition.y - 1,
+                    _camera.x - 1,
+                    _camera.y - 1,
                     _camera.width + 2,
                     _camera.height + 2)) {
                 Rectangle2D.Float position = new Rectangle2D.Float(
-                        (float)(object.getCollider().getX() - _cameraPosition.getX()),
-                        (float)(object.getCollider().getY() - _cameraPosition.getY()),
+                        (float)(object.getCollider().getX() - _camera.getX()),
+                        (float)(object.getCollider().getY() - _camera.getY()),
                         (float)object.getCollider().getWidth(),
                         (float)object.getCollider().getHeight()
                 );
@@ -236,6 +233,7 @@ class ModelDrawer {
     private static void moveCamera(IModel model) {
         float newX;
         float newY;
+        float epsilon = 0.001f;
 
         Rectangle2D.Float playerCollider = model.getRoom().getPlayer().getCollider();
         newX = (float)(playerCollider.getX() + (playerCollider.getWidth() - _camera.getWidth()) / 2);
@@ -244,7 +242,7 @@ class ModelDrawer {
         float roomWidth = (float)model.getRoom().getDimension().getWidth();
         if (newX < 0) {
             newX = 0;
-        } else if ((_camera.getWidth() < roomWidth)
+        } else if ((_camera.getWidth() < (roomWidth + epsilon))
                 && (newX + _camera.getWidth() > roomWidth)) {
             newX = roomWidth - (float)_camera.getWidth();
         }
@@ -252,11 +250,12 @@ class ModelDrawer {
         float roomHeight = (float)model.getRoom().getDimension().getHeight();
         if (newY < 0) {
             newY = 0;
-        } else if ((_camera.getHeight() < roomHeight)
+        } else if ((_camera.getHeight() < (roomHeight + epsilon))
                 && (newY + _camera.getHeight() > roomHeight)) {
             newY = roomHeight - (float)_camera.getHeight();
         }
 
-        _cameraPosition.setLocation(newX, newY);
+        _camera.x = newX;
+        _camera.y = newY;
     }
 }
