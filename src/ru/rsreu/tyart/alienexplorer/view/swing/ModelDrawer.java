@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 class ModelDrawer {
-    private static final int BUFFERS_COUNT = 3;
+    private static final int BUFFERS_COUNT = 4;
 
     private static final Color COLOR_TRANSPARENT = new Color(0, 0, 0, 0);
     private static final Color COLOR_MENU_SHADOW = new Color(31, 68, 82, 180);
@@ -28,7 +28,7 @@ class ModelDrawer {
     private static final double HEADER_HEIGHT = 0.2;
 
     private static final double MAX_VISIBLE_MENU_ITEMS = 7;
-    private static final int DEFAULT_CAMERA_WIDTH = 15;
+    private static final int DEFAULT_CAMERA_WIDTH = 14;
 
     private static ResourcesContainer _resources;
     private static Font _fontNormal;
@@ -102,13 +102,19 @@ class ModelDrawer {
         objectsToDraw.addAll(model.getRoom().getEnemies());
         objectsToDraw.add(model.getRoom().getPlayer());
         for (GameObject object : objectsToDraw) {
-            Rectangle2D.Float position = new Rectangle2D.Float(
-                    (float)(object.getCollider().getX() - _cameraPosition.getX()),
-                    (float)(object.getCollider().getY() - _cameraPosition.getY()),
-                    (float)object.getCollider().getWidth(),
-                    (float)object.getCollider().getHeight()
-            );
-            drawGameObjectSprite(graphics, layer.getHeight(), blockSize, object, position);
+            if (object.getCollider().intersects(
+                    _cameraPosition.x - 1,
+                    _cameraPosition.y - 1,
+                    _camera.width + 2,
+                    _camera.height + 2)) {
+                Rectangle2D.Float position = new Rectangle2D.Float(
+                        (float)(object.getCollider().getX() - _cameraPosition.getX()),
+                        (float)(object.getCollider().getY() - _cameraPosition.getY()),
+                        (float)object.getCollider().getWidth(),
+                        (float)object.getCollider().getHeight()
+                );
+                drawGameObjectSprite(graphics, layer.getHeight(), blockSize, object, position);
+            }
         }
 
         swapBuffers(MainForm.LEVEL_LAYER);
@@ -207,8 +213,8 @@ class ModelDrawer {
         Image sprite = _resources.getSprite(object);
         graphics.drawImage(
                 sprite,
-                (int)(rect.getX() * blockSize - 0.5),
-                (int)(canvasHeight - (rect.getY() + rect.getHeight()) * blockSize - 0.5),
+                (int)(rect.getX() * blockSize),
+                (int)(canvasHeight - (rect.getY() + rect.getHeight()) * blockSize),
                 (int)(rect.getWidth() * blockSize + 1),
                 (int)(rect.getHeight() * blockSize + 1),
                 null);
