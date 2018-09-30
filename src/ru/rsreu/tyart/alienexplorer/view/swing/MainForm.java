@@ -91,6 +91,7 @@ public class MainForm extends JFrame implements ModelEventListener {
                 ModelDrawer.drawMenu(model, _layers.get(MENU_LAYER));
                 break;
             case LEVEL_LOADED:
+                ModelDrawer.resetCamera(model, Toolkit.getDefaultToolkit().getScreenSize());
                 ModelDrawer.drawBackground(model, _layers.get(BACKGROUND_LAYER));
                 ModelDrawer.drawLevel(model, _layers.get(LEVEL_LAYER));
                 ModelDrawer.drawUI(model, _layers.get(UI_LAYER));

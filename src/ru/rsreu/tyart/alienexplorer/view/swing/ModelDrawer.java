@@ -5,6 +5,7 @@ import ru.rsreu.tyart.alienexplorer.model.object.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -26,12 +27,15 @@ class ModelDrawer {
 
     private static final double MAX_VISIBLE_MENU_ITEMS = 7;
 
-    private static final int CAMERA_WIDTH = 34;
+    private static final int DEFAULT_CAMERA_WIDTH = 15;
 
     private static ResourcesContainer _resources;
     private static Font _fontNormal;
     private static Font _fontBig;
     private static Font _fontSmall;
+
+    private static Dimension _camera;
+    private static Point2D.Float _cameraPosition;
 
     private ModelDrawer() {}
 
@@ -40,6 +44,20 @@ class ModelDrawer {
         _fontNormal = _resources.getFont().deriveFont(Font.PLAIN, screenSize.height / FONT_NORMAL_DIVIDER);
         _fontBig = _resources.getFont().deriveFont(Font.PLAIN, screenSize.height / FONT_BIG_DIVIDER);
         _fontSmall = _resources.getFont().deriveFont(Font.PLAIN, screenSize.height / FONT_SMALL_DIVIDER);
+    }
+
+    static void resetCamera(IModel model, Dimension screenSize) {
+        float width = (float)model.getRoom().getDimension().getWidth();
+        if (width > DEFAULT_CAMERA_WIDTH) {
+            width = DEFAULT_CAMERA_WIDTH;
+        }
+        float height = (float)(width * (screenSize.getHeight() / screenSize.getWidth()));
+        _camera = new Dimension();
+        _camera.setSize(width, height);
+
+        _cameraPosition = new Point2D.Float(
+                (float)model.getRoom().getStartCameraPosition().getX(),
+                (float)model.getRoom().getStartCameraPosition().getY());
     }
 
     static void drawBackground(IModel model, JLabel layer) {
@@ -58,12 +76,14 @@ class ModelDrawer {
     }
 
     static void drawLevel(IModel model, JLabel layer) {
+        moveCamera(model);
+
         Image result = new BufferedImage(layer.getWidth(), layer.getHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics graphics = result.getGraphics();
         graphics.setColor(COLOR_TRANSPARENT);
         graphics.fillRect(0, 0, layer.getWidth(), layer.getHeight());
 
-        int blockSize = layer.getWidth() / CAMERA_WIDTH;
+        int blockSize = layer.getWidth() / (int)_camera.getWidth();
 
         List<GameObject> objectsToDraw = new ArrayList<GameObject>();
         objectsToDraw.addAll(model.getRoom().getLevelObjects());
@@ -71,7 +91,13 @@ class ModelDrawer {
         objectsToDraw.addAll(model.getRoom().getEnemies());
         objectsToDraw.add(model.getRoom().getPlayer());
         for (GameObject object : objectsToDraw) {
-            drawGameObjectSprite(graphics, layer.getHeight(), blockSize, object);
+            Rectangle2D.Float position = new Rectangle2D.Float(
+                    (float)(object.getCollider().getX() - _cameraPosition.getX()),
+                    (float)(object.getCollider().getY() - _cameraPosition.getY()),
+                    (float)object.getCollider().getWidth(),
+                    (float)object.getCollider().getHeight()
+            );
+            drawGameObjectSprite(graphics, layer.getHeight(), blockSize, object, position);
         }
 
         layer.setIcon(new ImageIcon(result));
@@ -154,14 +180,6 @@ class ModelDrawer {
             Graphics graphics,
             int canvasHeight,
             int blockSize,
-            GameObject object) {
-        drawGameObjectSprite(graphics, canvasHeight, blockSize, object, object.getCollider());
-    }
-
-    private static void drawGameObjectSprite(
-            Graphics graphics,
-            int canvasHeight,
-            int blockSize,
             GameObject object,
             Rectangle2D.Float rect) {
         Image sprite = _resources.getSprite(object);
@@ -184,5 +202,32 @@ class ModelDrawer {
         int y = (int)(rect.getY() + ((rect.getHeight() - metrics.getHeight()) / 2) + metrics.getAscent());
         graphics.setFont(font);
         graphics.drawString(text, x, y);
+    }
+
+    private static void moveCamera(IModel model) {
+        float newX;
+        float newY;
+
+        Rectangle2D.Float playerCollider = model.getRoom().getPlayer().getCollider();
+        newX = (float)(playerCollider.getX() + (playerCollider.getWidth() - _camera.getWidth()) / 2);
+        newY = (float)(playerCollider.getY() + (playerCollider.getHeight() - _camera.getHeight()) / 2);
+
+        float roomWidth = (float)model.getRoom().getDimension().getWidth();
+        if (newX < 0) {
+            newX = 0;
+        } else if ((_camera.getWidth() < roomWidth)
+                && (newX + _camera.getWidth() > roomWidth)) {
+            newX = roomWidth - (float)_camera.getWidth();
+        }
+
+        float roomHeight = (float)model.getRoom().getDimension().getHeight();
+        if (newY < 0) {
+            newY = 0;
+        } else if ((_camera.getHeight() < roomHeight)
+                && (newY + _camera.getHeight() > roomHeight)) {
+            newY = roomHeight - (float)_camera.getHeight();
+        }
+
+        _cameraPosition.setLocation(newX, newY);
     }
 }

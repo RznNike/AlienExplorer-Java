@@ -1,6 +1,7 @@
 package ru.rsreu.tyart.alienexplorer.model.object.logic.statemachines;
 
 import ru.rsreu.tyart.alienexplorer.model.object.GameObject;
+import ru.rsreu.tyart.alienexplorer.model.object.logic.BaseObjectLogic;
 import ru.rsreu.tyart.alienexplorer.model.object.logic.Space2D;
 import ru.rsreu.tyart.alienexplorer.model.object.logic.Vector2D;
 
@@ -39,10 +40,10 @@ public class SlimeStateMachine extends ObjectStateMachine<SlimeStateType> {
     }
 
     private SlimeStateType findPossibleState(Space2D freeSpace, Vector2D move) {
-        if (freeSpace.getBottom() > EPSILON) {
+        if (freeSpace.getBottom() > BaseObjectLogic.EPSILON) {
             return SlimeStateType.STAND;
         } else {
-            if (Math.abs(move.getX()) > EPSILON) {
+            if (Math.abs(move.getX()) > BaseObjectLogic.EPSILON) {
                 return SlimeStateType.WALK;
             } else {
                 return SlimeStateType.STAND;

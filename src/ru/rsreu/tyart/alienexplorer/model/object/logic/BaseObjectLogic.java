@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class BaseObjectLogic<MachineStateEnum> {
-    public static final float EPSILON = 0.01f;
+    public static final float EPSILON = 0.001f;
     public static final float MAX_SPEED = 9.0f;
     public static final float G = 15.0f;
     public static final float LOOKUP_DIST = 1.5f;

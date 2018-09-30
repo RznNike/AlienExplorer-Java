@@ -42,8 +42,8 @@ public class RoomLoader {
         room.setDoors(new ArrayList<LevelObject>());
         room.setEnemies(new ArrayList<EnemyObject>());
         room.setUIObjects(new ArrayList<UIObject>());
-        int levelWidth = 1;
-        int levelHeight = 1;
+        Dimension dimension = new Dimension();
+        Point2D.Float cameraPosition = new Point2D.Float();
 
         String path = String.format("%s/level%d.txt", LEVELS_FOLDER, levelID);
         List<String> strings = readFile(path);
@@ -56,16 +56,16 @@ public class RoomLoader {
                         room.setId(Integer.valueOf(parts[1]));
                         break;
                     case WIDTH:
-                        levelWidth = Integer.valueOf(parts[1]);
+                        dimension.width = Integer.valueOf(parts[1]);
                         break;
                     case HEIGHT:
-                        levelHeight = Integer.valueOf(parts[1]);
+                        dimension.height = Integer.valueOf(parts[1]);
                         break;
                     case CAMERA_X:
-                        // TODO CAMERA_X
+                        cameraPosition.x = Float.valueOf(parts[1]);
                         break;
                     case CAMERA_Y:
-                        // TODO CAMERA_Y
+                        cameraPosition.y = Integer.valueOf(parts[1]);
                         break;
                     case LEVEL_OBJECT:
                         room.getLevelObjects().add(parseLevelObject(parts));
@@ -88,7 +88,8 @@ public class RoomLoader {
         }
 
         room.setType(GameRoomType.LEVEL);
-        room.setDimension(new Dimension(levelWidth, levelHeight));
+        room.setDimension(dimension);
+        room.setStartCameraPosition(cameraPosition);
 
         room.getPlayer().setLogic(new PlayerLogic(room));
         for (EnemyObject enemy : room.getEnemies()) {

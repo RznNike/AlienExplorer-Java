@@ -1,6 +1,7 @@
 package ru.rsreu.tyart.alienexplorer.model.object.logic.statemachines;
 
 import ru.rsreu.tyart.alienexplorer.model.object.GameObject;
+import ru.rsreu.tyart.alienexplorer.model.object.logic.BaseObjectLogic;
 import ru.rsreu.tyart.alienexplorer.model.object.logic.Space2D;
 import ru.rsreu.tyart.alienexplorer.model.object.logic.Vector2D;
 
@@ -39,7 +40,7 @@ public class GhostStateMachine extends ObjectStateMachine<GhostStateType> {
     }
 
     private GhostStateType findPossibleState(Vector2D move) {
-        if (Math.abs(move.getX()) > EPSILON) {
+        if (Math.abs(move.getX()) > BaseObjectLogic.EPSILON) {
             return GhostStateType.ATTACK;
         } else {
             return GhostStateType.STAND;

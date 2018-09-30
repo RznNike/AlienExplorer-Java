@@ -17,7 +17,7 @@ public class PlayerLogic extends BaseObjectLogic<PlayerStateType> {
     private static final float JUMP_SPEED = MAX_SPEED / 1.5f;
     private static final int MAX_JUMPS = 2;
     private static final float HURT_COOLDOWN_TIME = 1f;
-    private static final int THREAD_SLEEP_MS = 5;
+    private static final int THREAD_SLEEP_MS = 3;
 
     private List<ControllerCommand> _activeCommands;
     private int _jumpsCount;

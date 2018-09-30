@@ -10,6 +10,7 @@ import ru.rsreu.tyart.alienexplorer.model.object.logic.BaseObjectLogic;
 import ru.rsreu.tyart.alienexplorer.model.util.ModelEventType;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,6 +29,7 @@ public class GameRoom implements IGameRoom {
     private PlayerObject _player;
     private List<UIObject> _UIObjects;
     private Dimension _dimension;
+    private Point2D.Float _startCameraPosition;
 
     private GameModel _parent;
     private Semaphore _logicBusySemaphore;
@@ -105,7 +107,7 @@ public class GameRoom implements IGameRoom {
         _id = value;
     }
 
-    public BaseRoomLogic getRoomLogic() {
+    BaseRoomLogic getRoomLogic() {
         return _roomLogic;
     }
 
@@ -170,6 +172,7 @@ public class GameRoom implements IGameRoom {
         _parent = value;
     }
 
+    @Override
     public Dimension getDimension() {
         return _dimension;
     }
@@ -185,5 +188,14 @@ public class GameRoom implements IGameRoom {
     @Override
     public String getMenuHeader() {
         return _roomLogic.getMenuHeader();
+    }
+
+    @Override
+    public Point2D.Float getStartCameraPosition() {
+        return _startCameraPosition;
+    }
+
+    public void setStartCameraPosition(Point2D.Float value) {
+        _startCameraPosition = value;
     }
 }

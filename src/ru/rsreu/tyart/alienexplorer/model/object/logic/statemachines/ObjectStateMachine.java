@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class ObjectStateMachine<MachineStateEnum> {
-    protected static final float EPSILON = 0.01f;
-
     private MachineStateEnum _machineState;
     private Map<MachineStateEnum, List<Integer>> _objectStates;
     private float _timeInState;

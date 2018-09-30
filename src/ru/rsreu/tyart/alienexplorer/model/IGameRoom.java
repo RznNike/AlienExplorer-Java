@@ -6,6 +6,8 @@ import ru.rsreu.tyart.alienexplorer.model.object.LevelObject;
 import ru.rsreu.tyart.alienexplorer.model.object.PlayerObject;
 import ru.rsreu.tyart.alienexplorer.model.object.UIObject;
 
+import java.awt.*;
+import java.awt.geom.Point2D;
 import java.util.List;
 
 public interface IGameRoom {
@@ -16,4 +18,6 @@ public interface IGameRoom {
     PlayerObject getPlayer();
     List<UIObject> getUIObjects();
     String getMenuHeader();
+    Dimension getDimension();
+    Point2D.Float getStartCameraPosition();
 }
