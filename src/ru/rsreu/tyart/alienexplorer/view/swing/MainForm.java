@@ -13,13 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainForm extends JFrame implements ModelEventListener {
-    // TODO enum
-    public static final int LAYERS_COUNT = 4;
-    public static final int BACKGROUND_LAYER = 3;
-    public static final int LEVEL_LAYER = 2;
-    public static final int UI_LAYER = 1;
-    public static final int MENU_LAYER = 0;
-
     private JPanel _canvas;
     private List<JLabel> _layers;
     private ModelEventHandler _modelEventHandler;
@@ -46,7 +39,7 @@ public class MainForm extends JFrame implements ModelEventListener {
     private void initLayers() {
         JLayeredPane layeredCanvas = getLayeredPane();
         _layers = new ArrayList<JLabel>();
-        for (int i = 0; i < LAYERS_COUNT; i++) {
+        for (int i = 0; i < LayerType.values().length; i++) {
             JLabel layer = new JLabel();
             layer.setSize(_canvas.getSize());
             _layers.add(layer);
@@ -54,7 +47,7 @@ public class MainForm extends JFrame implements ModelEventListener {
             layer.setVisible(true);
         }
         for (int i = 0; i < _layers.size(); i++) {
-            layeredCanvas.setLayer(_layers.get(i), LAYERS_COUNT - i);
+            layeredCanvas.setLayer(_layers.get(i), i);
         }
     }
 
@@ -82,36 +75,36 @@ public class MainForm extends JFrame implements ModelEventListener {
 
         switch (eventType) {
             case MENU_LOADED:
-                ModelDrawer.drawBackground(model, _layers.get(BACKGROUND_LAYER));
-                ModelDrawer.drawMenu(model, _layers.get(MENU_LAYER));
-                _layers.get(LEVEL_LAYER).setVisible(false);
-                _layers.get(UI_LAYER).setVisible(false);
-                _layers.get(MENU_LAYER).setVisible(true);
+                ModelDrawer.drawBackground(model, _layers.get(LayerType.BACKGROUND.ordinal()));
+                ModelDrawer.drawMenu(model, _layers.get(LayerType.MENU.ordinal()));
+                _layers.get(LayerType.LEVEL.ordinal()).setVisible(false);
+                _layers.get(LayerType.UI.ordinal()).setVisible(false);
+                _layers.get(LayerType.MENU.ordinal()).setVisible(true);
                 break;
             case MENU_CHANGED:
-                ModelDrawer.drawMenu(model, _layers.get(MENU_LAYER));
+                ModelDrawer.drawMenu(model, _layers.get(LayerType.MENU.ordinal()));
                 break;
             case LEVEL_LOADED:
                 ModelDrawer.resetCamera(model, Toolkit.getDefaultToolkit().getScreenSize());
-                ModelDrawer.drawBackground(model, _layers.get(BACKGROUND_LAYER));
-                ModelDrawer.drawLevel(model, _layers.get(LEVEL_LAYER));
-                ModelDrawer.drawUI(model, _layers.get(UI_LAYER));
-                _layers.get(LEVEL_LAYER).setVisible(true);
-                _layers.get(UI_LAYER).setVisible(true);
-                _layers.get(MENU_LAYER).setVisible(false);
+                ModelDrawer.drawBackground(model, _layers.get(LayerType.BACKGROUND.ordinal()));
+                ModelDrawer.drawLevel(model, _layers.get(LayerType.LEVEL.ordinal()));
+                ModelDrawer.drawUI(model, _layers.get(LayerType.UI.ordinal()));
+                _layers.get(LayerType.LEVEL.ordinal()).setVisible(true);
+                _layers.get(LayerType.UI.ordinal()).setVisible(true);
+                _layers.get(LayerType.MENU.ordinal()).setVisible(false);
                 break;
             case LEVEL_CHANGED:
-                ModelDrawer.drawLevel(model, _layers.get(LEVEL_LAYER));
+                ModelDrawer.drawLevel(model, _layers.get(LayerType.LEVEL.ordinal()));
                 break;
             case UI_CHANGED:
-                ModelDrawer.drawUI(model, _layers.get(UI_LAYER));
+                ModelDrawer.drawUI(model, _layers.get(LayerType.UI.ordinal()));
                 break;
             case CONTEXT_MENU_LOADED:
-                ModelDrawer.drawMenu(model, _layers.get(MENU_LAYER));
-                _layers.get(MENU_LAYER).setVisible(true);
+                ModelDrawer.drawMenu(model, _layers.get(LayerType.MENU.ordinal()));
+                _layers.get(LayerType.MENU.ordinal()).setVisible(true);
                 break;
             case CONTEXT_MENU_CLOSED:
-                _layers.get(MENU_LAYER).setVisible(false);
+                _layers.get(LayerType.MENU.ordinal()).setVisible(false);
                 break;
         }
     }

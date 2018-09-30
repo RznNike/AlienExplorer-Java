@@ -44,7 +44,7 @@ class ModelDrawer {
         _fontNormal = _resources.getFont().deriveFont(Font.PLAIN, screenSize.height / FONT_NORMAL_DIVIDER);
         _fontBig = _resources.getFont().deriveFont(Font.PLAIN, screenSize.height / FONT_BIG_DIVIDER);
         _fontSmall = _resources.getFont().deriveFont(Font.PLAIN, screenSize.height / FONT_SMALL_DIVIDER);
-        _buffers = new Image[MainForm.LAYERS_COUNT][BUFFERS_COUNT];
+        _buffers = new Image[LayerType.values().length][BUFFERS_COUNT];
         for (int i = 0; i < _buffers.length; i++) {
             for (int j = 0; j < _buffers[0].length; j++) {
                 _buffers[i][j] = new BufferedImage(screenSize.width, screenSize.height, BufferedImage.TYPE_INT_ARGB);
@@ -67,7 +67,7 @@ class ModelDrawer {
     }
 
     static void drawBackground(IModel model, JLabel layer) {
-        Image result = _buffers[MainForm.BACKGROUND_LAYER][0];
+        Image result = _buffers[LayerType.BACKGROUND.ordinal()][0];
         Graphics2D graphics = (Graphics2D)result.getGraphics();
         graphics.setBackground(COLOR_TRANSPARENT);
         graphics.clearRect(0, 0, result.getWidth(null), result.getHeight(null));
@@ -80,14 +80,14 @@ class ModelDrawer {
             }
         }
 
-        swapBuffers(MainForm.BACKGROUND_LAYER);
+        swapBuffers(LayerType.BACKGROUND.ordinal());
         layer.setIcon(new ImageIcon(result));
     }
 
     static void drawLevel(IModel model, JLabel layer) {
         moveCamera(model);
 
-        Image result = _buffers[MainForm.LEVEL_LAYER][0];
+        Image result = _buffers[LayerType.LEVEL.ordinal()][0];
         Graphics2D graphics = (Graphics2D)result.getGraphics();
         graphics.setBackground(COLOR_TRANSPARENT);
         graphics.clearRect(0, 0, result.getWidth(null), result.getHeight(null));
@@ -115,12 +115,12 @@ class ModelDrawer {
             }
         }
 
-        swapBuffers(MainForm.LEVEL_LAYER);
+        swapBuffers(LayerType.LEVEL.ordinal());
         layer.setIcon(new ImageIcon(result));
     }
 
     static void drawUI(IModel model, JLabel layer) {
-        Image result = _buffers[MainForm.UI_LAYER][0];
+        Image result = _buffers[LayerType.UI.ordinal()][0];
         Graphics2D graphics = (Graphics2D)result.getGraphics();
         graphics.setBackground(COLOR_TRANSPARENT);
         graphics.clearRect(0, 0, result.getWidth(null), result.getHeight(null));
@@ -142,12 +142,12 @@ class ModelDrawer {
             }
         }
 
-        swapBuffers(MainForm.UI_LAYER);
+        swapBuffers(LayerType.UI.ordinal());
         layer.setIcon(new ImageIcon(result));
     }
 
     static void drawMenu(IModel model, JLabel layer) {
-        Image result = _buffers[MainForm.MENU_LAYER][0];
+        Image result = _buffers[LayerType.MENU.ordinal()][0];
         Graphics2D graphics = (Graphics2D)result.getGraphics();
         graphics.setBackground(COLOR_TRANSPARENT);
         graphics.clearRect(0, 0, result.getWidth(null), result.getHeight(null));
@@ -192,7 +192,7 @@ class ModelDrawer {
                     _fontNormal);
         }
 
-        swapBuffers(MainForm.MENU_LAYER);
+        swapBuffers(LayerType.MENU.ordinal());
         layer.setIcon(new ImageIcon(result));
     }
 
