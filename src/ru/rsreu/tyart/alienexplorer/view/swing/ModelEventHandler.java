@@ -1,6 +1,6 @@
 package ru.rsreu.tyart.alienexplorer.view.swing;
 
-import ru.rsreu.tyart.alienexplorer.model.util.ManualResetEvent;
+import ru.rsreu.tyart.alienexplorer.globalutil.ManualResetEvent;
 import ru.rsreu.tyart.alienexplorer.model.util.ModelEvent;
 
 import java.util.Queue;

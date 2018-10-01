@@ -1,4 +1,4 @@
-package ru.rsreu.tyart.alienexplorer.model.util;
+package ru.rsreu.tyart.alienexplorer.globalutil;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.AbstractQueuedSynchronizer;

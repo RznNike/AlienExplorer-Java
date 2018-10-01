@@ -4,7 +4,7 @@ import ru.rsreu.tyart.alienexplorer.model.main.GameRoom;
 import ru.rsreu.tyart.alienexplorer.model.object.GameObject;
 import ru.rsreu.tyart.alienexplorer.model.object.LevelObject;
 import ru.rsreu.tyart.alienexplorer.model.object.logic.statemachines.ObjectStateMachine;
-import ru.rsreu.tyart.alienexplorer.model.util.ManualResetEvent;
+import ru.rsreu.tyart.alienexplorer.globalutil.ManualResetEvent;
 
 import java.awt.geom.Rectangle2D;
 import java.util.Date;

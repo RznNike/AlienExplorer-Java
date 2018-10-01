@@ -6,6 +6,7 @@ import ru.rsreu.tyart.alienexplorer.view.swing.MainForm;
 
 public class Runner {
     public static void main(String[] args) {
+//        Locale.setDefault(new Locale("en", "US"));
         GameModel model = GameModel.getInstance();
 
         GameController controller = GameController.getInstance();

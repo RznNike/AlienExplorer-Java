@@ -6,7 +6,7 @@ import ru.rsreu.tyart.alienexplorer.model.main.logic.statemachines.LevelMenuStat
 import ru.rsreu.tyart.alienexplorer.model.object.EnemyObject;
 import ru.rsreu.tyart.alienexplorer.model.object.LevelObject;
 import ru.rsreu.tyart.alienexplorer.model.object.UIObjectType;
-import ru.rsreu.tyart.alienexplorer.model.util.ManualResetEvent;
+import ru.rsreu.tyart.alienexplorer.globalutil.ManualResetEvent;
 
 import java.awt.geom.Rectangle2D;
 
