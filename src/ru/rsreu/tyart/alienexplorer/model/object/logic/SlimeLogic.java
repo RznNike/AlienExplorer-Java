@@ -68,12 +68,12 @@ public class SlimeLogic extends BaseObjectLogic<SlimeStateType> {
         // Обработка движений по горизонтали
         if (_targetPoint == getEnemy().getLeftWalkingBound()) {
             if ((getEnemy().getCollider().getX() < _targetPoint.getX())
-                || (freeSpace.getLeft() < EPSILON)) {
+                || (freeSpace.getLeft() < (EPSILON * 2))) {
                 _targetPoint = getEnemy().getRightWalkingBound();
             }
         } else if (_targetPoint == getEnemy().getRightWalkingBound()) {
             if ((getEnemy().getCollider().getX() > _targetPoint.getX())
-                    || (freeSpace.getRight() < EPSILON)) {
+                    || (freeSpace.getRight() < (EPSILON * 2))) {
                 _targetPoint = getEnemy().getLeftWalkingBound();
             }
         }

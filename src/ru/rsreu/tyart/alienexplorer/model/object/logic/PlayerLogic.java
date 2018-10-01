@@ -95,11 +95,6 @@ public class PlayerLogic extends BaseObjectLogic<PlayerStateType> {
             float deltaSeconds) {
         Vector2D newSpeed = new Vector2D(0, 0);
 
-        // Обработка приседания
-        if ((freeSpace.getBottom() < EPSILON) && _activeCommands.contains(ControllerCommand.DOWN)) {
-            getPlayer().getCollider().height = getPlayer().getHeightSmall();
-            return newSpeed;
-        }
         getPlayer().getCollider().height = getPlayer().getHeightStandard();
 
         // Обработка движений по горизонтали
@@ -126,9 +121,15 @@ public class PlayerLogic extends BaseObjectLogic<PlayerStateType> {
         // Обработка получения урона
         if (_hurtCooldown > EPSILON) {
             _hurtCooldown -= deltaSeconds;
-        } else if (isEnemyAttacks()) {
+        }
+        if (isEnemyAttacks()) {
             newSpeed.setY(JUMP_SPEED / 1.5f);
             _hurtCooldown = HURT_COOLDOWN_TIME;
+        } else if ((freeSpace.getBottom() < EPSILON) && _activeCommands.contains(ControllerCommand.DOWN)) {
+            // Обработка приседания
+            getPlayer().getCollider().height = getPlayer().getHeightSmall();
+            newSpeed.setX(0);
+            newSpeed.setY(0);
         }
 
         // Сброс счетчика прыжков, если игрок на земле
@@ -158,13 +159,15 @@ public class PlayerLogic extends BaseObjectLogic<PlayerStateType> {
     private boolean isEnemyAttacks() {
         for (EnemyObject enemy : getRoom().getEnemies()) {
             if (getPlayer().getCollider().intersects(enemy.getCollider())) {
-                getPlayer().setHealth(getPlayer().getHealth() - enemy.getDamage());
-                if (getPlayer().getHealth() < 0) {
-                    getPlayer().setHealth(0);
+                if (_hurtCooldown < EPSILON) {
+                    getPlayer().setHealth(getPlayer().getHealth() - enemy.getDamage());
+                    if (getPlayer().getHealth() < 0) {
+                        getPlayer().setHealth(0);
+                    }
+                    getStateMachine().setMachineState(PlayerStateType.HURT);
+                    getRoom().getParent().sendEvent(ModelEventType.UI_CHANGED);
+                    return true;
                 }
-                getStateMachine().setMachineState(PlayerStateType.HURT);
-                getRoom().getParent().sendEvent(ModelEventType.UI_CHANGED);
-                return true;
             }
         }
         return false;
