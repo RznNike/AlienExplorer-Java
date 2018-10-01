@@ -1,6 +1,7 @@
 package ru.rsreu.tyart.alienexplorer.model.main.logic.statemachines;
 
 import ru.rsreu.tyart.alienexplorer.controller.ControllerCommand;
+import ru.rsreu.tyart.alienexplorer.globalutil.R;
 import ru.rsreu.tyart.alienexplorer.model.main.GameRoom;
 import ru.rsreu.tyart.alienexplorer.model.object.UIObject;
 import ru.rsreu.tyart.alienexplorer.model.object.UIObjectType;
@@ -117,13 +118,13 @@ public class LevelMenuStateMachine extends ModelStateMachine {
 
     private void initializePauseMenu() {
         getRoom().setUIObjects(new ArrayList<UIObject>(Arrays.asList(
-                new UIObject(UIObjectType.TEXT, 0, "GAME PAUSED", false),
+                new UIObject(UIObjectType.TEXT, 0, R.getString("game_paused"), false),
                 new UIObject(UIObjectType.RESUME, 1),
                 new UIObject(UIObjectType.RESTART, 0),
                 new UIObject(UIObjectType.BACK_TO_MAIN_MENU, 0)
         )));
 
-        setMenuHeader(String.format("Level %d", getRoom().getId()));
+        setMenuHeader(String.format("%s %d", R.getString("level"), getRoom().getId()));
         setSelectedMenuItem(1);
         setCurrentMenu(UIObjectType.RESUME);
         setCurrentCommand(ModelStateMachineCommand.PAUSE);
@@ -134,7 +135,7 @@ public class LevelMenuStateMachine extends ModelStateMachine {
 
     private void initializeWinMenu() {
         getRoom().setUIObjects(new ArrayList<UIObject>());
-        getRoom().getUIObjects().add(new UIObject(UIObjectType.TEXT, 0, "YOU WIN!", false));
+        getRoom().getUIObjects().add(new UIObject(UIObjectType.TEXT, 0, R.getString("you_win"), false));
 
         int currentLevel = getRoom().getId();
         List<Integer> levels = RoomLoader.getAvailableLevels();
@@ -154,7 +155,7 @@ public class LevelMenuStateMachine extends ModelStateMachine {
             setSelectedMenuItem(2);
         }
 
-        setMenuHeader(String.format("Level %d", getRoom().getId()));
+        setMenuHeader(String.format("%s %d", R.getString("level"), getRoom().getId()));
         setCurrentMenu(UIObjectType.NEXT_LEVEL);
         setCurrentCommand(ModelStateMachineCommand.PAUSE);
         _menuDisplayed = true;
@@ -164,12 +165,12 @@ public class LevelMenuStateMachine extends ModelStateMachine {
 
     private void initializeLoseMenu() {
         getRoom().setUIObjects(new ArrayList<UIObject>(Arrays.asList(
-                new UIObject(UIObjectType.TEXT, 0, "YOU LOSE...", false),
+                new UIObject(UIObjectType.TEXT, 0, R.getString("you_lose"), false),
                 new UIObject(UIObjectType.RESTART, 1),
                 new UIObject(UIObjectType.BACK_TO_MAIN_MENU, 0)
         )));
 
-        setMenuHeader(String.format("Level %d", getRoom().getId()));
+        setMenuHeader(String.format("%s %d", R.getString("level"), getRoom().getId()));
         setSelectedMenuItem(1);
         setCurrentMenu(UIObjectType.NEXT_LEVEL);
         setCurrentCommand(ModelStateMachineCommand.PAUSE);

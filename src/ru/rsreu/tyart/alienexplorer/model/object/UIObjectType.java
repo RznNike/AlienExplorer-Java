@@ -1,5 +1,6 @@
 package ru.rsreu.tyart.alienexplorer.model.object;
 
+import ru.rsreu.tyart.alienexplorer.globalutil.R;
 import ru.rsreu.tyart.alienexplorer.model.IPathEnum;
 
 public enum UIObjectType implements IPathEnum {
@@ -10,7 +11,7 @@ public enum UIObjectType implements IPathEnum {
 
         @Override
         public String toString() {
-            return "New game";
+            return R.getString("new_game");
         }},
     CHOOSE_LEVEL {
         public String getPath() {
@@ -19,7 +20,7 @@ public enum UIObjectType implements IPathEnum {
 
         @Override
         public String toString() {
-            return "Choose level";
+            return R.getString("choose_level");
         }},
     EXIT {
         public String getPath() {
@@ -28,7 +29,7 @@ public enum UIObjectType implements IPathEnum {
 
         @Override
         public String toString() {
-            return "Exit";
+            return R.getString("exit");
         }},
 
     RESUME {
@@ -38,7 +39,7 @@ public enum UIObjectType implements IPathEnum {
 
         @Override
         public String toString() {
-            return "Resume";
+            return R.getString("resume");
         }},
     BACK_TO_MAIN_MENU {
         public String getPath() {
@@ -47,7 +48,7 @@ public enum UIObjectType implements IPathEnum {
 
         @Override
         public String toString() {
-            return "Back to main menu";
+            return R.getString("back_to_main_menu");
         }},
     RESTART {
         public String getPath() {
@@ -56,7 +57,7 @@ public enum UIObjectType implements IPathEnum {
 
         @Override
         public String toString() {
-            return "Restart";
+            return R.getString("restart");
         }},
     NEXT_LEVEL {
         public String getPath() {
@@ -65,7 +66,7 @@ public enum UIObjectType implements IPathEnum {
 
         @Override
         public String toString() {
-            return "Next level";
+            return R.getString("next_level");
         }},
 
     OK {
@@ -75,7 +76,7 @@ public enum UIObjectType implements IPathEnum {
 
         @Override
         public String toString() {
-            return "OK";
+            return R.getString("ok");
         }},
     CANCEL {
         public String getPath() {
@@ -84,7 +85,7 @@ public enum UIObjectType implements IPathEnum {
 
         @Override
         public String toString() {
-            return "Cancel";
+            return R.getString("cancel");
         }},
 
     HEALTH {

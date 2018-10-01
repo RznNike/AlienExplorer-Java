@@ -1,6 +1,7 @@
 package ru.rsreu.tyart.alienexplorer.model.main.logic.statemachines;
 
 import ru.rsreu.tyart.alienexplorer.controller.ControllerCommand;
+import ru.rsreu.tyart.alienexplorer.globalutil.R;
 import ru.rsreu.tyart.alienexplorer.model.main.GameRoom;
 import ru.rsreu.tyart.alienexplorer.model.object.UIObject;
 import ru.rsreu.tyart.alienexplorer.model.object.UIObjectType;
@@ -107,7 +108,7 @@ public class MainMenuStateMachine extends ModelStateMachine {
         getRoom().setUIObjects(uiObjects);
 
         setSelectedMenuItem(0);
-        setMenuHeader("Alien Explorer");
+        setMenuHeader(R.getString("app_name"));
         setCurrentMenu(UIObjectType.OK);
         setCurrentCommand(ModelStateMachineCommand.NONE);
     }
@@ -117,12 +118,12 @@ public class MainMenuStateMachine extends ModelStateMachine {
         String caption = "";
         switch (type) {
             case NEW_GAME:
-                caption = "Start a new game?";
-                setMenuHeader("New game");
+                caption = R.getString("start_a_new_game");
+                setMenuHeader(R.getString("new_game"));
                 break;
             case EXIT:
-                caption = "Close game?";
-                setMenuHeader("Exit");
+                caption = R.getString("close_game");
+                setMenuHeader(R.getString("exit"));
                 break;
         }
         UIObject captionObject = new UIObject();
@@ -153,7 +154,7 @@ public class MainMenuStateMachine extends ModelStateMachine {
             UIObject object = new UIObject();
             object.setType(UIObjectType.TEXT);
             object.setState(0);
-            object.setText(String.format("%s %d", "Level", levelID));
+            object.setText(String.format("%s %d", R.getString("level"), levelID));
             object.setNumber(levelID);
             uiObjects.add(object);
         }
@@ -161,7 +162,7 @@ public class MainMenuStateMachine extends ModelStateMachine {
         getRoom().setUIObjects(uiObjects);
 
         setSelectedMenuItem(0);
-        setMenuHeader("Choose level");
+        setMenuHeader(R.getString("choose_level"));
         setCurrentMenu(UIObjectType.CHOOSE_LEVEL);
         setCurrentCommand(ModelStateMachineCommand.NONE);
     }
