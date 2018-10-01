@@ -95,8 +95,6 @@ public class PlayerLogic extends BaseObjectLogic<PlayerStateType> {
             float deltaSeconds) {
         Vector2D newSpeed = new Vector2D(0, 0);
 
-        getPlayer().getCollider().height = getPlayer().getHeightStandard();
-
         // Обработка движений по горизонтали
         int leftCommandPosition = _activeCommands.indexOf(ControllerCommand.LEFT);
         int rightCommandPosition = _activeCommands.indexOf(ControllerCommand.RIGHT);
@@ -125,11 +123,14 @@ public class PlayerLogic extends BaseObjectLogic<PlayerStateType> {
         if (isEnemyAttacks()) {
             newSpeed.setY(JUMP_SPEED / 1.5f);
             _hurtCooldown = HURT_COOLDOWN_TIME;
+            getPlayer().getCollider().height = getPlayer().getHeightStandard();
         } else if ((freeSpace.getBottom() < EPSILON) && _activeCommands.contains(ControllerCommand.DOWN)) {
             // Обработка приседания
             getPlayer().getCollider().height = getPlayer().getHeightSmall();
             newSpeed.setX(0);
             newSpeed.setY(0);
+        } else {
+            getPlayer().getCollider().height = getPlayer().getHeightStandard();
         }
 
         // Сброс счетчика прыжков, если игрок на земле
