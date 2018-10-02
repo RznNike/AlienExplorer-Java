@@ -42,13 +42,17 @@ class ModelEventHandler {
     }
 
     void addEvent(ModelEvent event) {
+        boolean duplicateFound = false;
         for (ModelEvent existedEvent : _eventQueue) {
             if ((existedEvent.getEventType() == event.getEventType())
                 && (existedEvent.getSender() == event.getSender())){
-                return;
+                duplicateFound = true;
+                break;
             }
         }
-        _eventQueue.add(event);
+        if (!duplicateFound) {
+            _eventQueue.add(event);
+        }
         _manualResetEvent.set();
     }
 }
